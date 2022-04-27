@@ -1,5 +1,6 @@
 package com.xinxin.controller;
 
+import com.xinxin.custom.annotation.PassToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
