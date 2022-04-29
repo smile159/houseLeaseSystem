@@ -3,6 +3,9 @@ import App from './App.vue'
 // 全局css
 import './assets/css/global.css'
 
+// 引入图片
+import $imgs from './router/img.js'
+
 // 路由
 import router from './router'
 // 引入UI组件库
@@ -19,6 +22,7 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.prototype.$imgs = $imgs
 
 new Vue({
   router,
