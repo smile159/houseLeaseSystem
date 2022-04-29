@@ -1,9 +1,7 @@
 package com.xinxin.common;
 
 import com.xinxin.response.ResultEnum;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 @Data

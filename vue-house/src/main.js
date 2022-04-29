@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 // 全局css
 import './assets/css/global.css'
+// 图标css
+import './assets/fonts/iconfont.css'
 
 // 引入图片
 import $imgs from './router/img.js'

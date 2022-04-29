@@ -2,9 +2,12 @@ package com.xinxin.controller;
 
 import com.xinxin.bean.User;
 import com.xinxin.bean.vo.LoginUser;
+import com.xinxin.common.ExpirationTime;
 import com.xinxin.common.Result;
+import com.xinxin.common.ResultMessage;
 import com.xinxin.custom.annotation.PassToken;
 import com.xinxin.service.UserService;
+import com.xinxin.utils.CookieUtils;
 import com.xinxin.utils.JwtUtils;
 import com.xinxin.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +43,10 @@ public class UserController {
         if (UserUtils.checkUser(loginUser,sqlUser)) {
             // 设置响应头token值，下次请求必须携带
             //response.setHeader("token", JwtUtils.createToken(sqlUser));
-            Cookie cookie = new Cookie("token",JwtUtils.createToken(sqlUser));
-            cookie.setMaxAge(7 * 24 * 60 * 60); // 7天过期
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
-            return Result.sussess(sqlUser);
+            response.addCookie(CookieUtils.createCookie("token",JwtUtils.createToken(sqlUser), ExpirationTime.SEVENDAYS,true));
+            return Result.sussess(ResultMessage.LOGINSUCCESS,sqlUser);
         } else {
             return Result.error();
         }
-    }
-
-    @GetMapping("/test")
-    public String test01(){
-        return "11111";
     }
 }
