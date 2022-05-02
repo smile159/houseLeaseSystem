@@ -19,7 +19,7 @@
             <el-card>
               <!--第一层小图片-->
               <div class="list-one-img">
-                <a href="/test">
+                <a href="/">
                   <img src="../assets/images/1.jpg" alt="">
                 </a>
               </div>
@@ -271,7 +271,9 @@
             </el-card>
           </el-col>
         </el-row>
-
+      </div>
+      <div class="more-house">
+        <el-button type="primary">更多租房信息</el-button>
       </div>
     </div>
   </div>
@@ -403,5 +405,11 @@ export default {
 }
 .brief-msg .right .el-tag {
   border-radius: 30px;
+}
+.more-house {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
 }
 </style>

@@ -25,12 +25,12 @@ public class RequestLog implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 日志记录
         // 获取请求的路径
-        System.out.println("getRequestURL" + request.getRequestURL());
-        System.out.println("getMethod" + request.getMethod());
-        System.out.println("getRequestURI" + request.getRequestURI());
-        System.out.println("getAuthType" + request.getAuthType());
-        System.out.println("getContextPath" + request.getContextPath());
-        System.out.println("handler "+handler);
+        System.out.println("getRequestURL：" + request.getRequestURL());
+        System.out.println("getMethod：" + request.getMethod());
+        System.out.println("getRequestURI：" + request.getRequestURI());
+        System.out.println("getAuthType：" + request.getAuthType());
+        System.out.println("getContextPath：" + request.getContextPath());
+        System.out.println("handler："+handler);
         return true;
     }
 

@@ -2,6 +2,7 @@ package com.xinxin.config.jwt;
 
 
 import com.xinxin.bean.User;
+import com.xinxin.common.excepiton.UserExcepiton;
 import com.xinxin.custom.annotation.PassToken;
 import com.xinxin.service.UserService;
 import com.xinxin.utils.CookieUtils;
@@ -32,7 +33,9 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
+        System.out.println("请求的路径为："+httpServletRequest.getRequestURI());
         String token = CookieUtils.getSpecifiedCookie(httpServletRequest.getCookies(),"token");
+        System.out.println("token = "+token);
         // 如果不是映射到方法直接通过
         if (!(object instanceof HandlerMethod)) {
             return true;
@@ -54,7 +57,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             if (token == null) {
                 //这里其实是登录失效,没token了   这个错误也是我自定义的，读者需要自己修改
                 log.info("token为空，校验失败!!!!");
-                return false;
+                throw new UserExcepiton.UserNoToken("用户token为空");
             }
 
             // 获取 token 中的 id

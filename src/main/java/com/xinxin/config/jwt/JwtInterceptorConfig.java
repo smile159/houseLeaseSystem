@@ -20,7 +20,11 @@ public class JwtInterceptorConfig implements WebMvcConfigurer {
 
         //默认拦截所有路径
         registry.addInterceptor(authenticationInterceptor())
-                .addPathPatterns("/**");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/swagger-ui/**")
+                .excludePathPatterns("/swagger-resources/**")
+                .excludePathPatterns("/v3/api-docs")
+                .excludePathPatterns("/doc.html");
     }
     @Bean
     public JwtAuthenticationInterceptor authenticationInterceptor() {

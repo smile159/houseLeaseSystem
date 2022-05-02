@@ -10,6 +10,9 @@ import com.xinxin.service.UserService;
 import com.xinxin.utils.CookieUtils;
 import com.xinxin.utils.JwtUtils;
 import com.xinxin.utils.UserUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +31,15 @@ import java.util.HashMap;
  * @createTime 2022年04月27日 16:51:00
  */
 @RestController
+@Api("userController")
 public class UserController {
     @Autowired
     UserService userService;
 
     @PostMapping("/login")
     @PassToken
-    public Result<User> loginUser(@RequestBody LoginUser loginUser, HttpServletResponse response) {
+    @ApiOperation(value = "用户登录")
+    public Result<User> loginUser(@RequestBody @ApiParam(value = "前端请求参数",required = true) LoginUser loginUser,@ApiParam(value = "设置COOKIE") HttpServletResponse response) {
         System.out.println("收到了登录请求：" + loginUser);
         // 数据库查询用户
         User sqlUser = userService.getUserByName(loginUser.getUserName());

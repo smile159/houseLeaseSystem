@@ -76,7 +76,7 @@ public class Result<T>{
     }
 
 
-    public static <T> Result<T> error(int code, String msg){
+    public static <T> Result<T> error(int code,String msg){
         return new Result<T>(code,msg);
     }
 

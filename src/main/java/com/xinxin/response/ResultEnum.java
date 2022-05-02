@@ -5,7 +5,7 @@ public enum ResultEnum {
     //内部定义枚举
     REJECT(0,"拒绝请求"),
     SUCCESS(1,"请求成功"),
-    ERROR(-1,"请求失败");
+    ERROR(-1,"未登录，请先登录");
 
 
     Integer code;
