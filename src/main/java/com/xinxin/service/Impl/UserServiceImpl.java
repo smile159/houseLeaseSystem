@@ -1,11 +1,16 @@
 package com.xinxin.service.Impl;
 
+import ch.qos.logback.core.helpers.Transform;
 import com.xinxin.bean.User;
+import com.xinxin.bean.dto.ViewUser;
+import com.xinxin.bean.vo.RegisterUser;
 import com.xinxin.mapper.UserMapper;
 import com.xinxin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 /**
  * @author smile
@@ -29,5 +34,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(String uid) {
         return userMapper.getUserById(uid);
+    }
+
+    @Override
+    public boolean registerUser(RegisterUser registerUser) {
+        //User newUser = new User();
+        //BeanUtils.copyProperties(registerUser,newUser);
+        User newUser = User.builder()
+                .userName(registerUser.getUserName())
+                .password(registerUser.getPassword())
+                .identity(3)
+                .status(1)
+                .build();
+        System.out.println("newUser = "+newUser);
+        int insertResult = userMapper.insertUser(newUser);
+        return insertResult > 0;
     }
 }

@@ -1,6 +1,7 @@
 package com.xinxin.config.exception;
 
 import com.xinxin.common.Result;
+import com.xinxin.common.ResultMessage;
 import com.xinxin.common.excepiton.UserExcepiton;
 import com.xinxin.response.ResultEnum;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +19,11 @@ public class UserExcepitonHandler {
 
     @ExceptionHandler(value = UserExcepiton.UserNoToken.class)
     public Result<String> userTokenException(Exception e) {
-        return Result.error(ResultEnum.ERROR.getCode(),ResultEnum.ERROR.getMsg());
+        return Result.error(ResultEnum.ERROR.getCode(),e.getMessage());
+    }
+
+    @ExceptionHandler(value = UserExcepiton.UserInexistence.class)
+    public Result<String> userInexistenceExceptionHandler(Exception e){
+        return Result.error(ResultEnum.REJECT.getCode(), e.getMessage());
     }
 }

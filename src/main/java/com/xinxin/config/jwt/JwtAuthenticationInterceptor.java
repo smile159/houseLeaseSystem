@@ -2,6 +2,7 @@ package com.xinxin.config.jwt;
 
 
 import com.xinxin.bean.User;
+import com.xinxin.common.ResultMessage;
 import com.xinxin.common.excepiton.UserExcepiton;
 import com.xinxin.custom.annotation.PassToken;
 import com.xinxin.service.UserService;
@@ -56,7 +57,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             // 执行认证
             if (token == null) {
                 //这里其实是登录失效,没token了   这个错误也是我自定义的，读者需要自己修改
-                log.info("token为空，校验失败!!!!");
+                log.error("token为空，校验失败!!!!");
                 throw new UserExcepiton.UserNoToken("用户token为空");
             }
 
@@ -68,7 +69,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             if (user == null) {
                 //这个错误也是我自定义的
                 log.info("用户不存在");
-                return false;
+                throw new UserExcepiton.UserInexistence(ResultMessage.UserNUll);
             }
 
             // 验证 token

@@ -1,7 +1,9 @@
 package com.xinxin.controller;
 
 import com.xinxin.bean.User;
+import com.xinxin.bean.dto.ViewUser;
 import com.xinxin.bean.vo.LoginUser;
+import com.xinxin.bean.vo.RegisterUser;
 import com.xinxin.common.ExpirationTime;
 import com.xinxin.common.Result;
 import com.xinxin.common.ResultMessage;
@@ -53,5 +55,20 @@ public class UserController {
         } else {
             return Result.error();
         }
+    }
+
+
+    @PostMapping("/register")
+    @PassToken
+    @ApiOperation(value = "用户注册")
+    public Result<ViewUser> registerUser(@RequestBody RegisterUser registerUser){
+        // 先查询用户是否已经存在
+        User userByName = userService.getUserByName(registerUser.getUserName());
+        if(userByName != null) return Result.error(ResultMessage.UserNUll);
+        // 用户不存在，将数据插入到数据库中
+        if(userService.registerUser(registerUser)){
+            return Result.sussess(ResultMessage.REGISTERSUCCESS);
+        }
+        return Result.error(ResultMessage.REGISTERERROR);
     }
 }

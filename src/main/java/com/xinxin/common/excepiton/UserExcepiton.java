@@ -15,4 +15,10 @@ public class UserExcepiton {
             super(message);
         }
     }
+
+    public static class UserInexistence extends BaseExcepiton{
+        public UserInexistence(String message) {
+            super(message);
+        }
+    }
 }

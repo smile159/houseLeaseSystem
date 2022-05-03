@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import IndexPage from '@/components/IndexPage'
-import ViewHouse from '@/components/house/ViewHouse'
+import ViewHouse from '@/views/house/ViewHouse'
 
 Vue.use(VueRouter)
 

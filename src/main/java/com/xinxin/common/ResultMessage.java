@@ -9,4 +9,8 @@ package com.xinxin.common;
 public class ResultMessage {
     public static final String LOGINSUCCESS = "登录成功";
     public static final String LOGINERROR = "登录失败";
+    public static final String UserNUll = "用户不存在";
+    public static final String UserExist = "用户存在";
+    public static final String REGISTERSUCCESS = "注册成功";
+    public static final String REGISTERERROR = "注册失败";
 }
