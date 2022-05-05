@@ -1,6 +1,6 @@
 package com.xinxin.utils;
 
-import com.xinxin.bean.User;
+import com.xinxin.bean.sql.User;
 import com.xinxin.bean.vo.LoginUser;
 
 /**

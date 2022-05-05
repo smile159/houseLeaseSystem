@@ -34,17 +34,17 @@ public class Result<T>{
     }
 
     // 成功的请求方法，有返回值
-    public static <T> Result<T> sussess(T data){
+    public static <T> Result<T> success(T data){
         return new Result<T>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(),data);
     }
 
     // 成功的请求，自定义msg
-    public static <T> Result<T> sussess(String msg){
+    public static <T> Result<T> success(String msg){
         return new Result<T>(ResultEnum.SUCCESS.getCode(), msg);
     }
 
     // 成功的请求，自定义msg和data
-    public static <T> Result<T> sussess(String msg, T data){
+    public static <T> Result<T> success(String msg, T data){
         return new Result<T>(ResultEnum.SUCCESS.getCode(),msg,data);
     }
 

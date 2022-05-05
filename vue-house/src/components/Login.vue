@@ -24,6 +24,9 @@
 <script>
 export default {
   name: 'Login',
+  mounted () {
+    console.log(this)
+  },
   data () {
     return {
       // 登录表单数据
@@ -49,17 +52,6 @@ export default {
       }
     }
   },
-  mounted () {
-    // eslint-disable-next-line no-undef
-    VANTA.CLOUDS({
-      el: '.login-container',
-      mouseControls: true,
-      touchControls: true,
-      gyroControls: false,
-      minHeight: 200.00,
-      minWidth: 200.00
-    })
-  },
   methods: {
     login () {
       // 判断表单是否校验通过
@@ -67,9 +59,15 @@ export default {
         console.log('校验是否通过？', valid)
         if (valid) {
           this.$http.post('login', this.loginForm).then(res => {
-            this.$message.success(res.data.msg)
             console.log(res)
-            this.$router.replace('/home')
+            if (res.data.status === 1) {
+              // 登录成功的提示消息
+              this.$message.success(res.data.msg)
+              // 将数据存储到localStorage中
+              localStorage.setItem('userInfo', JSON.stringify(res.data.data))
+              // 跳转
+              this.$router.replace('/home')
+            }
           }).catch(err => {
             console.log(err)
             this.$message.error('登录错误')
@@ -103,9 +101,4 @@ export default {
   width: 500px;
   height: 320px;
 }
-
-.el-card__body {
-
-}
-
 </style>

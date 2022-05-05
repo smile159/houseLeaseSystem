@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.xinxin.bean.User;
+import com.xinxin.bean.sql.User;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinxin.mapper.HouseRentMapper">
+    <!--public List<ViewHouseRent> queryHouseRent();-->
+    <!--
+        <resultMap id="deptAndEmpResultMap2" type="emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="email" column="email"/>
+        <result property="did" column="did"/>
+    <association property="dept" javaType="Dept">
+        <id property="did" column="did" />
+        <result  property="deptName" column="dept_name"/>
+    </association>
+</resultMap>
+    -->
+
+    <resultMap id="houseRentAndHouseResultMap" type="HouseRent">
+        <id property="rid" column="rid"/>
+        <result property="hid" column="hid"/>
+        <result property="rentTitle" column="rent_title"/>
+        <result property="rentContent" column="rent_content"/>
+        <result property="year" column="year"/>
+        <result property="month" column="month"/>
+        <result property="day" column="day"/>
+        <result property="month" column="money"/>
+        <result property="contactName" column="contact_name"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="houseStatus" column="house_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <!-- house_相关-->
+        <!--这种是结果映射，在sql语句中联表查询后将结果映射到字段上-->
+        <!--<association property="house" javaType="house">-->
+        <!--    <id property="tid" column="tid"/>-->
+        <!--    <result property="address" column="address"/>-->
+        <!--</association>-->
+        <!--分布查询-->
+        <association property="house"
+                     select="com.xinxin.mapper.HouseMapper.getHouseById"
+                     column="hid"
+                     fetchType="eager">
+        </association>
+    </resultMap>
+
+
+    <select id="queryHouseRent" resultType="houseRent">
+        select * from house_rent limit #{offset},#{pageSize}
+    </select>
+
+
+
+    <!--public List<HouseRent> getRecommendHouseRent(@Param("offset")int offset, @Param("pageSize") int pageSize);-->
+    <resultMap id="recommendRentHouseResultMap" type="viewHouseRent">
+        <id property="rid" column="rid"/>
+        <result property="rentTitle" column="rent_title"/>
+        <result property="money" column="money"/>
+        <result property="address" column="address"/>
+        <association property="houseTags"
+                     select="com.xinxin.mapper.HouseTagMapper.getHouseTagByHidAndTwo"
+                     column="hid"
+                     fetchType="eager"
+        />
+    </resultMap>
+
+    <select id="getRecommendHouseRent" resultMap="recommendRentHouseResultMap">
+        select * from house_rent left join house on house.hid = house_rent.hid
+    </select>
+
+
+
+</mapper>

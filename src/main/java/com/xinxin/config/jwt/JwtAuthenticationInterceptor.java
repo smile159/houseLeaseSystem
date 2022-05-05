@@ -1,7 +1,7 @@
 package com.xinxin.config.jwt;
 
 
-import com.xinxin.bean.User;
+import com.xinxin.bean.sql.User;
 import com.xinxin.common.ResultMessage;
 import com.xinxin.common.excepiton.UserExcepiton;
 import com.xinxin.custom.annotation.PassToken;
@@ -10,16 +10,13 @@ import com.xinxin.utils.CookieUtils;
 import com.xinxin.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.Map;
 
 /**
  * @author smile

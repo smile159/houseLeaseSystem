@@ -1,4 +1,4 @@
-package com.xinxin.bean;
+package com.xinxin.bean.sql;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

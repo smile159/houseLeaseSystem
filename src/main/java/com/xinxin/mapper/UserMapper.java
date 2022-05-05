@@ -1,14 +1,11 @@
 package com.xinxin.mapper;
 
-import com.xinxin.bean.User;
-import com.xinxin.bean.dto.ViewUser;
-import com.xinxin.bean.vo.RegisterUser;
+import com.xinxin.bean.sql.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import javax.swing.text.View;
 import java.util.List;
 
 /**

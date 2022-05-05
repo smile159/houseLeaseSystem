@@ -1,6 +1,6 @@
 package com.xinxin.controller;
 
-import com.xinxin.bean.User;
+import com.xinxin.bean.sql.User;
 import com.xinxin.bean.dto.ViewUser;
 import com.xinxin.bean.vo.LoginUser;
 import com.xinxin.bean.vo.RegisterUser;
@@ -16,15 +16,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 
 /**
  * @author smile
@@ -51,7 +47,7 @@ public class UserController {
             // 设置响应头token值，下次请求必须携带
             //response.setHeader("token", JwtUtils.createToken(sqlUser));
             response.addCookie(CookieUtils.createCookie("token",JwtUtils.createToken(sqlUser), ExpirationTime.SEVENDAYS,true));
-            return Result.sussess(ResultMessage.LOGINSUCCESS,sqlUser);
+            return Result.success(ResultMessage.LOGINSUCCESS,sqlUser);
         } else {
             return Result.error();
         }
@@ -67,7 +63,7 @@ public class UserController {
         if(userByName != null) return Result.error(ResultMessage.UserNUll);
         // 用户不存在，将数据插入到数据库中
         if(userService.registerUser(registerUser)){
-            return Result.sussess(ResultMessage.REGISTERSUCCESS);
+            return Result.success(ResultMessage.REGISTERSUCCESS);
         }
         return Result.error(ResultMessage.REGISTERERROR);
     }

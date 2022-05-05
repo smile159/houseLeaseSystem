@@ -1,6 +1,6 @@
 package com.xinxin;
 
-import com.xinxin.bean.User;
+import com.xinxin.bean.sql.User;
 import com.xinxin.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

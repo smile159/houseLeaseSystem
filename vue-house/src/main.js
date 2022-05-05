@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import store from './stroe'
 // 全局css
 import './assets/css/global.css'
 // 图标css
@@ -15,6 +16,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 引入axios
 import axios from 'axios'
+
 axios.defaults.baseURL = 'http://localhost:8080/'
 // 运行携带cookie
 axios.defaults.withCredentials = true
@@ -27,6 +29,7 @@ Vue.prototype.$http = axios
 Vue.prototype.$imgs = $imgs
 
 new Vue({
+  store,
   router,
   render: h => h(App)
 }).$mount('#app')

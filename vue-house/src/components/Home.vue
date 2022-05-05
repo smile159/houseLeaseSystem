@@ -17,7 +17,7 @@
         <el-menu-item index="/home">首页</el-menu-item>
         <el-menu-item index="/viewHouse">租房</el-menu-item>
         <div class="login-item"></div>
-        <template v-if="showLoginAndRegister">
+        <template v-if="!isLogin">
           <!--登录注册-->
           <el-menu-item index="/login">
             登录
@@ -26,7 +26,7 @@
             注册
           </el-menu-item>
         </template>
-        <el-submenu index="2" class="userinfoMenu" v-if="!showLoginAndRegister">
+        <el-submenu index="2" class="userinfoMenu" v-if="isLogin">
           <template slot="title">
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
             <span class="userName">用户名</span>
@@ -34,7 +34,7 @@
           <el-menu-item index="2-1">我的房屋</el-menu-item>
           <el-menu-item index="2-2">我的收藏</el-menu-item>
           <el-menu-item index="2-3">我的留言</el-menu-item>
-          <el-menu-item index="2-4">退出</el-menu-item>
+          <el-menu-item @click="logOut">退出</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-header>
@@ -51,20 +51,22 @@
       title="注册"
       :visible.sync="registerDialogVisble"
       width="500px"
+      @close="closeRegisterFormDialog"
       >
       <el-form
         :model="registerForm"
         :rules="registerRules"
         ref="registerFormDialogRef"
+        status-icon
       >
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="registerForm.userName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="registerForm.password" autocomplete="off"></el-input>
+        <el-form-item label="密码" prop="password" >
+          <el-input v-model="registerForm.password" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="affirmPassword">
-          <el-input v-model="registerForm.affirmPassword" autocomplete="off"></el-input>
+          <el-input v-model="registerForm.affirmPassword" autocomplete="off" show-password></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -78,16 +80,46 @@
 <script>
 export default {
   name: 'Home',
+  mounted () {
+    this.init()
+  },
   data () {
+    /* 二次密码校验 */
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else {
+        if (this.registerForm.affirmPassword !== '') {
+          this.$refs.registerFormDialogRef.validateField('affirmPassword')
+        }
+        callback()
+      }
+    }
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.registerForm.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
+      // 是否登录
+      isLogin: false,
+      // 用户数据
+      user: {},
       // 默认选中的菜单
       activeIndex: '0',
-      showLoginAndRegister: true,
       // 注册对话框控制
       registerDialogVisble: false,
+      // 注册表单
       registerForm: {
+        // 用户名
         userName: '',
+        // 密码
         password: '',
+        // 二次确认密码
         affirmPassword: ''
       },
       // 注册表单校验规则
@@ -98,32 +130,38 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' },
+          { validator: validatePass, trigger: 'blur' }
         ],
         affirmPassword: [
           { required: true, message: '请确认密码', trigger: 'blur' },
-          { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+          { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' },
+          { validator: validatePass2, trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
+    // 初始化方法，moutend挂载则触发
+    init () {
+      // 读取localStorage中的userinfo数据，判断是否存在
+      if (localStorage.getItem('userInfo')) {
+        // 如果存在则写入user
+        this.user = localStorage.getItem('userInfo')
+        // 修改登录状态
+        this.isLogin = true
+      } else {
+        this.isLogin = false
+      }
+    },
     register () {
       this.registerDialogVisble = true
     },
     submitRegisterForm () {
       this.$refs.registerFormDialogRef.validate(async valid => {
-        if (!valid) return this.$message.error('注册失败')
-        console.log('注册的数据为：', this.registerForm)
+        if (!valid) return this.$message.error('数据格式有误！请重新填写')
         // 校验密码和确认密码是否一致
         if (this.registerForm.password !== this.registerForm.affirmPassword) return this.$message.error('密码不一致')
-        /*        const { data: res } = await this.$http.post('register', this.registerForm)
-        console.log(res)
-        if (res.status > 0) {
-          this.$message.success(res.msg)
-        } else {
-          this.$message.error(res.msg)
-        } */
         this.$http.post('register', this.registerForm).then(
           res => {
             if (res.data.status > 0) {
@@ -139,6 +177,23 @@ export default {
         )
         this.registerDialogVisble = false
       })
+    },
+    // 关闭表单
+    closeRegisterFormDialog () {
+      console.log('关闭表单')
+      // 在关闭前对表单进行重置并移除校验结果
+      this.$refs.registerFormDialogRef.resetFields()
+      // 关闭表单提交对话框
+      this.registerDialogVisble = false
+    },
+    // 用户退出
+    logOut () {
+      // 清空data中的user
+      this.user = {}
+      // 情况localStorage中的userInfo
+      localStorage.removeItem('userInfo')
+      // 修改登录状态
+      this.isLogin = false
     }
   }
 }

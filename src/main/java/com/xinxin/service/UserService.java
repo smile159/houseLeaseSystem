@@ -1,10 +1,8 @@
 package com.xinxin.service;
 
-import com.xinxin.bean.User;
-import com.xinxin.bean.dto.ViewUser;
+import com.xinxin.bean.sql.User;
 import com.xinxin.bean.vo.RegisterUser;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Service;
 
 /**
  * @author smile

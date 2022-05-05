@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinxin.mapper.HouseTagMapper">
+    <!--@Select("select * from house_tag where hid=#{hid} limit 2")-->
+    <!--public List<HouseTag> getHouseTagByHidAndTwo(@Param("hid") Integer hid);-->
+    <select id="getHouseTagByHidAndTwo" resultType="houseTag">
+        select * from house_tag where hid=#{hid} limit 2
+    </select>
+</mapper>
