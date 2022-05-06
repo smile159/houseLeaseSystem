@@ -34,181 +34,24 @@
     <!--主体内容-->
     <div class="flex-div">
       <!--分割线-->
-        <el-row :gutter="5" type="flex" justify="center">
-          <el-col :span="6">
-            <!--卡片-->
-            <el-card>
-              <div class="clickToDetail">
-                <!--第一层小图片-->
-                <div class="list-one-img">
-                  <img src="../../assets/images/1.jpg" alt="">
-                </div>
-                <!--第二层租房信息-->
-                <div class="house-address">
-                  <h4>
-                    合租-测试测试
-                  </h4>
-                  <h6>
-                    四川省成都市金牛区
-                  </h6>
-                  <h3 class="price">
-                    <span>￥6666</span>/月
-                  </h3>
-                </div>
-              </div>
-              <!--收藏和简略信息-->
-              <div class="brief-msg">
-                <!--左边图标-->
-                <div class="left">
-                  <ul>
-                    <li>
-                      卧室3
-                    </li>
-                    <li>
-                      洗手间2
-                    </li>
-                  </ul>
-                </div>
-                <!--右边收藏按钮-->
-                <div class="right">
-                  <el-tag type="info">收藏</el-tag>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="6">
-            <!--卡片-->
-            <el-card>
-              <div class="clickToDetail">
-                <!--第一层小图片-->
-                <div class="list-one-img">
-                  <img src="../../assets/images/1.jpg" alt="">
-                </div>
-                <!--第二层租房信息-->
-                <div class="house-address">
-                  <h4>
-                    合租-测试测试
-                  </h4>
-                  <h6>
-                    四川省成都市金牛区
-                  </h6>
-                  <h3 class="price">
-                    <span>￥6666</span>/月
-                  </h3>
-                </div>
-              </div>
-              <!--收藏和简略信息-->
-              <div class="brief-msg">
-                <!--左边图标-->
-                <div class="left">
-                  <ul>
-                    <li>
-                      卧室3
-                    </li>
-                    <li>
-                      洗手间2
-                    </li>
-                  </ul>
-                </div>
-                <!--右边收藏按钮-->
-                <div class="right">
-                  <el-tag type="info">收藏</el-tag>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="6">
-            <!--卡片-->
-            <el-card>
-              <div class="clickToDetail">
-                <!--第一层小图片-->
-                <div class="list-one-img">
-                  <img src="../../assets/images/1.jpg" alt="">
-                </div>
-                <!--第二层租房信息-->
-                <div class="house-address">
-                  <h4>
-                    合租-测试测试
-                  </h4>
-                  <h6>
-                    四川省成都市金牛区
-                  </h6>
-                  <h3 class="price">
-                    <span>￥6666</span>/月
-                  </h3>
-                </div>
-              </div>
-              <!--收藏和简略信息-->
-              <div class="brief-msg">
-                <!--左边图标-->
-                <div class="left">
-                  <ul>
-                    <li>
-                      卧室3
-                    </li>
-                    <li>
-                      洗手间2
-                    </li>
-                  </ul>
-                </div>
-                <!--右边收藏按钮-->
-                <div class="right">
-                  <el-tag type="info">收藏</el-tag>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="6">
-            <!--卡片-->
-            <el-card>
-              <div class="clickToDetail">
-                <!--第一层小图片-->
-                <div class="list-one-img">
-                  <img src="../../assets/images/1.jpg" alt="">
-                </div>
-                <!--第二层租房信息-->
-                <div class="house-address">
-                  <h4>
-                    合租-测试测试
-                  </h4>
-                  <h6>
-                    四川省成都市金牛区
-                  </h6>
-                  <h3 class="price">
-                    <span>￥6666</span>/月
-                  </h3>
-                </div>
-              </div>
-              <!--收藏和简略信息-->
-              <div class="brief-msg">
-                <!--左边图标-->
-                <div class="left">
-                  <ul>
-                    <li>
-                      卧室3
-                    </li>
-                    <li>
-                      洗手间2
-                    </li>
-                  </ul>
-                </div>
-                <!--右边收藏按钮-->
-                <div class="right">
-                  <el-tag type="info">收藏</el-tag>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
+      <Card v-for="item in cardDataList" :key="item.rid" :d="item"/>
     </div>
   </div>
 </template>
 
 <script>
 import citys from '@/stroe/citys'
+import Card from '@/components/s-card'
 
 export default {
   name: 'ViewHouse',
+  components: { Card },
+  mounted () {
+    // 获取最新的出租信息
+    this.getHouseRentList()
+    console.log('viewHouse', this)
+    this.$bus.$on('refreshCradList', this.getHouseRentList)
+  },
   data () {
     return {
       // 热门城市数据
@@ -249,7 +92,30 @@ export default {
         priceEnd: ''
       },
       // 浏览的租房信息
-      viewHouseRent: []
+      viewHouseRent: [],
+      // 卡片模拟数据
+      cardData: {
+        rentTitle: '合租-测试用的',
+        address: '四川省成都市金牛区',
+        price: 9999,
+        houseTags: [
+          { name: '卫生间', value: '5', htid: 4 },
+          { name: '卧室', value: '6', htid: 5 }
+        ],
+        fid: 0
+      },
+      // 查询参数
+      queryHouseRent: {
+        pageSize: 6,
+        pageNum: 1
+      },
+      // 出租房屋的数据
+      cardDataList: [],
+      // 收藏表单数据
+      favoriteFrom: {
+        rid: -1,
+        uid: -1
+      }
     }
   },
   methods: {
@@ -261,6 +127,21 @@ export default {
       this.hotCity = this.cityList.filter((v) => {
         return v.name === value
       })
+    },
+    getHouseRentList () {
+      this.$http.get('getHouseRent', {
+        params: this.queryHouseRent
+      }).then(
+        res => {
+          // 请求成功
+          this.cardDataList = res.data.data
+          console.log(this.cardDataList)
+        }
+      ).catch(
+        err => {
+          console.log(err.message)
+        }
+      )
     }
   }
 }
@@ -301,113 +182,37 @@ export default {
   width: 80%;
   height: 500px;
 }
-
+/*卡片的父元素，flex布局*/
 .flex-div {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 1920px;
+  flex-flow: wrap;
 }
 
+/*span的左右内边距*/
 .header-content span {
   padding: 0 15px;
 }
-
+/*价格开始和结束*/
 .priceStart, .priceEnd {
   width: 100px;
 }
-/*所有的卡片*/
-.flex-div .el-card {
-  width: 370px;
-  height: 450px;
-  border-radius: .5rem;
-}
-/*取消卡片中的padding*/
-.flex-div .el-card > /deep/ .el-card__body {
-  padding: 0 !important;
-}
-/*最新租房信息的文字*/
-.flex-div > .show-msg {
-  width: 1350px;
-  height: 100px;
-  margin: 0 240px;
-  text-align: center;
-  line-height: 100px;
-}
-
-/*最新租房信息中的卡片的图片*/
-.flex-div .list-one-img {
-  width: 370px;
-  height: 240px;
-}
-
-.flex-div .list-one-img img {
-  width: 100%;
-  height: 100%;
-}
-/*设置每一行的上下间距*/
-.el-row {
-  margin: 20px 0;
-}
-
-.flex-div .el-card h6 {
-  font-weight: 200;
-}
-
-.house-address {
-  width: 370px;
-  height: 130px;
-  padding: 15px 0 0 15px;
-}
-
-.house-address h4 {
-  padding-bottom: 10px;
-}
-
-.house-address h6 {
-  padding-bottom: 15px;
-}
-
-.house-address span {
-  color: gold;
-  font-weight: 700;
-  font-size: 22px;
-  padding-right: 5px;
-}
-
-.house-address h3 {
-  font-weight: 200;
-  font-size: 16px;
-}
-
-.brief-msg {
-  width: 370px;
-  height: 72px;
-  border-top: 1px solid #eee;
-}
-
-.brief-msg div {
+.hvr-grow-shadow {
   display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
 }
-
-.brief-msg .left ul li {
-  /*变为行内块元素*/
-  display: inline-block;
-  line-height: 72px;
-  padding-left: 15px;
-}
-
-.brief-msg .left ul li span {
-  font-size: 24px;
-}
-
-.brief-msg .right {
-  float: right;
-  line-height: 72px;
-  padding-right: 15px;
-  cursor: pointer;
-}
-
-.brief-msg .right .el-tag {
-  border-radius: 30px;
+.hvr-grow-shadow:hover, .hvr-grow-shadow:focus, .hvr-grow-shadow:active {
+  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
 </style>

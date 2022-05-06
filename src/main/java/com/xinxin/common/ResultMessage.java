@@ -13,4 +13,5 @@ public class ResultMessage {
     public static final String UserExist = "用户存在";
     public static final String REGISTERSUCCESS = "注册成功";
     public static final String REGISTERERROR = "注册失败";
+    public static final String USERTOKENEXPIRED = "token过期，请重新登录";
 }

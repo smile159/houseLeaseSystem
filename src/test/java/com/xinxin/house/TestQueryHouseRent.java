@@ -36,9 +36,9 @@ public class TestQueryHouseRent {
     public void test01(){
         // 一页三条，查询第一页数据
         //List<ViewHouseRent> viewHouseRents = houseService.queryHouseRent(3, 1);
-        List<HouseRent> houseRents = houseRentService.queryHouseRent(3, 2);
-        for (HouseRent houseRent : houseRents) {
-            System.out.println(houseRent);
+        List<ViewHouseRent> viewHouseRents = houseRentService.queryHouseRent(3, 2);
+        for (ViewHouseRent viewHouseRent : viewHouseRents) {
+            System.out.println(viewHouseRent);
         }
     }
 

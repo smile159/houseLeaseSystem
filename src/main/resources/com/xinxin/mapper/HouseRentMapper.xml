@@ -48,8 +48,9 @@
     </resultMap>
 
 
-    <select id="queryHouseRent" resultType="houseRent">
-        select * from house_rent limit #{offset},#{pageSize}
+    <!--public List<ViewHouseRent> getHouseRentByPaging();-->
+    <select id="getHouseRentByPaging" resultMap="recommendRentHouseResultMap">
+        select * from house_rent left join house on house.hid = house_rent.hid limit #{offset},#{pageSize}
     </select>
 
 
@@ -60,6 +61,7 @@
         <result property="rentTitle" column="rent_title"/>
         <result property="money" column="money"/>
         <result property="address" column="address"/>
+        <result property="fid" column="fid"/>
         <association property="houseTags"
                      select="com.xinxin.mapper.HouseTagMapper.getHouseTagByHidAndTwo"
                      column="hid"

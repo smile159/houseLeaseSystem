@@ -18,4 +18,9 @@ public class HelloController {
     public String index(){
         return "Hello SpringBoot + Vue !!!";
     }
+
+    @GetMapping("/testToken")
+    public String testToken(){
+        return "测试token的";
+    }
 }

@@ -29,7 +29,7 @@
         <el-submenu index="2" class="userinfoMenu" v-if="isLogin">
           <template slot="title">
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-            <span class="userName">用户名</span>
+            <span class="userName" v-text="user.userName"></span>
           </template>
           <el-menu-item index="2-1">我的房屋</el-menu-item>
           <el-menu-item index="2-2">我的收藏</el-menu-item>
@@ -82,6 +82,9 @@ export default {
   name: 'Home',
   mounted () {
     this.init()
+    console.log('home', this)
+    // 绑定全局事件总线，用于收藏出租信息
+    this.$bus.$on('userFavorite', this.globalUserFavorite)
   },
   data () {
     /* 二次密码校验 */
@@ -147,7 +150,7 @@ export default {
       // 读取localStorage中的userinfo数据，判断是否存在
       if (localStorage.getItem('userInfo')) {
         // 如果存在则写入user
-        this.user = localStorage.getItem('userInfo')
+        this.user = JSON.parse(localStorage.getItem('userInfo'))
         // 修改登录状态
         this.isLogin = true
       } else {
@@ -194,6 +197,26 @@ export default {
       localStorage.removeItem('userInfo')
       // 修改登录状态
       this.isLogin = false
+    },
+    globalUserFavorite (rid) {
+      // 收藏是登录后的功能，先判断是否登录
+      if (!this.isLogin) return this.$message.error('请先登录')
+      console.log('rid = ', rid, 'uid = ', this.user.uid)
+      const data = { rid: rid, uid: this.user.uid }
+      console.log('收藏的数据：', data)
+      this.$http.post('favoriteHouseRent', data).then(
+        res => {
+          if (res.data.status > 0) {
+            // 刷新数据
+            this.$bus.$emit('refreshCradList')
+            this.$message.success(res.data.msg)
+          }
+        }
+      ).catch(
+        err => {
+          this.$message.error(err.message)
+        }
+      )
     }
   }
 }

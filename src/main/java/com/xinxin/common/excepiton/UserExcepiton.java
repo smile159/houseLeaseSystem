@@ -10,14 +10,22 @@ import com.xinxin.common.BaseExcepiton;
  */
 public class UserExcepiton {
 
+    // 用户没有token
     public static class UserNoToken extends BaseExcepiton{
         public UserNoToken(String message) {
             super(message);
         }
     }
 
+    // 用户不存在
     public static class UserInexistence extends BaseExcepiton{
         public UserInexistence(String message) {
+            super(message);
+        }
+    }
+    // 用户token过期
+    public static class UserTokenExpired extends BaseExcepiton {
+        public UserTokenExpired(String message) {
             super(message);
         }
     }

@@ -8,6 +8,7 @@ import com.xinxin.service.HouseRentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.View;
 import java.util.List;
 
 /**
@@ -22,10 +23,10 @@ public class HouseRentServiceImpl implements HouseRentService {
     HouseRentMapper houseRentMapper;
 
     @Override
-    public List<HouseRent> queryHouseRent(int pageSize, int pageNum) {
+    public List<ViewHouseRent> queryHouseRent(int pageSize, int pageNum) {
         // 计算偏移量
         int offset = (pageNum-1)*pageSize;
-        return null;
+        return houseRentMapper.getHouseRentByPaging(offset,pageSize);
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.xinxin.controller;
 
+import com.xinxin.bean.vo.FavoriteHouseRent;
 import com.xinxin.common.Result;
+import com.xinxin.service.FavoriteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -12,10 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class FavoriteController {
+    @Autowired
+    FavoriteService favoriteService;
 
     @PostMapping("/favoriteHouseRent")
-    public Result<String> userFavoriteHouseRent(){
-        return Result.error("ss");
+    public Result<String> userFavoriteHouseRent(@RequestBody FavoriteHouseRent favoriteHouseRent){
+        if(favoriteService.userFavoriteHouseRent(favoriteHouseRent)>0){
+            return Result.success("收藏成功");
+        }else{
+            return Result.error("收藏失败");
+        }
     }
 
 }

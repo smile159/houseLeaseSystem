@@ -70,7 +70,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             }
 
             // 验证 token
-            return JwtUtils.verifyToken(token, userId);
+            JwtUtils.verifyToken(token, userId);
         }
         return true;
     }

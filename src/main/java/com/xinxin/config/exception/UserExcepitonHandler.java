@@ -26,4 +26,11 @@ public class UserExcepitonHandler {
     public Result<String> userInexistenceExceptionHandler(Exception e){
         return Result.error(ResultEnum.REJECT.getCode(), e.getMessage());
     }
+
+
+    @ExceptionHandler(value = UserExcepiton.UserTokenExpired.class)
+    public Result<String> userTokenExpired(Exception e){
+        return Result.error(ResultEnum.ERROR.getCode(),e.getMessage());
+    }
+
 }
