@@ -41,6 +41,11 @@ public class ViewHouseRent {
     private String address;
 
     /*
+    * 房屋状态
+    * */
+    private Integer houseStatus;
+
+    /*
     * 收藏
     * */
     private Integer fid;

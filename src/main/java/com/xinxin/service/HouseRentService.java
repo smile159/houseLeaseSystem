@@ -12,7 +12,11 @@ import java.util.List;
  * @createTime 2022年05月04日 16:48:00
  */
 public interface HouseRentService {
-    public List<ViewHouseRent> queryHouseRent(int pageSize, int pageNum);
     // 分页查询
+    public List<ViewHouseRent> queryHouseRent(int pageSize, int pageNum);
+    // 推荐数据
     public List<ViewHouseRent> getRecommendHouseRent();
+    // 我的租赁
+    public List<ViewHouseRent> getMyHouseRentById(int uid);
+
 }

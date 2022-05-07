@@ -17,13 +17,14 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     FavoriteMapper favoriteMapper;
     @Override
-    public int userFavoriteHouseRent(FavoriteHouseRent favoriteHouseRent) {
-        // 先生成fid
-        int userFavorite = favoriteMapper.createUserFavorite(favoriteHouseRent);
-        if(userFavorite<0){
-            return -1;
-        }
-        // 更新出租信息的fid
-        return favoriteMapper.favoriteHouseRent(favoriteHouseRent.getRid(), favoriteHouseRent.getFid());
+    public int  userFavoriteHouseRent(FavoriteHouseRent favoriteHouseRent) {
+        // 生成fid
+        return favoriteMapper.createUserFavorite(favoriteHouseRent);
+    }
+
+    @Override
+    public int userCancelHouseRent(FavoriteHouseRent favoriteHouseRent) {
+        // 先删除fid
+        return favoriteMapper.deleteUserFavorite(favoriteHouseRent.getFid());
     }
 }

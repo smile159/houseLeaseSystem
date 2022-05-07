@@ -1,5 +1,6 @@
 package com.xinxin.mapper;
 
+import com.xinxin.bean.dto.ViewUser;
 import com.xinxin.bean.sql.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,7 +24,6 @@ public interface UserMapper {
     // 根据name查询用户
     @Select("select * from user where user_name=#{userName}")
     public User getUserByName(@Param("userName") String userName);
-
 
     // 根据id查询用户
     @Select("select * from user where uid=#{uid}")

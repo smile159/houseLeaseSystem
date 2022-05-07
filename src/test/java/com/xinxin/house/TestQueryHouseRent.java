@@ -55,4 +55,13 @@ public class TestQueryHouseRent {
         List<HouseTag> houseTagByHidAndTwo = houseTagMapper.getHouseTagByHidAndTwo(1);
         System.out.println(houseTagByHidAndTwo);
     }
+
+
+    @Test
+    public void test04(){
+        List<ViewHouseRent> myHouseRentById = houseRentService.getMyHouseRentById(1);
+        for (ViewHouseRent viewHouseRent : myHouseRentById) {
+            System.out.println(viewHouseRent);
+        }
+    }
 }

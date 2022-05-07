@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping("/login")
     @PassToken
     @ApiOperation(value = "用户登录")
-    public Result<User> loginUser(@RequestBody @ApiParam(value = "前端请求参数",required = true) LoginUser loginUser,@ApiParam(value = "设置COOKIE") HttpServletResponse response) {
+    public Result<ViewUser> loginUser(@RequestBody @ApiParam(value = "前端请求参数",required = true) LoginUser loginUser,@ApiParam(value = "设置COOKIE") HttpServletResponse response) {
         System.out.println("收到了登录请求：" + loginUser);
         // 数据库查询用户
         User sqlUser = userService.getUserByName(loginUser.getUserName());
@@ -45,9 +45,14 @@ public class UserController {
         // 校验数据是否为空，用户名和密码是否一致
         if (UserUtils.checkUser(loginUser,sqlUser)) {
             // 设置响应头token值，下次请求必须携带
-            //response.setHeader("token", JwtUtils.createToken(sqlUser));
             response.addCookie(CookieUtils.createCookie("token",JwtUtils.createToken(sqlUser), ExpirationTime.SEVENDAYS,true));
-            return Result.success(ResultMessage.LOGINSUCCESS,sqlUser);
+            ViewUser viewUser = ViewUser.builder()
+                    .uid(sqlUser.getUid())
+                    .userName(sqlUser.getUserName())
+                    .identity(sqlUser.getIdentity())
+                    .status(sqlUser.getStatus())
+                    .build();
+            return Result.success(ResultMessage.LOGINSUCCESS,viewUser);
         } else {
             return Result.error();
         }

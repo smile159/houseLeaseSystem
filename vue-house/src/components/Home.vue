@@ -31,7 +31,8 @@
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
             <span class="userName" v-text="user.userName"></span>
           </template>
-          <el-menu-item index="2-1">我的房屋</el-menu-item>
+          <el-menu-item index="/myHouse">我的房屋</el-menu-item>
+          <el-menu-item index="/myhouseRent">我的租赁</el-menu-item>
           <el-menu-item index="2-2">我的收藏</el-menu-item>
           <el-menu-item index="2-3">我的留言</el-menu-item>
           <el-menu-item @click="logOut">退出</el-menu-item>
@@ -85,6 +86,7 @@ export default {
     console.log('home', this)
     // 绑定全局事件总线，用于收藏出租信息
     this.$bus.$on('userFavorite', this.globalUserFavorite)
+    this.$bus.$on('userCancel', this.globalUserCancel)
   },
   data () {
     /* 二次密码校验 */
@@ -198,6 +200,7 @@ export default {
       // 修改登录状态
       this.isLogin = false
     },
+    // 全局事件：用户收藏出租信息
     globalUserFavorite (rid) {
       // 收藏是登录后的功能，先判断是否登录
       if (!this.isLogin) return this.$message.error('请先登录')
@@ -206,7 +209,25 @@ export default {
       console.log('收藏的数据：', data)
       this.$http.post('favoriteHouseRent', data).then(
         res => {
-          if (res.data.status > 0) {
+          if (res.data.status === 1) {
+            // 刷新数据
+            this.$bus.$emit('refreshCradList')
+            this.$message.success(res.data.msg)
+          }
+        }
+      ).catch(
+        err => {
+          this.$message.error(err.message)
+        }
+      )
+    },
+    // 全局事件，用户取消收藏
+    globalUserCancel (fid) {
+      if (!this.isLogin) return this.$message.error('请先登录')
+      const data = { fid }
+      this.$http.post('cancelHouseRent', data).then(
+        res => {
+          if (res.data.status === 1) {
             // 刷新数据
             this.$bus.$emit('refreshCradList')
             this.$message.success(res.data.msg)

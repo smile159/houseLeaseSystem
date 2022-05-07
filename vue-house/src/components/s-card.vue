@@ -1,5 +1,10 @@
 <template>
-  <el-card class="hvr-grow-shadow">
+  <el-card :class="this.anime === undefined?'hvr-grow-shadow':''" :style="this.anime === undefined?'':'height:490px'">
+    <el-tag
+      class="rentTagStatus"
+      :type="rentType">
+      {{ rentStatus }}
+    </el-tag>
     <div class="clickToDetail">
       <!--第一层小图片-->
       <div class="list-one-img">
@@ -8,13 +13,13 @@
       <!--第二层租房信息-->
       <div class="house-address">
         <h4>
-          {{d.rentTitle}}
+          {{ d.rentTitle }}
         </h4>
         <h6>
-          {{d.address}}
+          {{ d.address }}
         </h6>
         <h3 class="price">
-          <span>￥{{d.money}}</span>/月
+          <span>￥{{ d.money }}</span>/月
         </h3>
       </div>
     </div>
@@ -24,30 +29,51 @@
       <div class="left">
         <ul>
           <li v-for="(item,index) in d.houseTags" :key="index">
-            {{item.name}}{{item.value}}
+            {{ item.name }}{{ item.value }}
           </li>
         </ul>
       </div>
       <!--右边收藏按钮-->
       <div class="right">
-        <el-tag :type="d.fid >0?'success':'info'" @click="favorite">收藏</el-tag>
+        <el-tag :type="tagType" @click="favorite">{{ favoriteOrTag }}</el-tag>
       </div>
     </div>
+    <div class="flex-button">
+      <slot :row="this.cardData"></slot>
+    </div>
+    <el-dialog
+      title="房屋配置"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <span>这是一段信息</span>
+    </el-dialog>
   </el-card>
 </template>
 
 <script>
 export default {
   name: 'Card',
-  props: ['d'],
+  props: ['d', 'anime', 'favoriteAndTag'],
+  data () {
+    return {
+      dialogVisible: false,
+      cardData: this.d
+    }
+  },
+  mounted () {
+    console.log('this.cardData', this.cardData)
+  },
   methods: {
     favorite () {
-      console.log(this.d)
-      // this.$bus.$emit('userFavorite', this.d.rid)
-      if (this.isFavorite) {
-        console.log('取消收藏')
+      if (this.favoriteAndTag > 0) {
+        // 说明是标签的
+        this.dialogVisible = true
       } else {
-        console.log('收藏')
+        if (this.isFavorite) {
+          this.$bus.$emit('userCancel', this.d.fid)
+        } else {
+          this.$bus.$emit('userFavorite', this.d.rid)
+        }
       }
     }
   },
@@ -55,23 +81,62 @@ export default {
     // 计算当前是否已经收藏
     isFavorite () {
       return this.d.fid > 0
+    },
+    // 计算是否已经出租
+    rentStatus () {
+      return this.d.houseStatus > 0 ? '出租中' : '已出租'
+    },
+    // 出租标签的状态
+    rentType () {
+      return this.d.houseStatus > 0 ? 'success' : 'info'
+    },
+    // 是浏览还是管理
+    favoriteOrTag () {
+      return this.favoriteAndTag > 0 ? '更多标签' : '收藏'
+    },
+    tagType () {
+      if (this.favoriteAndTag > 0) {
+        return 'primary'
+      } else {
+        return this.d.fid > 0 ? 'success' : 'info'
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.rentTagStatus {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.flex-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.el-card > /deep/ .el-card__body .el-button {
+  margin-left: 10px;
+}
+
 /*所有的卡片*/
 .el-card {
+  position: relative;
   width: 370px;
   height: 450px;
   border-radius: .5rem;
   user-select: none;
 }
+
 /*取消卡片中的padding*/
 .el-card > /deep/ .el-card__body {
   padding: 0 !important;
 }
+
 /*最新租房信息的文字*/
 .show-msg {
   width: 1350px;
@@ -91,8 +156,9 @@ export default {
   width: 100%;
   height: 100%;
 }
+
 .el-card {
-  margin: 20px!important;
+  margin: 20px !important;
 }
 
 .el-card h6 {
@@ -168,9 +234,15 @@ export default {
   -webkit-transition-property: box-shadow, transform;
   transition-property: box-shadow, transform;
 }
+
 .hvr-grow-shadow:hover, .hvr-grow-shadow:focus, .hvr-grow-shadow:active {
   box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+.el-card__body .el-button {
+  margin: 0 10px;
+}
+
 </style>

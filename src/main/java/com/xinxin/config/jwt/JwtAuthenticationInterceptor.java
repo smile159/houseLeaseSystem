@@ -68,9 +68,9 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
                 log.info("用户不存在");
                 throw new UserExcepiton.UserInexistence(ResultMessage.UserNUll);
             }
-
             // 验证 token
             JwtUtils.verifyToken(token, userId);
+            httpServletRequest.setAttribute("userId",user.getUid());
         }
         return true;
     }

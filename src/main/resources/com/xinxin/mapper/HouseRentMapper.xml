@@ -61,18 +61,33 @@
         <result property="rentTitle" column="rent_title"/>
         <result property="money" column="money"/>
         <result property="address" column="address"/>
-        <result property="fid" column="fid"/>
+        <result property="houseStatus" column="house_status"/>
+        <result property="fid" column="fid" />
         <association property="houseTags"
                      select="com.xinxin.mapper.HouseTagMapper.getHouseTagByHidAndTwo"
                      column="hid"
                      fetchType="eager"
         />
+        <association property="fid"
+                     select="com.xinxin.mapper.HouseRentMapper.getFavoriteFidByRid"
+                     column="rid"
+                     >
+        </association>
     </resultMap>
 
     <select id="getRecommendHouseRent" resultMap="recommendRentHouseResultMap">
         select * from house_rent left join house on house.hid = house_rent.hid
     </select>
 
+    <!--public int getFavoriteFidByRid(@Param("rid") int rid);-->
+    <select id="getFavoriteFidByRid" resultType="integer">
+        select ifnull(fid,0) from favorite where rid=#{rid}
+    </select>
 
 
+
+    <!--public List<ViewHouseRent> getMyHouseRentById(@Param("uid") int uid);-->
+    <select id="getMyHouseRentById" resultMap="recommendRentHouseResultMap">
+        select * from house_rent left join house h on h.hid = house_rent.hid where h.uid=#{uid}
+    </select>
 </mapper>

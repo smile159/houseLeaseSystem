@@ -4,6 +4,8 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import IndexPage from '@/components/IndexPage'
 import ViewHouse from '@/views/house/ViewHouse'
+import MyHouse from '@/views/house/MyHouse'
+import MyHouseRent from '@/views/house/MyHouseRent'
 
 Vue.use(VueRouter)
 
@@ -29,6 +31,14 @@ const routes = [
       {
         path: '/viewHouse',
         component: ViewHouse
+      },
+      {
+        path: '/myHouse',
+        component: MyHouse
+      },
+      {
+        path: '/myhouseRent',
+        component: MyHouseRent
       }
     ]
   }

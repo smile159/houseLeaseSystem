@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.View;
 import java.util.List;
 
@@ -34,12 +35,21 @@ public class HouseRentController {
         return Result.success(houseRentService.getRecommendHouseRent());
     }
 
-
     // 分页查询
     @PassToken
     @GetMapping("/getHouseRent")
     public Result<List<ViewHouseRent>> getHouseRentBypaging(int pageSize,int pageNum){
         log.info("pageSize = {}, pageNum = {}",pageSize,pageNum);
         return Result.success(houseRentService.queryHouseRent(pageSize,pageNum));
+    }
+
+
+    @GetMapping("/getMyHouseRent")
+    public Result<List<ViewHouseRent>> getMyHouseRent(HttpServletRequest httpServletRequest){
+        // 获取本次请求的用户id
+        int userId = (int)httpServletRequest.getAttribute("userId");
+        System.out.println("用户ID为："+userId);
+        // 根据id查询house_rent中的对应数据，返回给前端
+        return Result.success(houseRentService.getMyHouseRentById(userId));
     }
 }

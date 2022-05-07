@@ -28,4 +28,14 @@ public class FavoriteController {
         }
     }
 
+
+    @PostMapping("/cancelHouseRent")
+    public Result<String> userCancelHouseRent(@RequestBody FavoriteHouseRent favoriteHouseRent){
+        if(favoriteService.userCancelHouseRent(favoriteHouseRent)>0){
+            return Result.success("取消收藏成功");
+        }else{
+            return Result.error("取消收藏失败");
+        }
+    }
+
 }

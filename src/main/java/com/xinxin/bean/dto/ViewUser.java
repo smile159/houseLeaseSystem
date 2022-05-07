@@ -35,9 +35,4 @@ public class ViewUser {
      * 账号状态
      */
     private Integer status;
-
-    /**
-     * 账号token
-     */
-    private String token;
 }

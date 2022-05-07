@@ -1,5 +1,6 @@
 package com.xinxin.service.Impl;
 
+import com.xinxin.bean.dto.ViewUser;
 import com.xinxin.bean.sql.User;
 import com.xinxin.bean.vo.RegisterUser;
 import com.xinxin.mapper.UserMapper;
@@ -7,6 +8,7 @@ import com.xinxin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 /**
  * @author smile

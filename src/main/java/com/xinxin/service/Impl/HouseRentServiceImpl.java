@@ -33,4 +33,9 @@ public class HouseRentServiceImpl implements HouseRentService {
     public List<ViewHouseRent> getRecommendHouseRent() {
         return houseRentMapper.getRecommendHouseRent();
     }
+
+    @Override
+    public List<ViewHouseRent> getMyHouseRentById(int uid) {
+        return houseRentMapper.getMyHouseRentById(uid);
+    }
 }

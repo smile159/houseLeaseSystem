@@ -12,14 +12,15 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface FavoriteMapper {
 
+    // 用户收藏出租信息
     // 根据uid和rid生成fid，返回fid
     @Insert("insert into favorite(fid,uid,rid) values (null,#{uid},#{rid})")
     //@SelectKey(statement = {"SELECT LAST_INSERT_ID()"}, keyProperty = "fid", before = false, resultType = FavoriteHouseRent.class)
     @Options(useGeneratedKeys = true, keyProperty = "fid", keyColumn = "fid")
     public int createUserFavorite(FavoriteHouseRent favoriteHouseRent);
 
+    //删除fid
+    @Delete("delete from favorite where fid=#{fid};")
+    public int deleteUserFavorite(@Param("fid") int fid);
 
-    // 用户收藏出租信息
-    @Update("update house_rent set fid=#{fid} where rid=#{rid}")
-    public int favoriteHouseRent(@Param("rid") int rid,@Param("fid") int fid);
 }

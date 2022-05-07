@@ -1,6 +1,7 @@
 package com.xinxin.mapper;
 
 import com.xinxin.bean.dto.ViewHouseRent;
+import com.xinxin.bean.sql.Favorite;
 import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.custom.annotation.PassToken;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +21,8 @@ public interface HouseRentMapper {
     public List<ViewHouseRent> getRecommendHouseRent();
     // 分页查询
     public List<ViewHouseRent> getHouseRentByPaging(@Param("offset") Integer offset,@Param("pageSize") Integer pageSize);
+    // 根据rid获取fid
+    public Integer getFavoriteFidByRid(@Param("rid") int rid);
+    // 根据uid查询租赁信息
+    public List<ViewHouseRent> getMyHouseRentById(@Param("uid") int uid);
 }
