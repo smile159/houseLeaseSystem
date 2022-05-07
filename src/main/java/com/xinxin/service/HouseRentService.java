@@ -1,5 +1,6 @@
 package com.xinxin.service;
 
+import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.sql.HouseRent;
 
@@ -17,6 +18,8 @@ public interface HouseRentService {
     // 推荐数据
     public List<ViewHouseRent> getRecommendHouseRent();
     // 我的租赁
-    public List<ViewHouseRent> getMyHouseRentById(int uid);
+    public List<ViewHouseRent> getMyHouseRentById(int uid,int type);
+    // 根据rid查询所有字段以及租客用户名
+    public ViewDetailHouseRent getMyHouseRentDetailData(int rid);
 
 }

@@ -1,5 +1,6 @@
 package com.xinxin.house;
 
+import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.bean.sql.HouseTag;
@@ -59,9 +60,15 @@ public class TestQueryHouseRent {
 
     @Test
     public void test04(){
-        List<ViewHouseRent> myHouseRentById = houseRentService.getMyHouseRentById(1);
+        List<ViewHouseRent> myHouseRentById = houseRentService.getMyHouseRentById(1,1);
         for (ViewHouseRent viewHouseRent : myHouseRentById) {
             System.out.println(viewHouseRent);
         }
+    }
+
+    @Test
+    public void test05(){
+        ViewDetailHouseRent myHouseRentDetailData = houseRentService.getMyHouseRentDetailData(1);
+        System.out.println(myHouseRentDetailData);
     }
 }

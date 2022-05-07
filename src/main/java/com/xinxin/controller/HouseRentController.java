@@ -1,5 +1,6 @@
 package com.xinxin.controller;
 
+import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.common.Result;
@@ -45,11 +46,17 @@ public class HouseRentController {
 
 
     @GetMapping("/getMyHouseRent")
-    public Result<List<ViewHouseRent>> getMyHouseRent(HttpServletRequest httpServletRequest){
+    public Result<List<ViewHouseRent>> getMyHouseRent(HttpServletRequest httpServletRequest,@RequestParam("type") int type){
+        log.info("请求的类型是type = "+type);
         // 获取本次请求的用户id
         int userId = (int)httpServletRequest.getAttribute("userId");
         System.out.println("用户ID为："+userId);
         // 根据id查询house_rent中的对应数据，返回给前端
-        return Result.success(houseRentService.getMyHouseRentById(userId));
+        return Result.success(houseRentService.getMyHouseRentById(userId,type));
+    }
+
+    @GetMapping("/getMyHouseRentDetail")
+    public Result<ViewDetailHouseRent> getMyHouseRentDetail(int rid){
+        return Result.success(houseRentService.getMyHouseRentDetailData(rid));
     }
 }

@@ -1,5 +1,6 @@
 package com.xinxin.service.Impl;
 
+import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.mapper.HouseMapper;
@@ -25,8 +26,8 @@ public class HouseRentServiceImpl implements HouseRentService {
     @Override
     public List<ViewHouseRent> queryHouseRent(int pageSize, int pageNum) {
         // 计算偏移量
-        int offset = (pageNum-1)*pageSize;
-        return houseRentMapper.getHouseRentByPaging(offset,pageSize);
+        int offset = (pageNum - 1) * pageSize;
+        return houseRentMapper.getHouseRentByPaging(offset, pageSize);
     }
 
     @Override
@@ -35,7 +36,16 @@ public class HouseRentServiceImpl implements HouseRentService {
     }
 
     @Override
-    public List<ViewHouseRent> getMyHouseRentById(int uid) {
-        return houseRentMapper.getMyHouseRentById(uid);
+    public List<ViewHouseRent> getMyHouseRentById(int uid, int type) {
+        if (type == 2) {
+            return houseRentMapper.getMyHouseRentByCustomId(uid);
+        } else {
+            return houseRentMapper.getMyHouseRentById(uid, type);
+        }
+    }
+
+    @Override
+    public ViewDetailHouseRent getMyHouseRentDetailData(int rid) {
+        return houseRentMapper.getMyHouseRentDetail(rid);
     }
 }

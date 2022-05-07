@@ -33,7 +33,7 @@ public class ViewHouseRent {
     /*
     * 月租
     * */
-    private Integer money;
+    private Integer monthMoney;
 
     /*
     * 房屋的详细地址

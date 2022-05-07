@@ -1,4 +1,4 @@
-package com.xinxin.bean.sql;
+package com.xinxin.bean.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,24 +9,31 @@ import java.util.Date;
 
 /**
  * @author smile
- * @ClassName HouseRent.java
+ * @ClassName ViewDetailHouseRent.java
  * @Description TODO
- * @createTime 2022年05月04日 10:02:00
+ * @createTime 2022年05月07日 15:13:00
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class HouseRent {
+public class ViewDetailHouseRent {
     /*
-    * 出租信息唯一标识
-    * */
+     * 出租信息唯一标识
+     * */
     private Integer rid;
 
     /**
      * 出租的房屋id
      */
     private Integer hid;
+
+    /*
+    * custom_uid
+    * */
+    private Integer cid;
+
+    /*
+    * 租客姓名
+    * */
+    private String customName;
 
     /**
      * 出租标题
@@ -41,8 +48,12 @@ public class HouseRent {
     /**
      * 出租月份
      */
-    private Integer monthMoney;
+    private Integer month;
 
+    /*
+    * 月金额
+    * */
+    private Integer monthMoney;
 
     /**
      * 发布日期
@@ -68,7 +79,4 @@ public class HouseRent {
      * 当前出租状态:未出租、已出租、隐藏
      */
     private Integer houseStatus;
-
-    // 多对一
-    private House house;
 }

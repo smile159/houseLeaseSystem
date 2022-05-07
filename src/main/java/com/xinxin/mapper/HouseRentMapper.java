@@ -1,5 +1,6 @@
 package com.xinxin.mapper;
 
+import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.sql.Favorite;
 import com.xinxin.bean.sql.HouseRent;
@@ -24,5 +25,9 @@ public interface HouseRentMapper {
     // 根据rid获取fid
     public Integer getFavoriteFidByRid(@Param("rid") int rid);
     // 根据uid查询租赁信息
-    public List<ViewHouseRent> getMyHouseRentById(@Param("uid") int uid);
+    public List<ViewHouseRent> getMyHouseRentById(@Param("uid") int uid,@Param("type") int type);
+    // 根据custom_uid查询租赁信息
+    public List<ViewHouseRent> getMyHouseRentByCustomId(@Param("cid") int cid);
+    // 根据rid查询所有数据
+    public ViewDetailHouseRent getMyHouseRentDetail(@Param("rid") int rid);
 }

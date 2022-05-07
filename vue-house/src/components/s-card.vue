@@ -19,7 +19,7 @@
           {{ d.address }}
         </h6>
         <h3 class="price">
-          <span>￥{{ d.money }}</span>/月
+          <span>￥{{ d.monthMoney }}</span>/月
         </h3>
       </div>
     </div>
@@ -84,7 +84,7 @@ export default {
     },
     // 计算是否已经出租
     rentStatus () {
-      return this.d.houseStatus > 0 ? '出租中' : '已出租'
+      return this.d.houseStatus > 0 ? this.d.houseStatus === 1 ? '出租中' : '已租赁' : '已出租'
     },
     // 出租标签的状态
     rentType () {

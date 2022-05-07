@@ -250,6 +250,7 @@ export default {
 
 .el-container > .el-header {
   padding: 0;
+  user-select: none;
 }
 
 .el-header > ul {
