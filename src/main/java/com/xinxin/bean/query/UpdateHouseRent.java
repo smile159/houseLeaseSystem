@@ -1,21 +1,12 @@
-package com.xinxin.bean.dto;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
-import java.util.Date;
+package com.xinxin.bean.query;
 
 /**
  * @author smile
- * @ClassName ViewDetailHouseRent.java
+ * @ClassName UpdateHouseRent.java
  * @Description TODO
- * @createTime 2022年05月07日 15:13:00
+ * @createTime 2022年05月07日 19:46:00
  */
-@Data
-public class ViewDetailHouseRent {
+public class UpdateHouseRent {
     /*
      * 出租信息唯一标识
      * */
@@ -27,13 +18,13 @@ public class ViewDetailHouseRent {
     private Integer hid;
 
     /*
-    * custom_uid
-    * */
+     * custom_uid
+     * */
     private Integer cid;
 
     /*
-    * 租客姓名
-    * */
+     * 租客姓名
+     * */
     private String customName;
 
     /**
@@ -52,8 +43,8 @@ public class ViewDetailHouseRent {
     private Integer month;
 
     /*
-    * 月金额
-    * */
+     * 月金额
+     * */
     private Integer monthMoney;
 
     /**

@@ -28,6 +28,9 @@ public class RequestLog implements HandlerInterceptor {
         System.out.println("getRequestURL：" + request.getRequestURL());
         System.out.println("getMethod：" + request.getMethod());
         System.out.println("handler："+handler);
+        if(request.getRequestURI().equals("/error")){
+            System.out.println("返回错误");
+        }
         return true;
     }
 

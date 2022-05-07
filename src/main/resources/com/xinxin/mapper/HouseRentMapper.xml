@@ -79,4 +79,9 @@
         select r.*,u.user_name from house_rent r left join user u on r.custom_uid=u.uid where r.rid=#{rid}
     </select>
 
+    <!--// 修改出租信息-->
+    <!--public int updateMyHouseRent(ViewDetailHouseRent viewDetailHouseRent);-->
+    <update id="updateMyHouseRent" parameterType="viewDetailHouseRent">
+        update house_rent set rent_title=#{rentTitle},rent_content=#{rentContent},month=#{month},month_money=#{monthMoney},contact_name=#{contactName},contact_phone=#{contactPhone},update_time=#{updateTime} where rid=#{rid}
+    </update>
 </mapper>

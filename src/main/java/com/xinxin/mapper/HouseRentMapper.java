@@ -7,6 +7,7 @@ import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.custom.annotation.PassToken;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -30,4 +31,9 @@ public interface HouseRentMapper {
     public List<ViewHouseRent> getMyHouseRentByCustomId(@Param("cid") int cid);
     // 根据rid查询所有数据
     public ViewDetailHouseRent getMyHouseRentDetail(@Param("rid") int rid);
+    // 修改出租信息
+    public int updateMyHouseRent(ViewDetailHouseRent viewDetailHouseRent);
+    // 下架出租信息
+    @Update("update house_rent set house_status=#{houseStatus} where rid=#{rid}")
+    public int updateHouseStatus(@Param("rid") int rid,@Param("houseStatus")int houseStatus);
 }

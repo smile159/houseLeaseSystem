@@ -6,6 +6,7 @@ import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.mapper.HouseMapper;
 import com.xinxin.mapper.HouseRentMapper;
 import com.xinxin.service.HouseRentService;
+import com.xinxin.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,23 @@ public class HouseRentServiceImpl implements HouseRentService {
     @Override
     public ViewDetailHouseRent getMyHouseRentDetailData(int rid) {
         return houseRentMapper.getMyHouseRentDetail(rid);
+    }
+
+    @Override
+    public int updateMyHouseRent(ViewDetailHouseRent viewDetailHouseRent) {
+        // 先计算当前时间，更新update_time字段
+        viewDetailHouseRent.setUpdateTime(DateTimeUtils.getNowDateTime());
+        // 调用接口修改数据
+        return houseRentMapper.updateMyHouseRent(viewDetailHouseRent);
+    }
+
+    @Override
+    public int hiddenMyHouseRent(int rid) {
+        return houseRentMapper.updateHouseStatus(rid,0);
+    }
+
+    @Override
+    public int showMyHouseRent(int rid) {
+        return houseRentMapper.updateHouseStatus(rid,1);
     }
 }

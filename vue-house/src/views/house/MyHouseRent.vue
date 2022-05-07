@@ -16,12 +16,11 @@
                   anime
                   :favorite-and-tag="1"
             >
-              <template scope="data">
+              <template slot-scope="data">
                 <!--{{aaa.row.rid}}-->
                 <el-button type="primary" round @click="editHouseDialog(data.row.rid)">编辑</el-button>
                 <!--下架或上架-->
-                <el-button type="warning" round v-if="data.row.houseStatus > 0">下架</el-button>
-                <el-button type="success" round v-else-if="data.row.houseStatus === 0">上架</el-button>
+                <el-button type="warning" round @click="hiddenHouseRent(data.row.rid)">下架</el-button>
                 <el-button type="danger" round>删除</el-button>
               </template>
             </Card>
@@ -36,12 +35,11 @@
                 anime
                 :favorite-and-tag="1"
           >
-            <template scope="data">
+            <template slot-scope="data">
               <!--{{aaa.row.rid}}-->
-              <el-button type="primary" round>编辑</el-button>
+              <el-button type="primary" round @click="editHouseDialog(data.row.rid)">编辑</el-button>
               <!--下架或上架-->
-              <el-button type="warning" round v-if="data.row.houseStatus > 0">下架</el-button>
-              <el-button type="success" round v-else-if="data.row.houseStatus === 0">上架</el-button>
+              <el-button type="success" round @click="showHouseRent(data.row.rid)">上架</el-button>
               <el-button type="danger" round>删除</el-button>
             </template>
           </Card>
@@ -66,16 +64,69 @@
       title="编辑出租信息"
       :visible.sync="editHouseDialogVisble"
       width="50%"
+      @close="clsoeEditHosueForm"
     >
-      <span>编辑对话框</span>
+      <el-form
+        :model="editHouseForm"
+        :rules="editHouseFormRules"
+        ref="editHouseFormRef"
+        label-width="100px"
+      >
+        <el-form-item label="出租标题" prop="rentTitle">
+          <el-input v-model="editHouseForm.rentTitle"></el-input>
+        </el-form-item>
+        <el-form-item label="出租内容" prop="rentContent">
+          <!--<el-input v-model="editHouseForm.rentContent"></el-input>-->
+          <el-input
+            type="textarea"
+            placeholder="请输入出租内容"
+            v-model="editHouseForm.rentContent"
+            maxlength="100"
+            show-word-limit
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="出租月数" prop="month">
+          <el-input v-model="editHouseForm.month"></el-input>
+        </el-form-item>
+        <el-form-item label="月租金额" prop="monthMoney">
+          <el-input v-model="editHouseForm.monthMoney"></el-input>
+        </el-form-item>
+        <el-form-item label="联系人" prop="contactName">
+          <el-input v-model="editHouseForm.contactName"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="contactPhone">
+          <el-input v-model="editHouseForm.contactPhone"></el-input>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-input v-model="editHouseForm.createTime" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="租客姓名">
+          <el-input v-model="editHouseForm.customName" disabled></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editHouseDialogVisble = false">取 消</el-button>
-        <el-button type="primary" @click="editHouseDialogVisble = false">确 定</el-button>
+        <el-button type="primary" @click="submitHouseRentDialogForm">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
-
+<!--
+cid: 2
+contactName: "小何"
+contactPhone: "18228867837"
+createTime: "2022-05-04T02:00:17.000+00:00"
+customName: "李四"
+hid: 1
+houseStatus: 1
+month: 2
+monthMoney: 6666
+rentContent: "急租，可随时看房，电话联系"
+rentTitle: "合租-世界花园-4居室-C卧"
+rid: 1
+updateTime: "2022-05-04T02:00:18.000+00:00"
+-->
 <script>
 import Card from '@/components/s-card'
 
@@ -101,7 +152,48 @@ export default {
       // 编辑对话框控制
       editHouseDialogVisble: false,
       // 出租详细数据
-      houseRentDetail: {}
+      editHouseForm: {},
+      // 数据校验规则
+      editHouseFormRules: {
+        rentTitle: [
+          { required: true, message: '请输入出租标题', trigger: 'blur' },
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+        ],
+        rentContent: [
+          { required: true, message: '请输入出租内容', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+        ],
+        month: [
+          { required: true, message: '请输入出租月数', trigger: 'blur' },
+          {
+            type: 'number',
+            min: 1,
+            max: 99,
+            message: '月份必须在1~99之间',
+            trigger: 'blur',
+            transform: (value) => Number(value)
+          }
+        ],
+        monthMoney: [
+          { required: true, message: '请输入月租金额', trigger: 'blur' },
+          {
+            type: 'number',
+            min: 1,
+            max: 999999,
+            message: '月租金额在1~999999之间',
+            trigger: 'blur',
+            transform: (value) => Number(value)
+          }
+        ],
+        contactName: [
+          { required: true, message: '请输入联系人', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        ],
+        contactPhone: [
+          { required: true, message: '请输入联系人电话', trigger: 'blur' },
+          { min: 5, max: 11, message: '长度在 5 到 11 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   mounted () {
@@ -151,11 +243,82 @@ export default {
         }
       }).then(
         res => {
-          this.houseRentDetail = res.data.data
+          this.editHouseForm = res.data.data
         }
       ).catch(
         err => {
           console.log('出错了...getHouseRentDetailData', err.message)
+        }
+      )
+    },
+    // 编辑表单的提交
+    submitHouseRentDialogForm () {
+      // 校验是否通过?
+      this.$refs.editHouseFormRef.validate(valid => {
+        if (!valid) return this.$message.error('数据校验失败')
+        // 提交数据到服务器
+        this.$http.post('editMyHouseRent', this.editHouseForm).then(
+          res => {
+            if (res.data.status === 1) {
+              this.$message.success(res.data.msg)
+              // 获取最新的数据
+              this.getMyHouseRent()
+            }
+          }
+        ).catch(
+          err => {
+            this.$message.error(err.message)
+          }
+        )
+        this.editHouseDialogVisble = false
+      })
+    },
+    // 关闭编辑对话框
+    clsoeEditHosueForm () {
+      console.log('关闭对话框')
+      // 关闭前重置表单
+      this.$refs.editHouseFormRef.resetFields()
+      // 关闭对话框
+      this.editHouseDialogVisble = false
+    },
+    // 下架出租信息
+    hiddenHouseRent (rid) {
+      console.log('下架,rid=', rid)
+      this.$http.get('hiddenMyHouseRent', {
+        params: {
+          rid: rid
+        }
+      }).then(
+        res => {
+          if (res.data.status === 1) {
+            this.$message.success(res.data.msg)
+            // 刷新数据
+            this.getMyHouseRent()
+          }
+        }
+      ).catch(
+        err => {
+          this.$message.error(err.message)
+        }
+      )
+    },
+    showHouseRent (rid) {
+      console.log('上架,rid=', rid)
+      this.$http.get('showMyHouseRent', {
+        params: {
+          rid: rid
+        }
+      }).then(
+        res => {
+          if (res.data.status === 1) {
+            this.$message.success(res.data.msg)
+            // 刷新数据
+            this.getMyHouseRent()
+          }
+        }
+      ).catch(
+        err => {
+          this.$message.error(err.message)
         }
       )
     }

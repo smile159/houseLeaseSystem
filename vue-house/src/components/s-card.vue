@@ -44,7 +44,7 @@
     <el-dialog
       title="房屋配置"
       :visible.sync="dialogVisible"
-      width="30%">
+      width="50%">
       <span>这是一段信息</span>
     </el-dialog>
   </el-card>

@@ -21,5 +21,10 @@ public interface HouseRentService {
     public List<ViewHouseRent> getMyHouseRentById(int uid,int type);
     // 根据rid查询所有字段以及租客用户名
     public ViewDetailHouseRent getMyHouseRentDetailData(int rid);
-
+    // 修改出租信息
+    public int updateMyHouseRent(ViewDetailHouseRent viewDetailHouseRent);
+    // 下架出租信息
+    public int hiddenMyHouseRent(int rid);
+    // 上架出租信息
+    public int showMyHouseRent(int rid);
 }

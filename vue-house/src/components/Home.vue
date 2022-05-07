@@ -29,12 +29,14 @@
         <el-submenu index="2" class="userinfoMenu" v-if="isLogin">
           <template slot="title">
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-            <span class="userName" v-text="user.userName"></span>
+            <el-badge value="99+" class="nameBadge"><span class="userName" >{{user.userName}}</span></el-badge>
           </template>
           <el-menu-item index="/myHouse">我的房屋</el-menu-item>
           <el-menu-item index="/myhouseRent">我的租赁</el-menu-item>
           <el-menu-item index="2-2">我的收藏</el-menu-item>
-          <el-menu-item index="2-3">我的留言</el-menu-item>
+          <el-menu-item index="2-3">
+            <el-badge value="99+">我的留言</el-badge>
+          </el-menu-item>
           <el-menu-item @click="logOut">退出</el-menu-item>
         </el-submenu>
       </el-menu>
@@ -284,5 +286,8 @@ export default {
 }
 .login-item {
   width: 650px;
+}
+.nameBadge /deep/ sup {
+  margin-top: 13px;
 }
 </style>
