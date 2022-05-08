@@ -1,11 +1,14 @@
 package com.xinxin.favorite;
 
+import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.vo.FavoriteHouseRent;
 import com.xinxin.mapper.FavoriteMapper;
 import com.xinxin.service.FavoriteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 /**
  * @author smile
@@ -43,5 +46,13 @@ public class TestFavoriteHouseRent {
         favoriteHouseRent.setUid(1);
         int userFavorite = favoriteService.userCancelHouseRent(favoriteHouseRent);
         System.out.println(userFavorite);
+    }
+
+    @Test
+    public void test03(){
+        List<ViewHouseRent> allHouseRent = favoriteMapper.getAllHouseRent(1);
+        for (ViewHouseRent viewHouseRent : allHouseRent) {
+            System.out.println(viewHouseRent);
+        }
     }
 }

@@ -1,10 +1,13 @@
 package com.xinxin.service.Impl;
 
+import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.vo.FavoriteHouseRent;
 import com.xinxin.mapper.FavoriteMapper;
 import com.xinxin.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author smile
@@ -26,5 +29,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     public int userCancelHouseRent(FavoriteHouseRent favoriteHouseRent) {
         // 先删除fid
         return favoriteMapper.deleteUserFavorite(favoriteHouseRent.getFid());
+    }
+
+    @Override
+    public List<ViewHouseRent> getAllFavorite(int uid) {
+        return favoriteMapper.getAllHouseRent(uid);
     }
 }

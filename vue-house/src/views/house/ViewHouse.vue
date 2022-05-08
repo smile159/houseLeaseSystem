@@ -34,7 +34,7 @@
     <!--主体内容-->
     <div class="flex-div">
       <!--分割线-->
-      <Card v-for="item in cardDataList" :key="item.rid" :d="item"/>
+      <Card v-for="item in cardDataList" :key="item.rid" :d="item" trigger-event="refreshCradList"/>
     </div>
   </div>
 </template>

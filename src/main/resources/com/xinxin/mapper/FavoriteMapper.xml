@@ -3,4 +3,23 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinxin.mapper.FavoriteMapper">
+    <!--// 查询用户的所有收藏-->
+    <!--public List<ViewHouseRent> getAllHouseRent(@Param("uid") int uid);-->
+    <resultMap id="getAllFavoriteResultMap" type="viewHouseRent">
+        <id property="rid" column="rid"/>
+        <result property="rentTitle" column="rent_title"/>
+        <result property="monthMoney" column="month_money"/>
+        <result property="address" column="address"/>
+        <result property="houseStatus" column="house_status"/>
+        <result property="fid" column="fid"/>
+        <association property="houseTags"
+                     select="com.xinxin.mapper.HouseTagMapper.getHouseTagByHidAndTwo"
+                     column="hid"
+                     fetchType="eager"
+        />
+    </resultMap>
+
+    <select id="getAllHouseRent" resultMap="com.xinxin.mapper.HouseRentMapper.recommendRentHouseResultMap">
+        select * from favorite f left join house_rent hr on hr.rid = f.rid left join house h on h.hid = hr.hid where f.uid=#{uid}
+    </select>
 </mapper>

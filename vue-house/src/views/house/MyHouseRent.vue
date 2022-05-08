@@ -19,8 +19,19 @@
               <template slot-scope="data">
                 <!--{{aaa.row.rid}}-->
                 <el-button type="primary" round @click="editHouseDialog(data.row.rid)">编辑</el-button>
-                <!--下架或上架-->
-                <el-button type="warning" round @click="hiddenHouseRent(data.row.rid)">下架</el-button>
+                <template>
+                  <el-popconfirm
+                    confirm-button-text='好的'
+                    cancel-button-text='不用了'
+                    icon="el-icon-info"
+                    icon-color="red"
+                    title="您确定要下架吗？"
+                    @confirm="hiddenHouseRent(data.row.rid)"
+                  >
+                    <!--下架或上架-->
+                    <el-button type="warning" slot="reference" round>下架</el-button>
+                  </el-popconfirm>
+                </template>
                 <el-button type="danger" round>删除</el-button>
               </template>
             </Card>
@@ -98,10 +109,10 @@
         <el-form-item label="联系电话" prop="contactPhone">
           <el-input v-model="editHouseForm.contactPhone"></el-input>
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item label="发布时间">
           <el-input v-model="editHouseForm.createTime" disabled></el-input>
         </el-form-item>
-        <el-form-item label="租客姓名">
+        <el-form-item label="租客姓名" v-if="nowPage !== 0">
           <el-input v-model="editHouseForm.customName" disabled></el-input>
         </el-form-item>
       </el-form>
@@ -193,7 +204,9 @@ export default {
           { required: true, message: '请输入联系人电话', trigger: 'blur' },
           { min: 5, max: 11, message: '长度在 5 到 11 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      // 当前的tab页
+      nowPage: 0
     }
   },
   mounted () {
@@ -219,6 +232,8 @@ export default {
     },
     // 切换tab的回调方法
     switchTab (target) {
+      this.nowPage = Number(target.paneName)
+      console.log('nowPage = ', this.nowPage)
       console.log(target)
       if (target.paneName === '0') {
         this.type = 1

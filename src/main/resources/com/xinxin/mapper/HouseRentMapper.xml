@@ -35,7 +35,6 @@
         <result property="monthMoney" column="month_money"/>
         <result property="address" column="address"/>
         <result property="houseStatus" column="house_status"/>
-        <result property="fid" column="fid" />
         <association property="houseTags"
                      select="com.xinxin.mapper.HouseTagMapper.getHouseTagByHidAndTwo"
                      column="hid"

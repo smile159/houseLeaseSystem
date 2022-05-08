@@ -1,7 +1,10 @@
 package com.xinxin.mapper;
 
+import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.vo.FavoriteHouseRent;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
  * @author smile
@@ -22,5 +25,8 @@ public interface FavoriteMapper {
     //删除fid
     @Delete("delete from favorite where fid=#{fid};")
     public int deleteUserFavorite(@Param("fid") int fid);
+
+    // 查询用户的所有收藏
+    public List<ViewHouseRent> getAllHouseRent(@Param("uid") int uid);
 
 }

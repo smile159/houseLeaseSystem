@@ -33,7 +33,7 @@
           </template>
           <el-menu-item index="/myHouse">我的房屋</el-menu-item>
           <el-menu-item index="/myhouseRent">我的租赁</el-menu-item>
-          <el-menu-item index="2-2">我的收藏</el-menu-item>
+          <el-menu-item index="/collectHouse">我的收藏</el-menu-item>
           <el-menu-item index="2-3">
             <el-badge value="99+">我的留言</el-badge>
           </el-menu-item>
@@ -188,10 +188,10 @@ export default {
     // 关闭表单
     closeRegisterFormDialog () {
       console.log('关闭表单')
-      // 在关闭前对表单进行重置并移除校验结果
-      this.$refs.registerFormDialogRef.resetFields()
       // 关闭表单提交对话框
       this.registerDialogVisble = false
+      // 在关闭前对表单进行重置并移除校验结果
+      this.$refs.registerFormDialogRef.resetFields()
     },
     // 用户退出
     logOut () {
@@ -203,7 +203,7 @@ export default {
       this.isLogin = false
     },
     // 全局事件：用户收藏出租信息
-    globalUserFavorite (rid) {
+    globalUserFavorite (rid, triggerEvent) {
       // 收藏是登录后的功能，先判断是否登录
       if (!this.isLogin) return this.$message.error('请先登录')
       console.log('rid = ', rid, 'uid = ', this.user.uid)
@@ -213,7 +213,9 @@ export default {
         res => {
           if (res.data.status === 1) {
             // 刷新数据
-            this.$bus.$emit('refreshCradList')
+            // this.$bus.$emit('refreshCradList')
+            console.log('触发的事件为：' + triggerEvent)
+            this.$bus.$emit(triggerEvent)
             this.$message.success(res.data.msg)
           }
         }
@@ -224,14 +226,14 @@ export default {
       )
     },
     // 全局事件，用户取消收藏
-    globalUserCancel (fid) {
+    globalUserCancel (fid, triggerEvent) {
       if (!this.isLogin) return this.$message.error('请先登录')
       const data = { fid }
       this.$http.post('cancelHouseRent', data).then(
         res => {
           if (res.data.status === 1) {
             // 刷新数据
-            this.$bus.$emit('refreshCradList')
+            this.$bus.$emit(triggerEvent)
             this.$message.success(res.data.msg)
           }
         }

@@ -1,12 +1,17 @@
 package com.xinxin.controller;
 
+import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.vo.FavoriteHouseRent;
 import com.xinxin.common.Result;
 import com.xinxin.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author smile
@@ -38,4 +43,9 @@ public class FavoriteController {
         }
     }
 
+    // 查询用户的所有收藏
+    @GetMapping("/getAllFavorite")
+    public Result<List<ViewHouseRent>> getUserAllFavoriteHouseRent(HttpServletRequest request){
+        return Result.success(favoriteService.getAllFavorite((int)request.getAttribute("userId")));
+    }
 }

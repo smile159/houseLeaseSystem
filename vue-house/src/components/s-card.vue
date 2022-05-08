@@ -5,7 +5,7 @@
       :type="rentType">
       {{ rentStatus }}
     </el-tag>
-    <div class="clickToDetail">
+    <div @click="toDetailPage" class="clickToDetail">
       <!--第一层小图片-->
       <div class="list-one-img">
         <img src="../assets/images/1.jpg" alt="">
@@ -53,7 +53,7 @@
 <script>
 export default {
   name: 'Card',
-  props: ['d', 'anime', 'favoriteAndTag'],
+  props: ['d', 'anime', 'favoriteAndTag', 'triggerEvent'],
   data () {
     return {
       dialogVisible: false,
@@ -70,11 +70,20 @@ export default {
         this.dialogVisible = true
       } else {
         if (this.isFavorite) {
-          this.$bus.$emit('userCancel', this.d.fid)
+          this.$bus.$emit('userCancel', this.d.fid, this.triggerEvent)
         } else {
-          this.$bus.$emit('userFavorite', this.d.rid)
+          this.$bus.$emit('userFavorite', this.d.rid, this.triggerEvent)
         }
       }
+    },
+    toDetailPage () {
+      console.log('s-card触发toDetailPage')
+      this.$router.push({
+        path: '/detail',
+        query: {
+          rid: this.d.rid
+        }
+      })
     }
   },
   computed: {
@@ -106,6 +115,9 @@ export default {
 </script>
 
 <style scoped>
+.clickToDetail {
+  cursor: pointer;
+}
 .rentTagStatus {
   position: absolute;
   top: 5px;
