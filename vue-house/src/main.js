@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import store from './stroe'
+// 引入高德地图
+import VueAMap from 'vue-amap'
+
 // 全局css
 import './assets/css/global.css'
 // 图标css
@@ -34,13 +37,22 @@ axios.interceptors.response.use(function (res) {
 
 // 插件使用
 Vue.use(ElementUI)
+Vue.use(VueAMap)
 /* 关闭生产提示 */
 Vue.config.productionTip = false
 /* 引入请求 */
 Vue.prototype.$http = axios
 /* 引入图片 */
 Vue.prototype.$imgs = $imgs
-
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+  // 高德的key
+  key: '2462cb3c8850a51f2d6760a21ea8e775',
+  // 插件集合
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 高德 sdk 版本，默认为 1.4.4
+  v: '1.4.15'
+})
 new Vue({
   store,
   router,
