@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @author smile
- * @ClassName UserMessage.java
+ * @ClassName SqlUserMessage.java
  * @Description 用户留言
  * @createTime 2022年05月09日 10:21:00
  */

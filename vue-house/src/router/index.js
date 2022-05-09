@@ -8,6 +8,7 @@ import MyHouse from '@/views/house/MyHouse'
 import MyHouseRent from '@/views/house/MyHouseRent'
 import CollectHouse from '@/views/house/CollectHouse'
 import Detail from '@/components/Detail'
+import MyComment from '@/views/house/MyComment'
 
 Vue.use(VueRouter)
 
@@ -49,6 +50,10 @@ const routes = [
       {
         path: '/detail',
         component: Detail
+      },
+      {
+        path: '/myComment',
+        component: MyComment
       }
     ]
   }

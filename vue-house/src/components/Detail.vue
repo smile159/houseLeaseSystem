@@ -74,6 +74,7 @@
               v-model="submitReserveForm.startTime"
               type="date"
               placeholder="选择日期"
+              :readonly="startTimeReadyOnly"
             >
             </el-date-picker>
             <span class="dateTimeText">退租日期</span>
@@ -82,9 +83,10 @@
               v-model="submitReserveForm.endTime"
               type="date"
               placeholder="选择日期"
+              :readonly="endTimeReadyOnly"
             >
             </el-date-picker>
-            <el-button class="reserveBtn" type="primary" @click="reserveOrder">立即预订</el-button>
+            <el-button class="reserveBtn" :type="reserveBtn" :disabled="reserveBtnDisabled" @click="reserveOrder" v-text="reserveBtnText"></el-button>
           </div>
         </el-card>
         <el-card class="house-reserve">
@@ -122,12 +124,18 @@ export default {
     // 获取当前日期
     const date = new Date()
     const nowDateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-    this.submitReserveForm.startDateTime = nowDateTime
+    this.submitReserveForm.startTime = nowDateTime
     // 根据rid获取房屋数据
     this.getHouseDetailData()
   },
   data () {
     return {
+      reserveBtnText: '立即预订',
+      reserveBtnDisabled: false,
+      // 预订按钮样式
+      reserveBtn: 'primary',
+      startTimeReadyOnly: false,
+      endTimeReadyOnly: false,
       // 音效
       ringOptions: {
         open: false,
@@ -226,7 +234,17 @@ export default {
         this.$http.post('reserveHouse', data).then(
           res => {
             if (res.data.status === 1) {
+              // 开始播放提示音
               this.ringOptions.ring = true
+              // 修改文字
+              this.reserveBtnText = '预订成功'
+              // 禁用按钮并修改样式
+              this.reserveBtn = 'success'
+              // 禁止点击
+              this.reserveBtnDisabled = true
+              // 禁用日期选择
+              this.startTimeReadyOnly = this.endTimeReadyOnly = true
+              // 成功提示
               this.$message.success(res.data.msg)
               // 2秒后关闭提示音
               setTimeout(() => {

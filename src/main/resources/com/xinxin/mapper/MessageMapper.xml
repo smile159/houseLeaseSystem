@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinxin.mapper.MessageMapper">
+
+    <resultMap id="getAllUserMessageBypagingResultMap" type="viewUserMessage">
+        <id property="mid" column="mid" />
+        <result property="rid" column="rid" />
+        <result property="userName" column="user_name" />
+        <result property="message" column="message" />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+    <!--public List<SqlUserMessage> getAllUserMessageBypaging(@Param("uid") int uid, @Param("offset") int offset, @Param("pageSize") int pageSize);-->
+    <select id="getAllUserMessageBypaging" resultMap="getAllUserMessageBypagingResultMap">
+        select * from user_message um left join user u on um.uid = u.uid where um.uid=#{uid} limit #{offset},#{pageSize}
+    </select>
+</mapper>

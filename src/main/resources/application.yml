@@ -10,7 +10,7 @@ spring:
 server:
   port: 8080
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:com/xinxin/mapper/*.xml
   type-aliases-package: com.xinxin.bean
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

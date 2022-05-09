@@ -34,7 +34,7 @@
           <el-menu-item index="/myHouse">我的房屋</el-menu-item>
           <el-menu-item index="/myhouseRent">我的租赁</el-menu-item>
           <el-menu-item index="/collectHouse">我的收藏</el-menu-item>
-          <el-menu-item index="2-3">
+          <el-menu-item index="/myComment">
             <el-badge value="99+">我的留言</el-badge>
           </el-menu-item>
           <el-menu-item @click="logOut">退出</el-menu-item>

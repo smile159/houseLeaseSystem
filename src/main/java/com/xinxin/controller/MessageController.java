@@ -1,15 +1,17 @@
 package com.xinxin.controller;
 
+import com.xinxin.bean.dto.ViewUser;
+import com.xinxin.bean.dto.ViewUserMessage;
 import com.xinxin.bean.vo.UserMessage;
 import com.xinxin.common.Result;
 import com.xinxin.service.MessageService;
 import com.xinxin.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.View;
+import java.util.List;
 
 /**
  * @author smile
@@ -28,5 +30,11 @@ public class MessageController {
         userMessage.setCreateTime(DateTimeUtils.getNowDateTime());
         userMessage.setUid((int)request.getAttribute("userId"));
         return messageService.createUserMessage(userMessage)>0?Result.success("留言成功"):Result.error("留言失败");
+    }
+
+    @GetMapping("/getAllMessage")
+    public Result<List<ViewUserMessage>> getAllMessage(HttpServletRequest request, @RequestParam("pageSize") int pageSize, @RequestParam("pageNum") int pageNum){
+        int uid = (int)request.getAttribute("userId");
+        return Result.success(messageService.getAllUserMessage(uid,pageSize,pageNum));
     }
 }
