@@ -39,7 +39,7 @@
         <!--房屋的设备配置-->
         <el-collapse v-model="activeNames">
           <el-collapse-item title="房屋配置" name="2">
-            <el-descriptions class="houseDescriptions">
+            <el-descriptions class="houseDescriptions" :column="6">
               <el-descriptions-item v-for="item in houseTags" :label="item.name" :key="item.htid">{{item.value}}</el-descriptions-item>
             </el-descriptions>
           </el-collapse-item>
@@ -71,7 +71,7 @@
             <span class="dateTimeText">入住日期</span>
             <el-date-picker
               value-format="yyyy-MM-dd"
-              v-model="startDateTime"
+              v-model="submitReserveForm.startTime"
               type="date"
               placeholder="选择日期"
             >
@@ -79,12 +79,12 @@
             <span class="dateTimeText">退租日期</span>
             <el-date-picker
               value-format="yyyy-MM-dd"
-              v-model="endDateTime"
+              v-model="submitReserveForm.endTime"
               type="date"
               placeholder="选择日期"
             >
             </el-date-picker>
-            <el-button class="reserveBtn" type="primary">立即预订</el-button>
+            <el-button class="reserveBtn" type="primary" @click="reserveOrder">立即预订</el-button>
           </div>
         </el-card>
         <el-card class="house-reserve">
@@ -99,11 +99,18 @@
               placeholder="请输入内容"
               v-model="leaveMessage">
             </el-input>
-            <el-button class="reserveBtn" type="primary">留言</el-button>
+            <el-button class="reserveBtn" type="primary" @click="sendMessage">留言</el-button>
           </div>
         </el-card>
       </div>
     </div>
+    <easy-ring
+    :open="ringOptions.open"
+    :ring="ringOptions.ring"
+    :src="ringOptions.src"
+    >
+
+    </easy-ring>
   </div>
 </template>
 
@@ -115,18 +122,20 @@ export default {
     // 获取当前日期
     const date = new Date()
     const nowDateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-    this.startDateTime = nowDateTime
+    this.submitReserveForm.startDateTime = nowDateTime
     // 根据rid获取房屋数据
     this.getHouseDetailData()
   },
   data () {
     return {
+      // 音效
+      ringOptions: {
+        open: false,
+        ring: false,
+        src: 'media/easy-ring-default.wav'
+      },
       // 默认选中的折叠项
       activeNames: ['1', '2', '3', '4'],
-      // 开始日期
-      startDateTime: '',
-      // 结束日期
-      endDateTime: '',
       // 留言
       leaveMessage: '',
       nowZb: [
@@ -135,7 +144,14 @@ export default {
       ],
       // 房屋的所有数据
       houseDta: {},
-      houseTags: []
+      houseTags: [],
+      // 预订提交表单
+      submitReserveForm: {
+        // 开始日期
+        startTime: '',
+        // 结束日期
+        endTime: ''
+      }
     }
   },
   computed: {
@@ -169,6 +185,7 @@ export default {
         }
       )
     },
+    // 获取所有的房屋配置
     getHouseAllTag (hid) {
       this.$http.get('getHouseAllTag', {
         params: {
@@ -186,6 +203,85 @@ export default {
           this.$message.error(err.message)
         }
       )
+    },
+    // 预订房屋
+    reserveOrder () {
+      this.$confirm('您确认要预订吗, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.ringOptions.src = this.$sound.reserve
+        this.ringOptions.open = true
+        // 数据校验
+        if (this.submitReserveForm.startDateTime === '' || this.submitReserveForm.endDateTime === '') {
+          return this.$message.warning('请选择入住日期和退租日期')
+        }
+        // 数据组合
+        const data = {
+          rid: this.rid,
+          ...this.submitReserveForm
+        }
+        console.log('data = ', data)
+        this.$http.post('reserveHouse', data).then(
+          res => {
+            if (res.data.status === 1) {
+              this.ringOptions.ring = true
+              this.$message.success(res.data.msg)
+              // 2秒后关闭提示音
+              setTimeout(() => {
+                this.ringOptions.ring = false
+              }, 1800)
+            }
+          }
+        ).catch(
+          err => {
+            this.$message.error(err.message)
+          }
+        )
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '您已取消'
+        })
+      })
+    },
+    // 用户留言
+    sendMessage () {
+      this.$confirm('您确定要留言吗, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.ringOptions.src = this.$sound.message
+        this.ringOptions.open = true
+        // 数据校验
+        if (this.leaveMessage.length <= 0) return this.$message.warning('请输入留言内容')
+        // 数据组合
+        const data = {
+          rid: this.rid,
+          message: this.leaveMessage
+        }
+        console.log('留言提交数据：', data)
+        this.$http.post('userMessage', data).then(
+          res => {
+            if (res.data.status === 1) {
+              this.$message.success(res.data.msg)
+              this.ringOptions.ring = true
+              // 情况留言内容
+              this.leaveMessage = ''
+              // 2秒后关闭提示音
+              setTimeout(() => {
+                this.ringOptions.ring = false
+              }, 1800)
+            }
+          }
+        ).catch(
+          err => {
+            this.$message.error(err.message)
+          }
+        )
+      })
     }
 
   }

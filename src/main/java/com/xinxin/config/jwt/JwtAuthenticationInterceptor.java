@@ -71,6 +71,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             // 验证 token
             JwtUtils.verifyToken(token, userId);
             httpServletRequest.setAttribute("userId",user.getUid());
+            httpServletRequest.setAttribute("userName",user.getUserName());
         }
         return true;
     }

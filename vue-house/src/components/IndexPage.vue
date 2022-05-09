@@ -10,11 +10,15 @@
         <h2>推荐租房信息</h2>
       </div>
       <div class="main-container">
-        <Card v-for="item in RecommendHouseRent" :key="item.rid" :d="item" anime trigger-event="getRecommendHouseRent"/>
+        <Card v-for="item in RecommendHouseRent" :key="item.rid" :d="item" trigger-event="getRecommendHouseRent"/>
       </div>
       <div class="more-house">
         <el-button type="primary" @click="moreHouse">更多租房信息</el-button>
       </div>
+    </div>
+    <div class="beianContainer">
+      <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022009091号-1</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank">粤B2-20****59-1</a>
     </div>
   </div>
 </template>
@@ -60,6 +64,20 @@ export default {
 </script>
 
 <style scoped>
+.more-house {
+  margin-top: 10px;
+}
+.beianContainer a{
+  text-decoration: none;
+  color: black;
+  margin: 0 5px;
+}
+.beianContainer {
+  margin-top: 50px;
+  background-color: #f7f9fc;
+  display: flex;
+  justify-content: center;
+}
 /*轮播图的图片*/
 .banner-img {
   width: 100%;
