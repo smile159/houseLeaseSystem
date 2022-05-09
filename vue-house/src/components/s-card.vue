@@ -60,9 +60,6 @@ export default {
       cardData: this.d
     }
   },
-  mounted () {
-    console.log('this.cardData', this.cardData)
-  },
   methods: {
     favorite () {
       if (this.favoriteAndTag > 0) {

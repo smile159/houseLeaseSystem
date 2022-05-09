@@ -29,13 +29,14 @@
         <el-submenu index="2" class="userinfoMenu" v-if="isLogin">
           <template slot="title">
             <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-            <el-badge value="99+" class="nameBadge"><span class="userName" >{{user.userName}}</span></el-badge>
+            <el-badge :value="messageNum" :hidden="hiddenMessageNum" class="nameBadge"><span
+              class="userName">{{ user.userName }}</span></el-badge>
           </template>
           <el-menu-item index="/myHouse">我的房屋</el-menu-item>
           <el-menu-item index="/myhouseRent">我的租赁</el-menu-item>
           <el-menu-item index="/collectHouse">我的收藏</el-menu-item>
           <el-menu-item index="/myComment">
-            <el-badge value="99+">我的留言</el-badge>
+            <el-badge :value="messageNum" :hidden="hiddenMessageNum">我的留言</el-badge>
           </el-menu-item>
           <el-menu-item @click="logOut">退出</el-menu-item>
         </el-submenu>
@@ -55,7 +56,7 @@
       :visible.sync="registerDialogVisble"
       width="500px"
       @close="closeRegisterFormDialog"
-      >
+    >
       <el-form
         :model="registerForm"
         :rules="registerRules"
@@ -65,7 +66,7 @@
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="registerForm.userName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password" >
+        <el-form-item label="密码" prop="password">
           <el-input v-model="registerForm.password" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="affirmPassword">
@@ -85,10 +86,11 @@ export default {
   name: 'Home',
   mounted () {
     this.init()
-    console.log('home', this)
     // 绑定全局事件总线，用于收藏出租信息
     this.$bus.$on('userFavorite', this.globalUserFavorite)
     this.$bus.$on('userCancel', this.globalUserCancel)
+    this.$bus.$on('setBadeg', this.setBadeg)
+    this.setBadeg()
   },
   data () {
     /* 二次密码校验 */
@@ -112,6 +114,10 @@ export default {
       }
     }
     return {
+      // 隐藏徽章
+      hiddenMessageNum: true,
+      // 留言数量
+      messageNum: 0,
       // 是否登录
       isLogin: false,
       // 用户数据
@@ -242,6 +248,29 @@ export default {
           this.$message.error(err.message)
         }
       )
+    },
+    // 修改徽章数量
+    setBadeg (value) {
+      this.$http.get('getMessageNum').then(
+        res => {
+          if (res.data.status === 1) {
+            this.messageNum = res.data.data
+            this.hiddenMessageNum = res.data.data <= 0
+            if (!sessionStorage.getItem('isShow')) {
+              sessionStorage.setItem('isShow', true)
+              this.$notify({
+                title: '温馨提示',
+                message: '您有新的留言，请及时查看',
+                duration: 0
+              })
+            }
+          }
+        }
+      ).catch(
+        err => {
+          this.$message.error(err.message)
+        }
+      )
     }
   }
 }
@@ -286,9 +315,11 @@ export default {
   height: 120px;
   margin-top: -32px;
 }
+
 .login-item {
   width: 650px;
 }
+
 .nameBadge /deep/ sup {
   margin-top: 13px;
 }

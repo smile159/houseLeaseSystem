@@ -1,16 +1,15 @@
 <template>
   <el-tabs v-model="activeName" @tab-click="handleClick" class="container-tab">
-    <el-tab-pane label="已读" name="first">
+    <el-tab-pane label="未读" name="first">
       <div class="main-container">
-
-        <el-card v-for="item in userMessageList" :key="item.mid">
+        <el-card v-for="item in userMessageList.result" :key="item.mid">
           <div slot="header">
             <div class="avatar">
               <div class="div-avatar">
                 <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
                 <span>{{ item.userName }}</span>
               </div>
-              <el-button style="float: right" type="text">已读</el-button>
+              <el-button style="float: right" type="text" @click="readUserMessage(item.mid)">已读</el-button>
             </div>
           </div>
           {{ item.message }}
@@ -18,9 +17,44 @@
            {{ item.createTime}}
           </span>
         </el-card>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryParams.pageNum"
+          :page-sizes="[1, 5, 10, 20]"
+          :page-size="queryParams.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="userMessageList.total">
+        </el-pagination>
       </div>
     </el-tab-pane>
-    <el-tab-pane label="未读" name="second">配置管理</el-tab-pane>
+    <el-tab-pane label="已读" name="second">
+      <div class="main-container">
+        <el-card v-for="item in userMessageList.result" :key="item.mid">
+          <div slot="header">
+            <div class="avatar">
+              <div class="div-avatar">
+                <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                <span>{{ item.userName }}</span>
+              </div>
+            </div>
+          </div>
+          {{ item.message }}
+          <span class="message-time">
+           {{ item.createTime}}
+          </span>
+        </el-card>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryParams.pageNum"
+          :page-sizes="[1, 5, 10, 20]"
+          :page-size="queryParams.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="userMessageList.total">
+        </el-pagination>
+      </div>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
@@ -31,26 +65,73 @@ export default {
     return {
       activeName: 'first',
       queryParams: {
-        pageSize: 10,
+        pageSize: 5,
         pageNum: 1
       },
-      userMessageList: []
+      userMessageList: {},
+      read: 0
     }
   },
   mounted () {
     this.getAllMessage()
   },
   methods: {
-    handleClick () {
-      console.log('switch tab')
+    // 选项卡的切换
+    handleClick (tabObject) {
+      console.log('switch tab', tabObject)
+      if (tabObject.name === 'second') {
+        this.read = 1
+      } else {
+        this.read = 0
+      }
+      this.getAllMessage()
     },
+    // 获取所有的数据
     getAllMessage () {
       this.$http.get('getAllMessage', {
-        params: this.queryParams
+        params: {
+          read: this.read,
+          ...this.queryParams
+        }
       }).then(
         res => {
           if (res.data.status === 1) {
             this.userMessageList = res.data.data
+          }
+        }
+      ).catch(
+        err => {
+          this.$message.error(err.message)
+        }
+      )
+    },
+    // 每页条数改变的时候
+    handleSizeChange (size) {
+      console.log(size)
+      this.queryParams.pageSize = size
+      this.getAllMessage()
+    },
+    // 用户点击了页数
+    handleCurrentChange (num) {
+      console.log('当前页数为', num)
+      this.queryParams.pageNum = num
+      this.getAllMessage()
+    },
+    // 用户点击了已读
+    readUserMessage (mid) {
+      console.log('用户点击的消息mid = ', mid)
+      this.$http.get('readMessage', {
+        params: {
+          mid: mid
+        }
+      }).then(
+        res => {
+          if (res.data.status === 1) {
+            this.$message.success(res.data.msg)
+            // 重新获取数据
+            this.getAllMessage()
+            // 更新一下徽章
+            this.$bus.$emit('setBadeg')
           }
         }
       ).catch(
@@ -64,6 +145,9 @@ export default {
 </script>
 
 <style scoped>
+.el-pagination {
+  margin-bottom: 20px;
+}
 .message-time {
   position: absolute;
   float: right;

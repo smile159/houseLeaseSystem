@@ -111,7 +111,6 @@
     :ring="ringOptions.ring"
     :src="ringOptions.src"
     >
-
     </easy-ring>
   </div>
 </template>

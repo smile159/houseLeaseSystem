@@ -17,14 +17,20 @@
       </div>
     </div>
     <div class="beianContainer">
-      <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022009091号-1</a>
-      <a href="https://beian.miit.gov.cn/" target="_blank">粤B2-20****59-1</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank" style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px;color:#939393;">蜀ICP备2022009091号-1</a>
+      <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51192302000220"
+         style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+        <img src="../assets/images/beian.png" style="float:left;" alt=""/>
+        <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">
+          川公网安备 51192302000220号</p>
+      </a>
     </div>
   </div>
 </template>
 
 <script>
 import Card from '@/components/s-card'
+
 export default {
   name: 'IndexPage',
   components: { Card },
@@ -67,17 +73,20 @@ export default {
 .more-house {
   margin-top: 10px;
 }
-.beianContainer a{
+
+.beianContainer a {
   text-decoration: none;
   color: black;
   margin: 0 5px;
 }
+
 .beianContainer {
   margin-top: 50px;
   background-color: #f7f9fc;
   display: flex;
   justify-content: center;
 }
+
 /*轮播图的图片*/
 .banner-img {
   width: 100%;
@@ -91,7 +100,8 @@ export default {
   background: url("../assets/images/banner/banner-1.jpg") no-repeat;
   background-size: 100%;
 }
-.newest-house{
+
+.newest-house {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,6 +109,7 @@ export default {
   flex-flow: wrap;
   flex-direction: column;
 }
+
 .newest-house .show-msg {
   margin-top: 30px;
 }

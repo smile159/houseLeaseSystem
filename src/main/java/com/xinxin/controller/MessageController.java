@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.View;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,8 +34,19 @@ public class MessageController {
     }
 
     @GetMapping("/getAllMessage")
-    public Result<List<ViewUserMessage>> getAllMessage(HttpServletRequest request, @RequestParam("pageSize") int pageSize, @RequestParam("pageNum") int pageNum){
+    public Result<HashMap<String,Object>> getAllMessage(HttpServletRequest request, @RequestParam("pageSize") int pageSize, @RequestParam("pageNum") int pageNum,int read){
         int uid = (int)request.getAttribute("userId");
-        return Result.success(messageService.getAllUserMessage(uid,pageSize,pageNum));
+        return Result.success(messageService.getAllUserMessage(uid, pageSize, pageNum,read));
+    }
+
+    @GetMapping("/readMessage")
+    public Result<String> readUserMessage(int mid){
+        return messageService.updateMessageRead(mid)>0?Result.success("修改状态成功"):Result.error("修改状态失败");
+    }
+
+    @GetMapping("/getMessageNum")
+    public Result<Integer> getMessageNum(HttpServletRequest request){
+        int uid = (int)request.getAttribute("userId");
+        return Result.success(messageService.getAllNoReadMessage(uid));
     }
 }

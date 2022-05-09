@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,9 +22,13 @@ public class TestUserMessage {
 
     @Test
     public void test01(){
-        List<ViewUserMessage> allUserMessage = messageService.getAllUserMessage(1, 10, 1);
-        for (ViewUserMessage viewUserMessage : allUserMessage) {
-            System.out.println(viewUserMessage);
-        }
+        HashMap<String, Object> allUserMessage = messageService.getAllUserMessage(1, 10, 1,0);
+        System.out.println(allUserMessage);
+    }
+
+    @Test
+    public void test02(){
+        int allNoReadMessage = messageService.getAllNoReadMessage(1);
+        System.out.println("未读数量为："+allNoReadMessage);
     }
 }

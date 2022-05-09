@@ -31,4 +31,8 @@ public class ViewUserMessage {
     * 留言时间
     * */
     private String createTime;
+    /*
+    * 留言状态
+    * */
+    private Integer read;
 }

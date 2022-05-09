@@ -11,8 +11,8 @@
         <result property="message" column="message" />
         <result property="createTime" column="create_time" />
     </resultMap>
-    <!--public List<SqlUserMessage> getAllUserMessageBypaging(@Param("uid") int uid, @Param("offset") int offset, @Param("pageSize") int pageSize);-->
+    <!--public List<SqlUserMessage> getAllUserMessageBypaging(@Param("uid") int uid, @Param("offset") int offset, @Param("pageSize") int pageSize,@param("read") int read);-->
     <select id="getAllUserMessageBypaging" resultMap="getAllUserMessageBypagingResultMap">
-        select * from user_message um left join user u on um.uid = u.uid where um.uid=#{uid} limit #{offset},#{pageSize}
+        select * from user_message um left join user u on um.uid = u.uid where um.uid=#{uid} and um.read =#{read} limit #{offset},#{pageSize}
     </select>
 </mapper>
