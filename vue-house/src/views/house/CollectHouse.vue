@@ -52,5 +52,11 @@ export default {
 </script>
 
 <style scoped>
-
+.flex-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1920px;
+  flex-flow: wrap;
+}
 </style>
