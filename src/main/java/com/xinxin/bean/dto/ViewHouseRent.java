@@ -25,6 +25,12 @@ public class ViewHouseRent {
      * */
     private Integer rid;
 
+
+    /*
+    * 房屋的关联id
+    * */
+    private Integer hid;
+
     /**
      * 出租标题
      */

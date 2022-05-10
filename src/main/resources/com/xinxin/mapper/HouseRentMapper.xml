@@ -31,6 +31,7 @@
     <!--public List<HouseRent> getRecommendHouseRent(@Param("offset")int offset, @Param("pageSize") int pageSize);-->
     <resultMap id="recommendRentHouseResultMap" type="viewHouseRent">
         <id property="rid" column="rid"/>
+        <result property="hid" column="hid"/>
         <result property="rentTitle" column="rent_title"/>
         <result property="monthMoney" column="month_money"/>
         <result property="address" column="address"/>

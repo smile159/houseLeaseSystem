@@ -45,7 +45,13 @@
       title="房屋配置"
       :visible.sync="dialogVisible"
       width="50%">
-      <span>这是一段信息</span>
+      <el-tag
+        v-for="item in tags"
+        :key="item.hTid"
+        type="success"
+        effect="dark">
+        {{ item.name }}
+      </el-tag>
     </el-dialog>
   </el-card>
 </template>
@@ -57,12 +63,25 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      cardData: this.d
+      cardData: this.d,
+      tags: []
     }
   },
   methods: {
     favorite () {
       if (this.favoriteAndTag > 0) {
+        console.log('ceshi', this.d)
+        this.$http.get('getHouseAllTag', { params: { hid: this.d.hid } }).then(
+          res => {
+            if (res.data.status === 1) {
+              this.tags = res.data.data
+            }
+          }
+        ).catch(
+          err => {
+            this.$message.error(err.message)
+          }
+        )
         // 说明是标签的
         this.dialogVisible = true
       } else {
@@ -98,7 +117,7 @@ export default {
     },
     // 是浏览还是管理
     favoriteOrTag () {
-      return this.favoriteAndTag > 0 ? '更多标签' : '收藏'
+      return this.favoriteAndTag > 0 ? '更多配置' : '收藏'
     },
     tagType () {
       if (this.favoriteAndTag > 0) {
@@ -112,6 +131,9 @@ export default {
 </script>
 
 <style scoped>
+.el-tag {
+  margin: 0 20px;
+}
 .clickToDetail {
   cursor: pointer;
 }

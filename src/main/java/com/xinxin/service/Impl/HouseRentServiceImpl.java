@@ -67,4 +67,9 @@ public class HouseRentServiceImpl implements HouseRentService {
     public int showMyHouseRent(int rid) {
         return houseRentMapper.updateHouseStatus(rid,1);
     }
+
+    @Override
+    public int deleteHouseRent(int rid) {
+        return houseRentMapper.deleteHouseRent(rid);
+    }
 }

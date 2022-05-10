@@ -13,7 +13,7 @@ public class House {
     /**
      * 房屋唯一标识
      */
-    private Integer tid;
+    private Integer hid;
 
     /**
      * 房东id

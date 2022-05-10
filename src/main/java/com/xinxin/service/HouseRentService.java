@@ -27,4 +27,6 @@ public interface HouseRentService {
     public int hiddenMyHouseRent(int rid);
     // 上架出租信息
     public int showMyHouseRent(int rid);
+    // 删除
+    public int deleteHouseRent(int rid);
 }

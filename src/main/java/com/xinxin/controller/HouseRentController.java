@@ -71,4 +71,10 @@ public class HouseRentController {
     public Result<String> showMyHouseRent(int rid) {
         return houseRentService.showMyHouseRent(rid)>0 ? Result.success("上架成功") : Result.error("上架失败");
     }
+
+
+    @GetMapping("/deleteHouseRent")
+    public Result<String> deleteHouseRent(int rid){
+        return houseRentService.deleteHouseRent(rid)>0 ? Result.success("删除成功") : Result.error("删除失败");
+    }
 }

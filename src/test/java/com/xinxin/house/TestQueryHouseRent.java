@@ -75,5 +75,6 @@ public class TestQueryHouseRent {
 
     @Test
     public void test06(){
+
     }
 }

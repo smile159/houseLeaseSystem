@@ -32,7 +32,7 @@
                     <el-button type="warning" slot="reference" round>下架</el-button>
                   </el-popconfirm>
                 </template>
-                <el-button type="danger" round>删除</el-button>
+                <el-button type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
               </template>
             </Card>
           </div>
@@ -51,7 +51,7 @@
               <el-button type="primary" round @click="editHouseDialog(data.row.rid)">编辑</el-button>
               <!--下架或上架-->
               <el-button type="success" round @click="showHouseRent(data.row.rid)">上架</el-button>
-              <el-button type="danger" round>删除</el-button>
+              <el-button type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
             </template>
           </Card>
         </div>
@@ -213,6 +213,32 @@ export default {
     this.getMyHouseRent()
   },
   methods: {
+    // 删除发布的信息
+    deleteHouseRent (rid) {
+      this.$confirm('此操作将删除该出租信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.get('deleteHouseRent', { params: { rid: rid } }).then(
+          res => {
+            if (res.data.status === 1) {
+              this.$message.success(res.data.msg)
+              this.getMyHouseRent()
+            }
+          }
+        ).catch(
+          err => {
+            console.log('出错了', err.message)
+          }
+        )
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     // 获取我发布的租赁信息
     getMyHouseRent () {
       this.$http.get('getMyHouseRent', {

@@ -4,9 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xinxin.mapper.HouseMapper">
     <!--public House getHouseById(@Param("hid") int hid);-->
-    <select id="getHouseById" resultType="house">
+    <select id="getHouseByHId" resultType="house">
         select * from house where hid=#{hid}
     </select>
 
+    <!--@Insert("insert into house (uid, house_name, type, city, address, area, floor, max_floor, direction) values (#{uid},#{houseName},#{type},#{city},#{address},#{area},#{floor},#{maxFloor},#{direction});")-->
+
+    <insert id="addNewHouse">
+        insert into house (uid, house_name, type, city, address, area, floor, max_floor, direction) values (#{uid},#{houseName},#{type},#{city},#{address},#{area},#{floor},#{maxFloor},#{direction})
+    </insert>
 
 </mapper>
