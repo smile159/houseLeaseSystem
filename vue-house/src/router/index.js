@@ -9,6 +9,8 @@ import MyHouseRent from '@/views/house/MyHouseRent'
 import CollectHouse from '@/views/house/CollectHouse'
 import Detail from '@/components/Detail'
 import MyComment from '@/views/house/MyComment'
+import Admin from '@/admin/Admin'
+import AdminLoginPage from '@/admin/AdminLoginPage'
 
 Vue.use(VueRouter)
 
@@ -56,6 +58,14 @@ const routes = [
         component: MyComment
       }
     ]
+  },
+  {
+    path: '/admin',
+    component: AdminLoginPage
+  },
+  {
+    path: '/adminHome',
+    component: Admin
   }
 ]
 
