@@ -1,6 +1,6 @@
 <template>
 <div>
-  首页，echars统计，和其他一些数据展示
+  11111111
 </div>
 </template>
 
@@ -11,5 +11,8 @@ export default {
 </script>
 
 <style scoped>
-
+.demo1 {
+  width: 500px;
+  height: 500px;
+}
 </style>

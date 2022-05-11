@@ -5,7 +5,10 @@ public enum ResultEnum {
     //内部定义枚举
     REJECT(0,"拒绝请求"),
     SUCCESS(1,"请求成功"),
-    ERROR(-1,"未登录，请先登录");
+    ERROR(-1,"未登录，请先登录"),
+    BANACCOUNT(4000,"您的账号已被封禁"),
+    BANEDMESSAGE(4001,"您的账号已被禁言");
+
 
 
     Integer code;

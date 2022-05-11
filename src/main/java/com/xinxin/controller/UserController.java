@@ -7,6 +7,7 @@ import com.xinxin.bean.vo.RegisterUser;
 import com.xinxin.common.ExpirationTime;
 import com.xinxin.common.Result;
 import com.xinxin.common.ResultMessage;
+import com.xinxin.common.excepiton.UserExcepiton;
 import com.xinxin.custom.annotation.PassToken;
 import com.xinxin.service.UserService;
 import com.xinxin.utils.CookieUtils;
@@ -15,6 +16,7 @@ import com.xinxin.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,18 +32,22 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @Api("userController")
+@Slf4j
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    UserUtils userUtils;
 
     @PostMapping("/login")
     @PassToken
     @ApiOperation(value = "用户登录")
-    public Result<ViewUser> loginUser(@RequestBody @ApiParam(value = "前端请求参数",required = true) LoginUser loginUser,@ApiParam(value = "设置COOKIE") HttpServletResponse response) {
+    public Result<ViewUser> loginUser(@RequestBody @ApiParam(value = "前端请求参数",required = true) LoginUser loginUser,@ApiParam(value = "设置COOKIE") HttpServletResponse response) throws UserExcepiton.UserStopMessage, UserExcepiton.UserBaned {
         System.out.println("收到了登录请求：" + loginUser);
         // 数据库查询用户
         User sqlUser = userService.getUserByName(loginUser.getUserName());
         System.out.println("login = "+sqlUser);
+        userUtils.checkBlackUser(sqlUser.getUid());
         // 校验数据是否为空，用户名和密码是否一致
         if (UserUtils.checkUser(loginUser,sqlUser)) {
             // 设置响应头token值，下次请求必须携带
@@ -52,9 +58,11 @@ public class UserController {
                     .identity(sqlUser.getIdentity())
                     .status(sqlUser.getStatus())
                     .build();
+            log.info("校验通过");
             return Result.success(ResultMessage.LOGINSUCCESS,viewUser);
         } else {
-            return Result.error();
+            log.info("校验失败");
+            return Result.error("账号或密码错误");
         }
     }
 

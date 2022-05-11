@@ -1,6 +1,8 @@
 package com.xinxin.service.admin;
 
 import com.xinxin.bean.admin.AdminLoginUser;
+import com.xinxin.bean.admin.dto.ViewAdminUser;
+import com.xinxin.bean.admin.vo.BanUser;
 import com.xinxin.common.excepiton.AdminUserException;
 
 /**
@@ -12,5 +14,11 @@ import com.xinxin.common.excepiton.AdminUserException;
 public interface AdminUserService {
 
     /*检查管理员账号*/
-    public void checkAdminUser(AdminLoginUser adminLoginUser) throws AdminUserException.checkException;
+    public ViewAdminUser checkAdminUser(AdminLoginUser adminLoginUser) throws AdminUserException.checkException;
+
+    /*
+    * 封禁用户
+    * */
+
+    public int adminBanUser(BanUser banUser);
 }

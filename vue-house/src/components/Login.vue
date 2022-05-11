@@ -3,14 +3,13 @@
     <el-card class="loginCard" :body-style="loginCardStyle">
       <el-form
         :model="loginForm"
-        :rules="loginRules"
         label-width="100px"
         ref="loginFormRef"
       >
-        <el-form-item label="用户名" prop="userName">
+        <el-form-item label="用户名">
           <el-input v-model="loginForm.userName"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="密码">
           <el-input v-model="loginForm.password"></el-input>
         </el-form-item>
         <el-form-item>
@@ -34,17 +33,6 @@ export default {
         userName: 'smile',
         password: '123456'
       },
-      // 登录表单校验规则
-      loginRules: {
-        userName: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 1, max: 12, message: '长度在 1 到 12 个字符', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-        ]
-      },
       // 卡片body体样式
       loginCardStyle: {
         width: '100%',
@@ -55,26 +43,21 @@ export default {
   methods: {
     login () {
       // 判断表单是否校验通过
-      this.$refs.loginFormRef.validate(valid => {
-        console.log('校验是否通过？', valid)
-        if (valid) {
-          this.$http.post('login', this.loginForm).then(res => {
-            console.log(res)
-            if (res.data.status === 1) {
-              // 登录成功的提示消息
-              this.$message.success(res.data.msg)
-              // 将数据存储到localStorage中
-              localStorage.setItem('userInfo', JSON.stringify(res.data.data))
-              // 跳转
-              this.$router.replace('/home')
-            }
-          }).catch(err => {
-            console.log(err)
-            this.$message.error('登录错误')
-          })
+      this.$http.post('login', this.loginForm).then(res => {
+        console.log(res)
+        if (res.data.status === 1) {
+          // 登录成功的提示消息
+          this.$message.success(res.data.msg)
+          // 将数据存储到localStorage中
+          localStorage.setItem('userInfo', JSON.stringify(res.data.data))
+          // 跳转
+          this.$router.replace('/home')
         } else {
-          this.$message.error('数据校验失败')
+          if (res.data.status < 4000) this.$message.error(res.data.msg)
         }
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('登录错误')
       })
     }
   }

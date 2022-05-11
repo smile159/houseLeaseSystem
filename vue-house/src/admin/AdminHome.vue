@@ -9,7 +9,7 @@
         text-color="#fff"
         active-text-color="#ffd04b"
       >
-        <el-menu-item index="1">
+        <el-menu-item index="/adminHome/adminIndex">
           <i class="el-icon-menu"></i>
           <span slot="title">首页</span>
         </el-menu-item>
@@ -19,7 +19,7 @@
             <i class="el-icon-location"></i>
             <span>用户管理</span>
           </template>
-          <el-menu-item index="/manageUser">用户浏览</el-menu-item>
+          <el-menu-item index="/adminHome/manageUser">用户浏览</el-menu-item>
         </el-submenu>
 
         <el-menu-item index="3">
@@ -39,11 +39,10 @@
           class="top-header"
           mode="horizontal">
           <el-menu-item index="1" class="logo">房屋租赁管理系统</el-menu-item>
-          <el-menu-item index="2" class="logout-btn">
+          <el-menu-item class="logout-btn">
             <!--用户信息-->
-            <span>
-              smile
-            </span>
+            <span class="userName" v-if="adminData.identity === 1" style="color: red">开发者 {{adminData.account}}</span>
+            <span class="userName" v-else style="color: gold">管理员 {{adminData.account}}</span>
             <el-button type="info">退出</el-button>
           </el-menu-item>
         </el-menu>
@@ -59,12 +58,29 @@
 <script>
 export default {
   name: 'AdminHome',
+  mounted () {
+    this.init()
+  },
+  data () {
+    return {
+      adminData: {}
+    }
+  },
   methods: {
+    init () {
+      const adminData = JSON.parse(sessionStorage.getItem('adminUserInfo'))
+      this.adminData = adminData
+    }
   }
 }
 </script>
 
 <style scoped>
+.userName {
+  font-size: 20px;
+  color: black;
+  margin-right: 20px;
+}
 .top-header>.el-menu-item.is-active{
   border-bottom: 0;
   cursor: auto;
@@ -79,6 +95,7 @@ export default {
 }
 /*退出按钮*/
 .logout-btn {
+  cursor: default;
   float: right!important;
 }
 /*容器*/

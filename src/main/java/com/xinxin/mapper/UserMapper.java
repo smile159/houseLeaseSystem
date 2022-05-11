@@ -2,10 +2,9 @@ package com.xinxin.mapper;
 
 import com.xinxin.bean.dto.ViewUser;
 import com.xinxin.bean.sql.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.xinxin.bean.vo.EditUserForm;
+import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -37,5 +36,44 @@ public interface UserMapper {
     // 获取所有用户，分页查询
     @Select("select * from user limit #{offset},#{pageSize}")
     public List<User> getUserByPaging(@Param("offset") int offset,@Param("pageSize") int pageSize);
+
+    /*
+    * 用户统计
+    * */
+    @Select("select count(*) from user")
+    public int queryAllUserCount();
+
+    /*
+    * 修改用户的状态
+    * */
+
+    @Update("update user set status=#{status} where uid=#{uid}")
+    public int updateUserStatus(@Param("uid") int uid,@Param("status") int status);
+
+    /*
+    * 判断是否为黑名单用户
+    * */
+    @Select("select measure from user_blacklist where ban_id=#{uid}")
+    public Integer checkBlackUser(@Param("uid") int uid);
+
+
+    /*
+    * 删除用户
+    * */
+    @Delete("delete from user where uid=#{uid}")
+    public int deleteUserByUid(@Param("uid") int uid);
+
+
+    /*
+    * 用户修改
+    * */
+    @Update("update user set user_name=#{userName},password=#{password} where uid=#{uid}")
+    public int editUserByUid(@RequestBody EditUserForm editUserForm);
+
+    /*
+    * 解除限制
+    * */
+    @Update("update user_blacklist set status=0 where ban_id=#{uid}")
+    public int relieveUser(@Param("uid") int uid);
 
 }

@@ -33,4 +33,20 @@ public class UserExcepitonHandler {
         return Result.error(ResultEnum.ERROR.getCode(),e.getMessage());
     }
 
+    /*
+    * 账号封禁
+    * */
+    @ExceptionHandler(value = UserExcepiton.UserBaned.class)
+    public Result<String> UserBaned(Exception e){
+        return Result.error(ResultEnum.BANACCOUNT.getCode(),ResultEnum.BANACCOUNT.getMsg());
+    }
+
+    /*
+    * 账号禁言
+    * */
+    @ExceptionHandler(value = UserExcepiton.UserStopMessage.class)
+    public Result<String> UserStopMessage(Exception e){
+        return Result.error(ResultEnum.BANEDMESSAGE.getCode(),ResultEnum.BANEDMESSAGE.getMsg());
+    }
+
 }

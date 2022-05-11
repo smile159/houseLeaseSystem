@@ -2,6 +2,7 @@ package com.xinxin.controller.admin;
 
 import com.xinxin.bean.admin.AdminLoginUser;
 import com.xinxin.bean.admin.AdminUser;
+import com.xinxin.bean.admin.dto.ViewAdminUser;
 import com.xinxin.common.Result;
 import com.xinxin.common.excepiton.AdminUserException;
 import com.xinxin.custom.annotation.PassToken;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * @author smile
@@ -23,11 +25,9 @@ public class AdminController {
     AdminUserService adminUserService;
 
     @PostMapping("/adminLogin")
-    public Result<String> login(@RequestBody AdminLoginUser adminLoginUser) throws AdminUserException.checkException, InterruptedException {
+    public Result<ViewAdminUser> login(@RequestBody AdminLoginUser adminLoginUser) throws AdminUserException.checkException, InterruptedException {
         System.out.println("adminLoginUser = "+adminLoginUser);
-        adminUserService.checkAdminUser(adminLoginUser);
-        // 模拟请求过多
-        Thread.sleep(5000);
-        return Result.success("登录成功");
+        ViewAdminUser viewAdminUser = adminUserService.checkAdminUser(adminLoginUser);
+        return Result.success(viewAdminUser);
     }
 }

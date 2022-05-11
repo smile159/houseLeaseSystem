@@ -3335,6 +3335,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
+easy-ring@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/easy-ring/-/easy-ring-1.1.13.tgz#06a9f64d494ffdebf517c63a3dcc6f50fcaaf014"
+  integrity sha512-9D8k/QiSVEpb4VCqmSEnMkAmdj4q8/aLzK/lkqv7P/ICriVGRp8rIcloNFaiMxR3CRnvpJWCPB6Hk6Bt+rJfcw==
+
 easy-stack@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/easy-stack/-/easy-stack-1.0.1.tgz#8afe4264626988cabb11f3c704ccd0c835411066"

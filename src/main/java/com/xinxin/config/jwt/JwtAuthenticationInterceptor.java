@@ -8,6 +8,7 @@ import com.xinxin.custom.annotation.PassToken;
 import com.xinxin.service.UserService;
 import com.xinxin.utils.CookieUtils;
 import com.xinxin.utils.JwtUtils;
+import com.xinxin.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
@@ -28,6 +29,7 @@ import java.lang.reflect.Method;
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
+
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
@@ -65,7 +67,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
             // 获取 token 中的 id
             String userId = JwtUtils.getAudience(token);
-
+            int uid = Integer.parseInt(JwtUtils.getAudience(token));
             //找找看是否有这个user   因为我们需要检查用户是否存在，读者可以自行修改逻辑
             User user = userService.getUserById(userId);
             if (user == null) {
@@ -76,6 +78,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             // 验证 token
             JwtUtils.verifyToken(token, userId);
             httpServletRequest.setAttribute("userId",user.getUid());
+            httpServletRequest.setAttribute("uid",uid);
             httpServletRequest.setAttribute("userName",user.getUserName());
         }
         return true;

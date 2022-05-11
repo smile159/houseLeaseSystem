@@ -12,7 +12,7 @@ import java.util.Date;
 public class DateTimeUtils {
     public static String getNowDateTime(){
         Date date = new Date();
-        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String format = dateFormat.format(date);
         System.out.println("现在的时间是："+format);
         return format;

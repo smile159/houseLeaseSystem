@@ -1,9 +1,11 @@
 package com.xinxin.service;
 
 import com.xinxin.bean.sql.User;
+import com.xinxin.bean.vo.EditUserForm;
 import com.xinxin.bean.vo.RegisterUser;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,5 +21,26 @@ public interface UserService {
 
     public boolean registerUser(@Param("user") RegisterUser user);
 
-    public List<User> getUserByPaging(int pageSize, int pageNum);
+    public HashMap<String,Object> getUserByPaging(int pageSize, int pageNum);
+
+    /*
+    * 检测是否为黑名单用户
+    * */
+    public boolean checkUserIsBan(int uid);
+
+    /*
+    * 删除用户
+    * */
+    public int deleteUser(int uid);
+
+    /*
+    * 编辑用户
+    * */
+
+    public int editUser(EditUserForm editUserForm);
+
+    /*
+    * 解除限制
+    * */
+    public int relieveUser(int uid);
 }

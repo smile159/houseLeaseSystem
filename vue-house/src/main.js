@@ -23,28 +23,32 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 引入axios
 import axios from 'axios'
+
+// 插件使用
+Vue.use(ElementUI)
+Vue.use(VueAMap)
+Vue.use(EasyRing)
 /* 设置基本url */
 axios.defaults.baseURL = 'http://localhost:8080/'
 // 运行携带cookie
 axios.defaults.withCredentials = true
 
 // axios响应拦截器
-axios.interceptors.response.use(function (res) {
+axios.interceptors.response.use((res) => {
   console.log('拦截器', res)
   if (res.data.status < 0) {
     console.log('登录过期')
     ElementUI.Message.error(res.data.msg)
     router.replace('/login')
+  } else if (res.data.status === 4000) {
+    ElementUI.MessageBox('您的账号已被封禁', '提示', {
+      confirmButtonText: '确定'
+    })
   }
   return res
 }, function (err) {
   console.log('err', err)
 })
-
-// 插件使用
-Vue.use(ElementUI)
-Vue.use(VueAMap)
-Vue.use(EasyRing)
 
 /* 关闭生产提示 */
 Vue.config.productionTip = false

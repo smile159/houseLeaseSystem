@@ -29,4 +29,18 @@ public class UserExcepiton {
             super(message);
         }
     }
+    // 用户封号
+    public static class UserBaned extends BaseExcepiton {
+        public UserBaned(String message) {
+            super(message);
+        }
+    }
+    //禁止发言
+    public static class UserStopMessage extends BaseExcepiton {
+        public UserStopMessage(String message) {
+            super(message);
+        }
+    }
+
+
 }

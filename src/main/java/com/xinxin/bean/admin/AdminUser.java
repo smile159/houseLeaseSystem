@@ -13,7 +13,7 @@ public class AdminUser {
     /*
     * 账号唯一标识
     * */
-    private Integer a_uid;
+    private Integer aUid;
     /*
     * 账号
     * */
@@ -37,11 +37,11 @@ public class AdminUser {
     /*
     * 创建时间
     * */
-    private String create_time;
+    private String createTime;
     /*
     * 上次活动时间
     * */
-    private String active_time;
+    private String activeTime;
     /*
     * 账号状态
     * */

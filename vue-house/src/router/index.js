@@ -69,14 +69,14 @@ const routes = [
   {
     path: '/adminHome',
     component: AdminHome,
-    redirect: '/adminIndex',
+    redirect: '/adminHome/adminIndex',
     children: [
       {
-        path: '/adminIndex',
+        path: 'adminIndex',
         component: AdminIndex
       },
       {
-        path: '/manageUser',
+        path: 'manageUser',
         component: ManageUser
       }
     ]
