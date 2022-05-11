@@ -1,13 +1,19 @@
 <template>
   <el-container>
     <!--侧边栏-->
-    <el-aside width="200px">
+    <el-aside :width="asideDynamicWidth">
+      <div :class="foldDiv" style="background-color: #545c64">
+        <i class="el-icon-s-fold" @click="toggleCollapse" ref="asideIcon"></i>
+      </div>
       <el-menu
+        :collapse-transition="false"
         router
-        default-active="1"
+        default-active="/adminHome/adminIndex"
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
+        @select="selectMenu"
+        :collapse="isCollapse"
       >
         <el-menu-item index="/adminHome/adminIndex">
           <i class="el-icon-menu"></i>
@@ -22,11 +28,11 @@
           <el-menu-item index="/adminHome/manageUser">用户浏览</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index="3">
+        <el-menu-item index="/adminHome/houseManage">
           <i class="el-icon-document"></i>
           <span slot="title">房屋管理</span>
         </el-menu-item>
-        <el-menu-item index="4">
+        <el-menu-item index="/adminHome/statistics">
           <i class="el-icon-setting"></i>
           <span slot="title">统计</span>
         </el-menu-item>
@@ -63,19 +69,54 @@ export default {
   },
   data () {
     return {
-      adminData: {}
+      adminData: {},
+      // 折叠
+      isCollapse: false,
+      foldDiv: {
+        width: '199px'
+      }
     }
   },
   methods: {
     init () {
       const adminData = JSON.parse(sessionStorage.getItem('adminUserInfo'))
       this.adminData = adminData
+    },
+    selectMenu (index, indexPath) {
+      console.log('index = ', index, 'indexPath = ', indexPath)
+    },
+    // 是否收缩左侧菜单栏
+    toggleCollapse () {
+      this.foldDiv.width = this.isCollapse ? '64px' : '199px'
+      this.$refs.asideIcon.className = 'el-icon-s-unfold'
+      this.isCollapse = !this.isCollapse
+    }
+  },
+  computed: {
+    asideDynamicWidth () {
+      return this.isCollapse ? '63px' : '200px'
     }
   }
 }
 </script>
 
 <style scoped>
+.el-aside::-webkit-scrollbar {
+  display: none;
+}
+.fold-div {
+  background-color: #545c64;
+}
+.el-icon-s-unfold, .el-icon-s-fold {
+  position: relative;
+  left: 50%;
+  top: 0;
+  font-size: 28px;
+  color: white;
+  transform: translateX(-50%);
+  cursor: pointer;
+  margin-top: 10px;
+}
 .userName {
   font-size: 20px;
   color: black;
@@ -110,6 +151,6 @@ export default {
 }
 /*主体内容*/
 .el-main {
-  background-color: gold;
+  background-color: #eeeeee;
 }
 </style>

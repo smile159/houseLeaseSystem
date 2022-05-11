@@ -23,6 +23,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 引入axios
 import axios from 'axios'
+// 引入echarts
+import * as echarts from 'echarts'
 
 // 插件使用
 Vue.use(ElementUI)
@@ -57,6 +59,9 @@ Vue.prototype.$http = axios
 /* 引入图片 */
 Vue.prototype.$imgs = $imgs
 Vue.prototype.$sound = sound
+// 全局注册
+Vue.prototype.echarts = echarts
+
 // 初始化vue-amap
 VueAMap.initAMapApiLoader({
   // 高德的key

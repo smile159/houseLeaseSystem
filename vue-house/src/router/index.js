@@ -14,6 +14,8 @@ import AdminLoginPage from '@/admin/AdminLoginPage'
 // 后台
 import AdminIndex from '@/admin/views/AdminIndex'
 import ManageUser from '@/admin/views/ManageUser'
+import HouseManage from '@/admin/views/HouseManage'
+import Statistics from '@/admin/views/Statistics'
 
 Vue.use(VueRouter)
 
@@ -78,6 +80,14 @@ const routes = [
       {
         path: 'manageUser',
         component: ManageUser
+      },
+      {
+        path: 'houseManage',
+        component: HouseManage
+      },
+      {
+        path: 'statistics',
+        component: Statistics
       }
     ]
   }
