@@ -4,6 +4,8 @@ import com.xinxin.bean.sql.User;
 import com.xinxin.bean.vo.RegisterUser;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author smile
  * @ClassName UserService.java
@@ -16,4 +18,6 @@ public interface UserService {
     public User getUserById(@Param("uid") String uid);
 
     public boolean registerUser(@Param("user") RegisterUser user);
+
+    public List<User> getUserByPaging(int pageSize, int pageNum);
 }

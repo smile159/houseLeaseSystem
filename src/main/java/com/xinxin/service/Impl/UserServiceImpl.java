@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * @author smile
@@ -47,5 +49,12 @@ public class UserServiceImpl implements UserService {
         System.out.println("newUser = "+newUser);
         int insertResult = userMapper.insertUser(newUser);
         return insertResult > 0;
+    }
+
+    @Override
+    public List<User> getUserByPaging(int pageSize, int pageNum) {
+        // 计算偏移
+        int offset = (pageNum -1) * pageSize;
+        return userMapper.getUserByPaging(offset,pageSize);
     }
 }

@@ -9,8 +9,11 @@ import MyHouseRent from '@/views/house/MyHouseRent'
 import CollectHouse from '@/views/house/CollectHouse'
 import Detail from '@/components/Detail'
 import MyComment from '@/views/house/MyComment'
-import Admin from '@/admin/Admin'
+import AdminHome from '@/admin/AdminHome'
 import AdminLoginPage from '@/admin/AdminLoginPage'
+// 后台
+import AdminIndex from '@/admin/views/AdminIndex'
+import ManageUser from '@/admin/views/ManageUser'
 
 Vue.use(VueRouter)
 
@@ -65,7 +68,18 @@ const routes = [
   },
   {
     path: '/adminHome',
-    component: Admin
+    component: AdminHome,
+    redirect: '/adminIndex',
+    children: [
+      {
+        path: '/adminIndex',
+        component: AdminIndex
+      },
+      {
+        path: '/manageUser',
+        component: ManageUser
+      }
+    ]
   }
 ]
 

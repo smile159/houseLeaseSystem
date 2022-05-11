@@ -30,8 +30,12 @@ public interface UserMapper {
     public User getUserById(@Param("uid") String uid);
 
     // 用户注册
-    @Insert("insert into user(user_name,password,identity,status,token) values(#{userName},#{password},#{identity},#{status},#{token} )")
+    @Insert("insert into user(user_name,password,identity,status) values(#{userName},#{password},#{identity},#{status} )")
     public int insertUser(User user);
 
+
+    // 获取所有用户，分页查询
+    @Select("select * from user limit #{offset},#{pageSize}")
+    public List<User> getUserByPaging(@Param("offset") int offset,@Param("pageSize") int pageSize);
 
 }

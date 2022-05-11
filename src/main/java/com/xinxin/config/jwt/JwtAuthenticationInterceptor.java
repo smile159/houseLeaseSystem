@@ -38,6 +38,11 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         if (!(object instanceof HandlerMethod)) {
             return true;
         }
+        // 判断请求路径是否包含admin
+        if(httpServletRequest.getRequestURI().contains("admin")){
+            log.info("检测到是后台请求，直接放行");
+            return true;
+        }
         HandlerMethod handlerMethod = (HandlerMethod) object;
         Method method = handlerMethod.getMethod();
         //检查是否有passtoken注释，有则跳过认证
