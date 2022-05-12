@@ -75,6 +75,9 @@ public class HouseRentController {
 
     @GetMapping("/deleteHouseRent")
     public Result<String> deleteHouseRent(int rid){
+        if(houseRentService.queryIsAllowDelete(rid) == 0){
+            return Result.error("管理员已禁止删除");
+        }
         return houseRentService.deleteHouseRent(rid)>0 ? Result.success("删除成功") : Result.error("删除失败");
     }
 }

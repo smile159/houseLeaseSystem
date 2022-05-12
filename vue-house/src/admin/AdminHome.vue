@@ -2,7 +2,7 @@
   <el-container>
     <!--侧边栏-->
     <el-aside :width="asideDynamicWidth">
-      <div :class="foldDiv" style="background-color: #545c64">
+      <div class="fold-div"  :style="dynamicWidth">
         <i class="el-icon-s-fold" @click="toggleCollapse" ref="asideIcon"></i>
       </div>
       <el-menu
@@ -28,7 +28,10 @@
           <el-menu-item index="/adminHome/manageUser">用户浏览</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index="/adminHome/houseManage">
+        <el-menu-item
+          :route="{path: '/adminHome/houseManage',query: {adminUser:JSON.stringify(this.adminData)}}"
+          index="/adminHome/houseManage"
+        >
           <i class="el-icon-document"></i>
           <span slot="title">房屋管理</span>
         </el-menu-item>
@@ -49,7 +52,7 @@
             <!--用户信息-->
             <span class="userName" v-if="adminData.identity === 1" style="color: red">开发者 {{adminData.account}}</span>
             <span class="userName" v-else style="color: gold">管理员 {{adminData.account}}</span>
-            <el-button type="info">退出</el-button>
+            <el-button type="primary">退出</el-button>
           </el-menu-item>
         </el-menu>
       </el-header>
@@ -72,9 +75,7 @@ export default {
       adminData: {},
       // 折叠
       isCollapse: false,
-      foldDiv: {
-        width: '199px'
-      }
+      fold: 'tttt'
     }
   },
   methods: {
@@ -87,25 +88,33 @@ export default {
     },
     // 是否收缩左侧菜单栏
     toggleCollapse () {
-      this.foldDiv.width = this.isCollapse ? '64px' : '199px'
       this.$refs.asideIcon.className = 'el-icon-s-unfold'
       this.isCollapse = !this.isCollapse
     }
   },
   computed: {
     asideDynamicWidth () {
-      return this.isCollapse ? '63px' : '200px'
+      return this.isCollapse ? '63px' : '199px'
+    },
+    dynamicWidth () {
+      return this.isCollapse ? 'width:63px;' : 'width:198px;'
     }
   }
 }
 </script>
 
 <style scoped>
+.fold-div {
+  background-color: #545c64
+}
+.el-aside .tttt {
+  width: 198px!important;
+}
+.el-aside .yyyy {
+  width: 64px!important;
+}
 .el-aside::-webkit-scrollbar {
   display: none;
-}
-.fold-div {
-  background-color: #545c64;
 }
 .el-icon-s-unfold, .el-icon-s-fold {
   position: relative;

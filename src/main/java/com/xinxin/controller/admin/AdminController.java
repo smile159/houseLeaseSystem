@@ -28,6 +28,7 @@ public class AdminController {
     public Result<ViewAdminUser> login(@RequestBody AdminLoginUser adminLoginUser) throws AdminUserException.checkException, InterruptedException {
         System.out.println("adminLoginUser = "+adminLoginUser);
         ViewAdminUser viewAdminUser = adminUserService.checkAdminUser(adminLoginUser);
-        return Result.success(viewAdminUser);
+        //return Result.success(viewAdminUser);
+        return Result.success("登录成功",viewAdminUser);
     }
 }

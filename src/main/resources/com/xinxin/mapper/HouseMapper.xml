@@ -14,4 +14,5 @@
         insert into house (uid, house_name, type, city, address, area, floor, max_floor, direction) values (#{uid},#{houseName},#{type},#{city},#{address},#{area},#{floor},#{maxFloor},#{direction})
     </insert>
 
+
 </mapper>

@@ -4,6 +4,7 @@ import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
 import com.xinxin.bean.vo.UpdateHouse;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,6 +18,11 @@ public interface HouseService {
     * 获取所有的房屋
     * */
     public List<House> getAllHouse(int uid);
+
+    /*
+    * 获取所有的房屋
+    * */
+    public HashMap<String,Object> getAllHouseByPaging(int pageSize, int pageNum);
 
     /*
     * 添加房屋
@@ -39,4 +45,30 @@ public interface HouseService {
     * */
 
     public House getHouse(int hid);
+
+    /*
+    * 禁止房屋租赁信息查询
+    * */
+    public int disabledQueryHouseRent(int hid);
+
+    /*
+    * 取消禁止房屋租赁信息查询
+    * */
+    public int unDisabledQueryHouseRent(int hid);
+
+
+    /*
+    * 禁止房屋被删除
+    * */
+    public int disabledHouseDelete(int hid);
+
+    /*
+    * 取消禁止房屋被删除
+    * */
+    public int allowHouseDelete(int hid);
+    /*
+    * 查询是否允许删除
+    * */
+
+    public int queryHouseIsAllowDelete(int hid);
 }

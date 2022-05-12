@@ -60,16 +60,21 @@ public class HouseRentServiceImpl implements HouseRentService {
 
     @Override
     public int hiddenMyHouseRent(int rid) {
-        return houseRentMapper.updateHouseStatus(rid,0);
+        return houseRentMapper.updateHouseStatus(rid,1);
     }
 
     @Override
     public int showMyHouseRent(int rid) {
-        return houseRentMapper.updateHouseStatus(rid,1);
+        return houseRentMapper.updateHouseStatus(rid,0);
     }
 
     @Override
     public int deleteHouseRent(int rid) {
         return houseRentMapper.deleteHouseRent(rid);
+    }
+
+    @Override
+    public int queryIsAllowDelete(int rid) {
+        return houseRentMapper.queryHouseRentAllowDeleteBiHid(rid);
     }
 }

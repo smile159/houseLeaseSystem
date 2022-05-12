@@ -23,7 +23,7 @@
 
     <!--public List<ViewHouseRent> getHouseRentByPaging();-->
     <select id="getHouseRentByPaging" resultMap="recommendRentHouseResultMap">
-        select * from house_rent left join house on house.hid = house_rent.hid limit #{offset},#{pageSize}
+        select * from house_rent left join house on house.hid = house_rent.hid where allow_hidden != 1 limit #{offset},#{pageSize}
     </select>
 
 
@@ -36,6 +36,8 @@
         <result property="monthMoney" column="month_money"/>
         <result property="address" column="address"/>
         <result property="houseStatus" column="house_status"/>
+        <result property="allowHidden" column="allow_hidden"/>
+        <result property="allowDelete" column="allow_delete"/>
         <association property="houseTags"
                      select="com.xinxin.mapper.HouseTagMapper.getHouseTagByHidAndTwo"
                      column="hid"
@@ -49,7 +51,7 @@
     </resultMap>
 
     <select id="getRecommendHouseRent" resultMap="recommendRentHouseResultMap">
-        select * from house_rent left join house on house.hid = house_rent.hid
+        select * from house_rent left join house on house.hid = house_rent.hid where allow_hidden !=1 limit 6
     </select>
 
     <!--public int getFavoriteFidByRid(@Param("rid") int rid);-->

@@ -32,7 +32,7 @@
                     <el-button type="warning" slot="reference" round>下架</el-button>
                   </el-popconfirm>
                 </template>
-                <el-button type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
+                <el-button :disabled="data.row.allowDelete === 0" type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
               </template>
             </Card>
           </div>
@@ -51,7 +51,7 @@
               <el-button type="primary" round @click="editHouseDialog(data.row.rid)">编辑</el-button>
               <!--下架或上架-->
               <el-button type="success" round @click="showHouseRent(data.row.rid)">上架</el-button>
-              <el-button type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
+              <el-button :disabled="data.row.allowDelete === 0" type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
             </template>
           </Card>
         </div>

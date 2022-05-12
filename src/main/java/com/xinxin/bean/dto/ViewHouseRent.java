@@ -61,4 +61,7 @@ public class ViewHouseRent {
     * */
     private List<HouseTag> houseTags;
 
+    private Integer allowHidden;
+    private Integer allowDelete;
+
 }
