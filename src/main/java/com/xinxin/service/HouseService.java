@@ -71,4 +71,9 @@ public interface HouseService {
     * */
 
     public int queryHouseIsAllowDelete(int hid);
+
+    /*
+    * 删除
+    * */
+    public int adminDeleteUserHouseByHid(int hid);
 }

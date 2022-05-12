@@ -74,4 +74,8 @@ public interface HouseMapper {
     @Select("select allow_delete from house_rent where hid=#{hid}")
     public int queryHouseAllowDeleteBiHid(@Param("hid") int hid);
 
+
+    @Delete("delete from house where hid=#{hid}")
+    public int deleteUserHouse(@Param("hid") int hid);
+
 }

@@ -4,12 +4,14 @@
     <div class="card-data">
       <!--用户数量-->
       <el-card>
-        <h3>用户数量为：1000</h3>
+        <h3>用户数量为：{{statistics.userCount}}</h3>
       </el-card>
       <el-card>
-        <h3>发布的租赁数量：150</h3>
+        <h3>发布的租赁数量：{{statistics.houseRentCount}}</h3>
       </el-card>
-      <el-card>333</el-card>
+      <el-card>
+        <h3>房屋数量：{{statistics.houseCount}}</h3>
+      </el-card>
     </div>
     <!--echarts图表展示-->
     <div>
@@ -23,6 +25,12 @@ export default {
   name: 'AdminIndex.vue',
   mounted () {
     this.init()
+    this.getStatistics()
+  },
+  data () {
+    return {
+      statistics: {}
+    }
   },
   methods: {
     init () {
@@ -47,6 +55,12 @@ export default {
           }
         ]
       })
+    },
+    async getStatistics () {
+      const { data: r } = await this.$http.get('admin/getStatistics')
+      console.log(r)
+      if (r.status !== 1) return this.$message.error(r.msg)
+      this.statistics = r.data
     }
   }
 }

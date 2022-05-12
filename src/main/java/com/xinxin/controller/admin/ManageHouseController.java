@@ -64,4 +64,13 @@ public class ManageHouseController {
     public Result<String> allowHouseDelete(int hid){
         return houseService.allowHouseDelete(hid)>0?Result.success("取消禁止删除成功"):Result.error("取消禁止删除失败");
     }
+
+
+    /*
+    * 删除
+    * */
+    @GetMapping("deleteUserHouse")
+    public Result<String> deleteUserHouse(int hid){
+        return houseService.adminDeleteUserHouseByHid(hid)>0?Result.success("删除成功"):Result.error("删除失败");
+    }
 }

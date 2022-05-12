@@ -93,4 +93,9 @@ public class HouseServiceImpl implements HouseService {
     public int queryHouseIsAllowDelete(int hid) {
         return houseMapper.queryHouseAllowDeleteBiHid(hid);
     }
+
+    @Override
+    public int adminDeleteUserHouseByHid(int hid) {
+        return houseMapper.deleteUserHouse(hid);
+    }
 }

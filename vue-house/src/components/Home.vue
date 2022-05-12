@@ -90,7 +90,9 @@ export default {
     this.$bus.$on('userFavorite', this.globalUserFavorite)
     this.$bus.$on('userCancel', this.globalUserCancel)
     this.$bus.$on('setBadeg', this.setBadeg)
-    this.setBadeg()
+    if (this.isLogin) {
+      this.setBadeg()
+    }
   },
   data () {
     /* 二次密码校验 */

@@ -119,7 +119,7 @@
             <el-button size="small" type="success" v-else-if="scope.row.allowHidden === 1" @click="showHouse(scope.row.hid)">显示</el-button>
             <el-button size="small" type="success" v-if="scope.row.allowDelete === 0" @click="allowDelete(scope.row.hid)">允许删除</el-button>
             <el-button size="small" type="danger" v-else-if="scope.row.allowDelete === 1" @click="disableDelete(scope.row.hid)">禁止删除</el-button>
-            <el-button size="small" type="danger">删除</el-button>
+            <el-button size="small" type="danger" @click="deleteUserHouse(scope.row.hid)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -224,6 +224,27 @@ export default {
       if (r.status !== 1) return this.$message.error(r.msg)
       this.$message.success(r.msg)
       this.getAllHouseByPaging()
+    },
+    deleteUserHouse (hid) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const { data: r } = await this.$http.get('admin/deleteUserHouse', {
+          params: {
+            hid: hid
+          }
+        })
+        if (r.status !== 1) return this.$message.error(r.msg)
+        this.$message.success(r.msg)
+        this.getAllHouseByPaging()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '出错了'
+        })
+      })
     }
   }
 }
