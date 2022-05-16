@@ -1,6 +1,7 @@
 package com.xinxin.service.Impl;
 
 import com.xinxin.bean.admin.dto.ViewManageHouse;
+import com.xinxin.bean.dto.ViewStatistics;
 import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
 import com.xinxin.bean.vo.UpdateHouse;
@@ -97,5 +98,14 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public int adminDeleteUserHouseByHid(int hid) {
         return houseMapper.deleteUserHouse(hid);
+    }
+
+    @Override
+    public ViewStatistics queryHouseRentAndUserGlance() {
+        ViewStatistics viewStatistics = ViewStatistics.builder()
+                .houseRentGlance(houseMapper.queryHouseRentGlance())
+                .userGlance(houseMapper.queryUserGlance())
+                .build();
+        return viewStatistics;
     }
 }

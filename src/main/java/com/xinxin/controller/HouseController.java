@@ -1,5 +1,6 @@
 package com.xinxin.controller;
 
+import com.xinxin.bean.dto.ViewStatistics;
 import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
 import com.xinxin.bean.vo.UpdateHouse;
@@ -54,9 +55,14 @@ public class HouseController {
         return houseService.updateHouse(updateHouse)>0?Result.success("修改成功"):Result.error("修改失败");
     }
 
-
     @GetMapping("/getHouse")
     public Result<House> getHouse(int hid){
         return Result.success(houseService.getHouse(hid));
+    }
+
+
+    @GetMapping("/getHouseRentAndUserGlance")
+    public Result<ViewStatistics> getHouseRentAndUserGlance(){
+        return Result.success(houseService.queryHouseRentAndUserGlance());
     }
 }

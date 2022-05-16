@@ -36,7 +36,7 @@ public class JwtUtils {
     public static String createToken(User user) {
 
         Calendar nowTime = Calendar.getInstance();
-        nowTime.add(Calendar.MINUTE, 30);
+        nowTime.add(Calendar.MINUTE, 1440);
         Date expiresDate = nowTime.getTime();
 
         return JWT.create().withAudience(user.getUid().toString())   //签发对象

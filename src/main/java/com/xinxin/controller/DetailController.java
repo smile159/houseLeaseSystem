@@ -2,6 +2,7 @@ package com.xinxin.controller;
 
 import com.xinxin.bean.dto.ViewHouseDetail;
 import com.xinxin.common.Result;
+import com.xinxin.mapper.HouseRentMapper;
 import com.xinxin.service.DetailService;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,13 @@ public class DetailController {
     @Autowired
     DetailService detailService;
 
+    @Autowired
+    HouseRentMapper houseRentMapper;
+
     @GetMapping("/getHouseDetail")
     public Result<ViewHouseDetail> getHouseDetail(@RequestParam("rid") int rid){
-        log.info("rid = {}",rid);
-        return Result.success(detailService.getAllDataByHouseRentRid(rid));
+        ViewHouseDetail allDataByHouseRentRid = detailService.getAllDataByHouseRentRid(rid);
+        houseRentMapper.addGlance(allDataByHouseRentRid.getHid());
+        return Result.success(allDataByHouseRentRid);
     }
 }

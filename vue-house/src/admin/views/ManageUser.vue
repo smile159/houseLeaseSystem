@@ -1,6 +1,10 @@
 <template>
   <div>
     <!--面包屑-->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <!--操作-->
       <div class="main-container">
@@ -143,9 +147,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="editUserDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="submitEditUserForm">确 定</el-button>
-  </span>
+        <el-button @click="editUserDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitEditUserForm">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -328,6 +332,9 @@ export default {
 </script>
 
 <style scoped>
+.el-breadcrumb {
+  margin-bottom: 20px;
+}
 .input-userName {
   width: 100px;
 }

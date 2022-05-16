@@ -1,6 +1,8 @@
 package com.xinxin.mapper;
 
 import com.xinxin.bean.admin.dto.ViewManageHouse;
+import com.xinxin.bean.query.StatisticsHouseRent;
+import com.xinxin.bean.query.StatisticsUser;
 import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
 import com.xinxin.bean.vo.UpdateHouse;
@@ -78,4 +80,9 @@ public interface HouseMapper {
     @Delete("delete from house where hid=#{hid}")
     public int deleteUserHouse(@Param("hid") int hid);
 
+    @Select("select user.user_name,sum(h.glance_count) as count from user left join house h on user.uid = h.uid group by user.uid having sum(h.glance_count)")
+    public List<StatisticsUser> queryUserGlance();
+
+    @Select("select h.house_name,glance_count from house h where h.glance_count>0")
+    public List<StatisticsHouseRent> queryHouseRentGlance();
 }

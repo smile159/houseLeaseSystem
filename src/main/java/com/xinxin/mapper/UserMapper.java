@@ -53,7 +53,7 @@ public interface UserMapper {
     /*
     * 判断是否为黑名单用户
     * */
-    @Select("select measure from user_blacklist where ban_id=#{uid}")
+    @Select("select measure from user_blacklist where ban_id=#{uid} and status!=0")
     public Integer checkBlackUser(@Param("uid") int uid);
 
 

@@ -2,7 +2,9 @@ package com.xinxin.service;
 
 import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
+import com.xinxin.bean.query.ConditionsSearch;
 import com.xinxin.bean.sql.HouseRent;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -31,4 +33,7 @@ public interface HouseRentService {
     public int deleteHouseRent(int rid);
     // 查询是否允许删除
     public int queryIsAllowDelete(int rid);
+    public int addGlance(@Param("hid") int hid);
+    // 条件搜索
+    public List<ViewHouseRent> queryConditionsSearch(ConditionsSearch conditionsSearch);
 }

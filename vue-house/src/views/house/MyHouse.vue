@@ -202,7 +202,7 @@ export default {
           { min: 1, max: 11, message: '长度在 1 到 11 个字符', trigger: 'blur' }
         ]
       },
-      // 添加房屋的表单
+      // 更新房屋的表单
       updateHouseForm: {},
       // 控制添加房屋的对话框显示和隐藏
       updateHouseDialogVisible: false,

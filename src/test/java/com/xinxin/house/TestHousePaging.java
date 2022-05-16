@@ -1,5 +1,6 @@
 package com.xinxin.house;
 
+import com.xinxin.bean.dto.ViewStatistics;
 import com.xinxin.bean.sql.House;
 import com.xinxin.service.HouseService;
 import org.junit.jupiter.api.Test;
@@ -25,5 +26,12 @@ public class TestHousePaging {
     public void test01(){
         HashMap<String, Object> allHouseByPaging = houseService.getAllHouseByPaging(2, 1);
         System.out.println(allHouseByPaging);
+    }
+
+
+    @Test
+    public void test02(){
+        ViewStatistics viewStatistics = houseService.queryHouseRentAndUserGlance();
+        System.out.println(viewStatistics);
     }
 }

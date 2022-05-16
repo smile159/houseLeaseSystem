@@ -67,10 +67,12 @@ export default {
       tags: []
     }
   },
+  activated () {
+    console.log('激活')
+  },
   methods: {
     favorite () {
       if (this.favoriteAndTag > 0) {
-        console.log('ceshi', this.d)
         this.$http.get('getHouseAllTag', { params: { hid: this.d.hid } }).then(
           res => {
             if (res.data.status === 1) {

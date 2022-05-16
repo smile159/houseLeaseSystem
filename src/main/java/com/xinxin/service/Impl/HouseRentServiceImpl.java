@@ -2,6 +2,7 @@ package com.xinxin.service.Impl;
 
 import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
+import com.xinxin.bean.query.ConditionsSearch;
 import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.mapper.HouseMapper;
 import com.xinxin.mapper.HouseRentMapper;
@@ -76,5 +77,15 @@ public class HouseRentServiceImpl implements HouseRentService {
     @Override
     public int queryIsAllowDelete(int rid) {
         return houseRentMapper.queryHouseRentAllowDeleteBiHid(rid);
+    }
+
+    @Override
+    public int addGlance(int hid) {
+        return houseRentMapper.addGlance(hid);
+    }
+
+    @Override
+    public List<ViewHouseRent> queryConditionsSearch(ConditionsSearch conditionsSearch) {
+        return houseRentMapper.conditionsSearch(conditionsSearch);
     }
 }

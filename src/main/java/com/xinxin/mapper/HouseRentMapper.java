@@ -2,6 +2,7 @@ package com.xinxin.mapper;
 
 import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
+import com.xinxin.bean.query.ConditionsSearch;
 import com.xinxin.bean.sql.Favorite;
 import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.custom.annotation.PassToken;
@@ -31,17 +32,24 @@ public interface HouseRentMapper {
     public ViewDetailHouseRent getMyHouseRentDetail(@Param("rid") int rid);
     // 修改出租信息
     public int updateMyHouseRent(ViewDetailHouseRent viewDetailHouseRent);
+    /*
+     * 条件搜索，动态sql
+     * */
+    public List<ViewHouseRent> conditionsSearch(ConditionsSearch conditionsSearch);
+
     // 下架出租信息 修改allowHidden
     @Update("update house_rent set allow_hidden=#{allowHidden} where hid=#{hid}")
     public int updateHouseStatus(@Param("hid") int hid,@Param("allowHidden")int allowHidden);
     // 删除发布信息
     @Delete("delete from house_rent where rid=#{rid}")
     public int deleteHouseRent(@Param("rid") int rid);
-
     // 更新allowdelete
     @Update("update house_rent set allow_delete=#{allowDelete} where hid=#{hid}")
     public int updateHouseRentAllowDelete(@Param("hid") int hid,@Param("allowDelete") int allowDelete);
-
     @Select("select allow_delete from house_rent where rid=#{rid}")
     public int queryHouseRentAllowDeleteBiHid(@Param("rid") int rid);
+
+    // 浏览统计增加(租赁信息的房屋上)
+    @Update("update house set glance_count=glance_count+1 where hid=#{hid}")
+    public int addGlance(@Param("hid") int hid);
 }

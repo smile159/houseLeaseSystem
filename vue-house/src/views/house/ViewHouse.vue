@@ -27,7 +27,7 @@
         <span>----</span>
         <el-input v-model="searchForm.priceEnd" class="priceEnd"></el-input>
         元
-        <el-button type="primary" round>搜索</el-button>
+        <el-button type="primary" round @click="searchHouseRent">搜索</el-button>
         <el-button type="primary" round>重置</el-button>
       </div>
     </el-card>
@@ -87,9 +87,9 @@ export default {
         // 街道
         address: '',
         // 价格开始
-        priceStart: '',
+        priceStart: 0,
         // 价格结束
-        priceEnd: ''
+        priceEnd: 0
       },
       // 浏览的租房信息
       viewHouseRent: [],
@@ -119,6 +119,11 @@ export default {
     }
   },
   methods: {
+    async searchHouseRent () {
+      const { data: r } = await this.$http.post('conditionsSearch', this.searchForm)
+      if (r.status !== 1) return this.$message.error(r.msg)
+      this.cardDataList = r.data
+    },
     // 搜索城市
     searchCity (value) {
       // 自定义搜索逻辑

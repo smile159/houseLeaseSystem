@@ -114,7 +114,7 @@
           width="380px"
         >
           <template slot-scope="scope">
-            <el-button size="small" type="primary">编辑</el-button>
+            <el-button size="small" type="primary" @click="openEditHouseDialog(scope.row)">编辑</el-button>
             <el-button size="small" type="warning" v-if="scope.row.allowHidden === 0" @click="hiddenHouse(scope.row.hid)">隐藏</el-button>
             <el-button size="small" type="success" v-else-if="scope.row.allowHidden === 1" @click="showHouse(scope.row.hid)">显示</el-button>
             <el-button size="small" type="success" v-if="scope.row.allowDelete === 0" @click="allowDelete(scope.row.hid)">允许删除</el-button>
@@ -123,18 +123,58 @@
           </template>
         </el-table-column>
       </el-table>
-      <!--分页-->
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryHouseParams.pageNum"
-        :page-sizes="[1, 5, 10, 20]"
-        :page-size="queryHouseParams.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
+      <div class="bottom-pagination">
+        <!--分页-->
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryHouseParams.pageNum"
+          :page-sizes="[1, 5, 10, 20]"
+          :page-size="queryHouseParams.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
+        </el-pagination>
+      </div>
     </el-card>
+    <!--编辑对话框-->
+    <el-dialog
+      title="提示"
+      :visible.sync="updateHouseDialogVisible"
+      width="50%"
+      @close="closeUpdateHouseDialog"
+    >
+      <el-form :model="updateHouseForm" :rules="updateHouseFormRules" ref="updateHouseFormRef" label-width="100px">
+        <el-form-item label="房屋名称" prop="houseName">
+          <el-input v-model="updateHouseForm.houseName"></el-input>
+        </el-form-item>
+        <el-form-item label="房屋类型" prop="type">
+          <el-input v-model="updateHouseForm.type"></el-input>
+        </el-form-item>
+        <el-form-item label="所在城市" prop="city">
+          <el-input v-model="updateHouseForm.city"></el-input>
+        </el-form-item>
+        <el-form-item label="详细地址" prop="address">
+          <el-input v-model="updateHouseForm.address"></el-input>
+        </el-form-item>
+        <el-form-item label="房屋面积" prop="area">
+          <el-input v-model="updateHouseForm.area"></el-input>
+        </el-form-item>
+        <el-form-item label="房屋楼层" prop="floor">
+          <el-input v-model="updateHouseForm.floor"></el-input>
+        </el-form-item>
+        <el-form-item label="最大楼层" prop="maxFloor">
+          <el-input v-model="updateHouseForm.maxFloor"></el-input>
+        </el-form-item>
+        <el-form-item label="房屋朝向" prop="direction">
+          <el-input v-model="updateHouseForm.direction"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="updateHouseDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitUpdateHouseForm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -156,10 +196,100 @@ export default {
       },
       // 表格加载
       isLoading: false,
-      total: 0
+      total: 0,
+      // 更新房屋的表单
+      updateHouseForm: {},
+      // 控制添加房屋的对话框显示和隐藏
+      updateHouseDialogVisible: false,
+      // 添加房屋表单的校验规则
+      updateHouseFormRules: {
+        houseName: [
+          { required: true, message: '请输入房屋名称', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        type: [
+          { required: true, message: '请输入房屋类型', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        city: [
+          { required: true, message: '请输入所在城市', trigger: 'blur' },
+          { min: 1, max: 6, message: '长度在 1 到 6 个字符', trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '请输入详细地址', trigger: 'blur' },
+          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+        ],
+        area: [
+          { required: true, message: '请输入房屋面积', trigger: 'blur' },
+          {
+            type: 'number',
+            min: 1,
+            max: 999,
+            message: '数值在1-999之间',
+            trigger: 'blur',
+            transform: (value) => Number(value)
+          }
+        ],
+        floor: [
+          { required: true, message: '请输入房屋楼层', trigger: 'blur' },
+          {
+            type: 'number',
+            min: 1,
+            max: 100,
+            message: '数值在1-100之间',
+            trigger: 'blur',
+            transform: (value) => Number(value)
+          }
+        ],
+        maxFloor: [
+          { required: true, message: '请输入最大楼层', trigger: 'blur' },
+          {
+            type: 'number',
+            min: 1,
+            max: 100,
+            message: '数值在1-100之间',
+            trigger: 'blur',
+            transform: (value) => Number(value)
+          }
+        ],
+        direction: [
+          { required: true, message: '请输入房屋朝向', trigger: 'blur' },
+          { min: 1, max: 11, message: '长度在 1 到 11 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
+    submitUpdateHouseForm () {
+      this.$refs.updateHouseFormRef.validate(valid => {
+        if (!valid) return this.$message.error('请输入正确的数据')
+        this.$http.post('updateHouse', this.updateHouseForm).then(
+          res => {
+            if (res.data.status === 1) {
+              this.$message.success(res.data.msg)
+              this.updateHouseDialogVisible = false
+              // 刷新数据
+              this.getAllHouseByPaging()
+            }
+          }
+        ).catch(
+          err => {
+            this.$message.error(err.message)
+          }
+        )
+      })
+    },
+    closeUpdateHouseDialog () {
+      // 重置表单
+      this.$refs.updateHouseFormRef.resetFields()
+      // 关闭对话框
+      this.updateHouseDialogVisible = false
+    },
+    openEditHouseDialog (row) {
+      console.log('row = ', row)
+      this.updateHouseForm = row
+      this.updateHouseDialogVisible = true
+    },
     async getAllHouseByPaging () {
       this.isLoading = true
       const { data: r } = await this.$http.get('admin/getHousePaging', {
@@ -251,6 +381,12 @@ export default {
 </script>
 
 <style scoped>
+/*底部分页*/
+.bottom-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
 .el-breadcrumb {
   margin-bottom: 20px;
 }

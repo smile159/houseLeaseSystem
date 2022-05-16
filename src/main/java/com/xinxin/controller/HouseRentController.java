@@ -2,6 +2,7 @@ package com.xinxin.controller;
 
 import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
+import com.xinxin.bean.query.ConditionsSearch;
 import com.xinxin.common.Result;
 import com.xinxin.custom.annotation.PassToken;
 import com.xinxin.service.HouseRentService;
@@ -25,6 +26,23 @@ public class HouseRentController {
     @Autowired
     HouseRentService houseRentService;
 
+
+    @GetMapping("/houseRentGlanceAddCount")
+    public Result<String> houseRentAddGlance(int hid){
+        return null;
+    }
+
+
+
+    /*
+    * 按条件搜索
+    * */
+    @PostMapping("/conditionsSearch")
+    public Result<List<ViewHouseRent>> conditionsSearch(@RequestBody ConditionsSearch conditionsSearch){
+        return Result.success(houseRentService.queryConditionsSearch(conditionsSearch));
+    }
+
+
     @PassToken
     @GetMapping("/RecommendHouseRent")
     public Result<List<ViewHouseRent>> getHouseRent() {
@@ -39,7 +57,6 @@ public class HouseRentController {
         log.info("pageSize = {}, pageNum = {}", pageSize, pageNum);
         return Result.success(houseRentService.queryHouseRent(pageSize, pageNum));
     }
-
 
     @GetMapping("/getMyHouseRent")
     public Result<List<ViewHouseRent>> getMyHouseRent(HttpServletRequest httpServletRequest, @RequestParam("type") int type) {

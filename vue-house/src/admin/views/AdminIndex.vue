@@ -13,10 +13,25 @@
         <h3>房屋数量：{{statistics.houseCount}}</h3>
       </el-card>
     </div>
-    <!--echarts图表展示-->
-    <div>
-      <div ref="demo1" class="demo1"></div>
+    <div class="main-content">
+      <!--消息通知-->
+      <div class="main-left">
+        <el-card>
+          <h2 style="color: red">系统实时推送</h2>
+          <div>
+            <span>[2022-5-16 13:21:10]今日24:00执行网站维护</span>
+          </div>
+        </el-card>
+      </div>
+      <div class="main-right">
+        <el-calendar v-model="value">
+        </el-calendar>
+      </div>
     </div>
+    <!--echarts图表展示-->
+    <!--<div>-->
+    <!--  <div ref="demo1" class="demo1"></div>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -24,41 +39,18 @@
 export default {
   name: 'AdminIndex.vue',
   mounted () {
-    this.init()
     this.getStatistics()
   },
   data () {
     return {
-      statistics: {}
+      statistics: {},
+      value: new Date()
     }
   },
   methods: {
-    init () {
-      console.log(this.$refs.demo1)
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = this.echarts.init(this.$refs.demo1)
-      // 绘制图表
-      myChart.setOption({
-        title: {
-          text: 'ECharts 入门示例'
-        },
-        tooltip: {},
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [
-          {
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-          }
-        ]
-      })
-    },
     async getStatistics () {
+      console.log('获取数据')
       const { data: r } = await this.$http.get('admin/getStatistics')
-      console.log(r)
       if (r.status !== 1) return this.$message.error(r.msg)
       this.statistics = r.data
     }
@@ -67,7 +59,23 @@ export default {
 </script>
 
 <style scoped>
+.main-left .el-card {
+  width: 94%;
+  height: 100%;
+}
+.main-content {
+  display: flex;
+  justify-content: space-between;
+}
+.main-content .main-left {
+  flex: 1;
+}
+.main-content .main-right {
+  flex: 1;
+}
 .el-card /deep/ .el-card__body{
+  width: 100%;
+  height: 100%;
 }
 .el-card {
   display: flex;

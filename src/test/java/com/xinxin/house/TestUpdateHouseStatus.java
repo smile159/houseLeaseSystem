@@ -40,5 +40,7 @@ public class TestUpdateHouseStatus {
     }
     @Test
     public void test03(){
+        int i = houseRentService.addGlance(1);
+        System.out.println(i);
     }
 }

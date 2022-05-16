@@ -86,4 +86,20 @@
     <update id="updateMyHouseRent" parameterType="viewDetailHouseRent">
         update house_rent set rent_title=#{rentTitle},rent_content=#{rentContent},month=#{month},month_money=#{monthMoney},contact_name=#{contactName},contact_phone=#{contactPhone},update_time=#{updateTime} where rid=#{rid}
     </update>
+
+    <!--public List<ViewHouseRent> conditionsSearch(ConditionsSearch conditionsSearch);-->
+    <select id="conditionsSearch" resultMap="recommendRentHouseResultMap">
+        select * from house_rent left join house h on h.hid = house_rent.hid
+        <where>
+            <if test="selectCityName !=''">
+                city = #{selectCityName}
+            </if>
+            <if test="address!=''" >
+               and address like '%${address}%'
+            </if>
+            <if test="priceStart!='' and priceEnd!=''">
+               and  month_money between #{priceStart} and #{priceEnd}
+            </if>
+        </where>
+    </select>
 </mapper>

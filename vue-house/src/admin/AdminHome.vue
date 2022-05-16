@@ -16,27 +16,30 @@
         :collapse="isCollapse"
       >
         <el-menu-item index="/adminHome/adminIndex">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-s-help"></i>
           <span slot="title">首页</span>
         </el-menu-item>
 
         <el-submenu index="2">
           <template slot="title">
-            <i class="el-icon-location"></i>
+            <i class="el-icon-user"></i>
             <span>用户管理</span>
           </template>
-          <el-menu-item index="/adminHome/manageUser">用户浏览</el-menu-item>
+          <el-menu-item index="/adminHome/manageUser">
+            <i class="el-icon-menu"></i>
+            <span>用户浏览</span>
+          </el-menu-item>
         </el-submenu>
 
         <el-menu-item
           :route="{path: '/adminHome/houseManage',query: {adminUser:JSON.stringify(this.adminData)}}"
           index="/adminHome/houseManage"
         >
-          <i class="el-icon-document"></i>
+          <i class="el-icon-price-tag"></i>
           <span slot="title">房屋管理</span>
         </el-menu-item>
         <el-menu-item index="/adminHome/statistics">
-          <i class="el-icon-setting"></i>
+          <i class="el-icon-notebook-2"></i>
           <span slot="title">统计</span>
         </el-menu-item>
       </el-menu>

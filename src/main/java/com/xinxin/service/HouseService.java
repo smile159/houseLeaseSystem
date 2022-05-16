@@ -1,5 +1,6 @@
 package com.xinxin.service;
 
+import com.xinxin.bean.dto.ViewStatistics;
 import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
 import com.xinxin.bean.vo.UpdateHouse;
@@ -69,11 +70,16 @@ public interface HouseService {
     /*
     * 查询是否允许删除
     * */
-
     public int queryHouseIsAllowDelete(int hid);
 
     /*
     * 删除
     * */
     public int adminDeleteUserHouseByHid(int hid);
+
+
+    /*
+    * 获取浏览统计数据
+    * */
+    public ViewStatistics queryHouseRentAndUserGlance();
 }
