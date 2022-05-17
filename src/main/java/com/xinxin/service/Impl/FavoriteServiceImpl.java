@@ -21,8 +21,13 @@ public class FavoriteServiceImpl implements FavoriteService {
     FavoriteMapper favoriteMapper;
     @Override
     public int  userFavoriteHouseRent(FavoriteHouseRent favoriteHouseRent) {
-        // 生成fid
-        return favoriteMapper.createUserFavorite(favoriteHouseRent);
+        /// 先查询是否有存在的记录
+        Integer result = favoriteMapper.queryIsAlreadyExist(favoriteHouseRent);
+        if(result == null){
+            // 生成fid
+            return favoriteMapper.createUserFavorite(favoriteHouseRent);
+        }
+        return 1;
     }
 
     @Override

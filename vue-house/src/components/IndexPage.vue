@@ -53,10 +53,6 @@ export default {
         res => {
           this.RecommendHouseRent = res.data.data
         }
-      ).catch(
-        err => {
-          console.log(err)
-        }
       )
     },
     moreHouse () {

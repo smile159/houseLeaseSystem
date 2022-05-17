@@ -1,5 +1,6 @@
 package com.xinxin.service;
 
+import com.xinxin.bean.dto.ViewReserveOrder;
 import com.xinxin.bean.vo.ReserveOrder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,4 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface OrderService {
 
     public int userReserveHouseRent(ReserveOrder reserveOrder, HttpServletRequest request);
+
+    public ViewReserveOrder queryUserOrder(int rid,String userName);
 }

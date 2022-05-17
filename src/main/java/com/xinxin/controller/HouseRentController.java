@@ -3,6 +3,7 @@ package com.xinxin.controller;
 import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.query.ConditionsSearch;
+import com.xinxin.bean.vo.CreateHouseRent;
 import com.xinxin.common.Result;
 import com.xinxin.custom.annotation.PassToken;
 import com.xinxin.service.HouseRentService;
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @Slf4j
+@RequestMapping("house")
 public class HouseRentController {
 
     @Autowired
@@ -80,13 +82,13 @@ public class HouseRentController {
     }
 
     @GetMapping("/hiddenMyHouseRent")
-    public Result<String> hiddenMyHouseRent(int rid) {
-        return houseRentService.hiddenMyHouseRent(rid)>0 ? Result.success("下架成功") : Result.error("下架失败");
+    public Result<String> unshelveMyHouseRent(int rid) {
+        return houseRentService.unshelveMyHouseRent(rid)>0 ? Result.success("下架成功") : Result.error("下架失败");
     }
 
     @GetMapping("/showMyHouseRent")
-    public Result<String> showMyHouseRent(int rid) {
-        return houseRentService.showMyHouseRent(rid)>0 ? Result.success("上架成功") : Result.error("上架失败");
+    public Result<String> shelveMyHouseRent(int rid) {
+        return houseRentService.shelveMyHouseRent(rid)>0 ? Result.success("上架成功") : Result.error("上架失败");
     }
 
 
@@ -96,5 +98,15 @@ public class HouseRentController {
             return Result.error("管理员已禁止删除");
         }
         return houseRentService.deleteHouseRent(rid)>0 ? Result.success("删除成功") : Result.error("删除失败");
+    }
+
+
+    /*
+    * 创建房屋租赁
+    * */
+    @PostMapping("/createHouseRent")
+    public Result<String> createHouseRent(@RequestBody CreateHouseRent createHouseRent){
+        System.out.println("create = "+createHouseRent);
+        return houseRentService.createHouseRent(createHouseRent)>0 ? Result.success("发布成功") : Result.error("发布失败");
     }
 }

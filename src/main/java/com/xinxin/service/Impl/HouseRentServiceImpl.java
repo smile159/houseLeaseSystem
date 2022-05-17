@@ -3,15 +3,13 @@ package com.xinxin.service.Impl;
 import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.query.ConditionsSearch;
-import com.xinxin.bean.sql.HouseRent;
-import com.xinxin.mapper.HouseMapper;
+import com.xinxin.bean.vo.CreateHouseRent;
 import com.xinxin.mapper.HouseRentMapper;
 import com.xinxin.service.HouseRentService;
 import com.xinxin.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.View;
 import java.util.List;
 
 /**
@@ -39,7 +37,7 @@ public class HouseRentServiceImpl implements HouseRentService {
 
     @Override
     public List<ViewHouseRent> getMyHouseRentById(int uid, int type) {
-        if (type == 2) {
+        if (type == 2) {//租客租赁的数据
             return houseRentMapper.getMyHouseRentByCustomId(uid);
         } else {
             return houseRentMapper.getMyHouseRentById(uid, type);
@@ -59,14 +57,20 @@ public class HouseRentServiceImpl implements HouseRentService {
         return houseRentMapper.updateMyHouseRent(viewDetailHouseRent);
     }
 
+    /*
+    * 下架房屋信息
+    * */
     @Override
-    public int hiddenMyHouseRent(int rid) {
-        return houseRentMapper.updateHouseStatus(rid,1);
+    public int unshelveMyHouseRent(int rid) {
+        return houseRentMapper.updateHouseStatus(rid,0);
     }
 
+    /*
+    * 上架房屋信息
+    * */
     @Override
-    public int showMyHouseRent(int rid) {
-        return houseRentMapper.updateHouseStatus(rid,0);
+    public int shelveMyHouseRent(int rid) {
+        return houseRentMapper.updateHouseStatus(rid,1);
     }
 
     @Override
@@ -87,5 +91,17 @@ public class HouseRentServiceImpl implements HouseRentService {
     @Override
     public List<ViewHouseRent> queryConditionsSearch(ConditionsSearch conditionsSearch) {
         return houseRentMapper.conditionsSearch(conditionsSearch);
+    }
+
+    @Override
+    public int createHouseRent(CreateHouseRent createHouseRent) {
+        createHouseRent.setCustomUid(0);
+        createHouseRent.setHouseStatus(1);
+        createHouseRent.setAllowDelete(1);
+        createHouseRent.setAllowHidden(1);
+        createHouseRent.setCreateTime(DateTimeUtils.getNowDateTime());
+        createHouseRent.setUpdateTime(DateTimeUtils.getNowDateTime());
+        System.out.println("impl "+createHouseRent);
+        return houseRentMapper.insertHouseRent(createHouseRent);
     }
 }

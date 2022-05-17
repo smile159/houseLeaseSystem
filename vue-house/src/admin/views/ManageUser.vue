@@ -248,7 +248,6 @@ export default {
       this.banUserDialogVisible = false
     },
     closeBanUserDialog () {
-      console.log('表单重置')
       // 手动表单重置
       this.banUserForm = {
         operationUid: 0,
@@ -260,7 +259,6 @@ export default {
       this.banUserDialogVisible = false
     },
     tableRowClassName ({ row, rowIndex }) {
-      console.log('row = ', row, 'rowIndex =', rowIndex)
       if (row.status === 0) {
         console.log('封禁')
         return 'danger-row'
@@ -273,7 +271,6 @@ export default {
       }
     },
     deleteUser (uid) {
-      console.log('删除的用户id为：', uid)
       this.$confirm('您真的要删除该用户吗？', '确认信息', {
         distinguishCancelAndClose: true,
         confirmButtonText: '确定',
@@ -289,7 +286,6 @@ export default {
         })
     },
     editUser (data) {
-      console.log('用户数据为：', data)
       const { identity, status, ...otherData } = data
       this.editUserForm = otherData
       this.editUserDialogVisible = true

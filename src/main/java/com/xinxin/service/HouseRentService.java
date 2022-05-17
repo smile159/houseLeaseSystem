@@ -4,6 +4,7 @@ import com.xinxin.bean.dto.ViewDetailHouseRent;
 import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.query.ConditionsSearch;
 import com.xinxin.bean.sql.HouseRent;
+import com.xinxin.bean.vo.CreateHouseRent;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,9 +27,9 @@ public interface HouseRentService {
     // 修改出租信息
     public int updateMyHouseRent(ViewDetailHouseRent viewDetailHouseRent);
     // 下架出租信息
-    public int hiddenMyHouseRent(int rid);
+    public int unshelveMyHouseRent(int rid);
     // 上架出租信息
-    public int showMyHouseRent(int rid);
+    public int shelveMyHouseRent(int rid);
     // 删除
     public int deleteHouseRent(int rid);
     // 查询是否允许删除
@@ -36,4 +37,9 @@ public interface HouseRentService {
     public int addGlance(@Param("hid") int hid);
     // 条件搜索
     public List<ViewHouseRent> queryConditionsSearch(ConditionsSearch conditionsSearch);
+
+    /*
+    * 创建租赁信息
+    * */
+    public int createHouseRent(CreateHouseRent createHouseRent);
 }

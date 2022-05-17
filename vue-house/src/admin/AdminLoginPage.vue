@@ -77,7 +77,6 @@ export default {
     async login () {
       this.loginBtnIcon = 'el-icon-loading'
       const { data: r } = await this.$http.post('adminLogin', this.adminLoginForm)
-      console.log(r)
       if (r.status !== 1) this.$message.error(r.msg)
       // 拿到数据以后存储
       sessionStorage.setItem('adminUserInfo', JSON.stringify(r.data))

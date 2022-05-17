@@ -6,7 +6,8 @@ create table favorite
     constraint favorite_fid_uindex
         unique (fid),
     constraint favorite___fk_rid
-        foreign key (rid) references house_rent (rid),
+        foreign key (rid) references house_rent (rid)
+            on update cascade on delete cascade,
     constraint favorite___fk_uid
         foreign key (uid) references user (uid)
 )
@@ -15,7 +16,6 @@ create table favorite
 alter table favorite
     add primary key (fid);
 
-INSERT INTO houselease.favorite (fid, uid, rid) VALUES (3348, 1, 2);
-INSERT INTO houselease.favorite (fid, uid, rid) VALUES (3349, 1, 1);
-INSERT INTO houselease.favorite (fid, uid, rid) VALUES (3350, 1, 3);
-INSERT INTO houselease.favorite (fid, uid, rid) VALUES (3351, 1, 4);
+INSERT INTO houselease.favorite (uid, rid) VALUES (1, 3);
+INSERT INTO houselease.favorite (uid, rid) VALUES (1, 4);
+INSERT INTO houselease.favorite (uid, rid) VALUES (1, 2);

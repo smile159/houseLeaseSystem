@@ -1,5 +1,6 @@
 package com.xinxin.service;
 
+import com.xinxin.bean.dto.ViewHouseSelect;
 import com.xinxin.bean.dto.ViewStatistics;
 import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
@@ -82,4 +83,10 @@ public interface HouseService {
     * 获取浏览统计数据
     * */
     public ViewStatistics queryHouseRentAndUserGlance();
+
+
+    /*
+    * 动态select
+    * */
+    public List<ViewHouseSelect> queryUserAllHouse(int uid);
 }

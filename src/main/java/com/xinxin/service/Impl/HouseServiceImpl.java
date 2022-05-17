@@ -1,6 +1,7 @@
 package com.xinxin.service.Impl;
 
 import com.xinxin.bean.admin.dto.ViewManageHouse;
+import com.xinxin.bean.dto.ViewHouseSelect;
 import com.xinxin.bean.dto.ViewStatistics;
 import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
@@ -69,12 +70,12 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public int disabledQueryHouseRent(int hid) {
         // 根据rid设置状态 1为隐藏
-        return houseRentMapper.updateHouseStatus(hid, 1);
+        return houseRentMapper.updateHouseHidden(hid, 1);
     }
 
     @Override
     public int unDisabledQueryHouseRent(int hid) {
-        return houseRentMapper.updateHouseStatus(hid, 0);
+        return houseRentMapper.updateHouseHidden(hid, 0);
     }
 
     /*
@@ -107,5 +108,10 @@ public class HouseServiceImpl implements HouseService {
                 .userGlance(houseMapper.queryUserGlance())
                 .build();
         return viewStatistics;
+    }
+
+    @Override
+    public List<ViewHouseSelect> queryUserAllHouse(int uid) {
+        return houseMapper.getSelectHouseByUid(uid);
     }
 }

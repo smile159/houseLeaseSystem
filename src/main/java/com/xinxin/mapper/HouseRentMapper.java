@@ -5,6 +5,7 @@ import com.xinxin.bean.dto.ViewHouseRent;
 import com.xinxin.bean.query.ConditionsSearch;
 import com.xinxin.bean.sql.Favorite;
 import com.xinxin.bean.sql.HouseRent;
+import com.xinxin.bean.vo.CreateHouseRent;
 import com.xinxin.custom.annotation.PassToken;
 import org.apache.ibatis.annotations.*;
 
@@ -37,12 +38,24 @@ public interface HouseRentMapper {
      * */
     public List<ViewHouseRent> conditionsSearch(ConditionsSearch conditionsSearch);
 
-    // 下架出租信息 修改allowHidden
+
+
+    /*
+    * 修改房屋是否隐藏
+    * */
     @Update("update house_rent set allow_hidden=#{allowHidden} where hid=#{hid}")
-    public int updateHouseStatus(@Param("hid") int hid,@Param("allowHidden")int allowHidden);
+    public int updateHouseHidden(@Param("hid") int hid,@Param("allowHidden") int allowHidden);
+
+    /*
+    * 修改房屋的出租状态，控制是可出租还是已出租
+    * */
+    @Update("update house_rent set house_status=#{houseStatus} where rid=#{rid}")
+    public int updateHouseStatus(@Param("rid") int rid,@Param("houseStatus") int houseStatus);
+
     // 删除发布信息
     @Delete("delete from house_rent where rid=#{rid}")
     public int deleteHouseRent(@Param("rid") int rid);
+
     // 更新allowdelete
     @Update("update house_rent set allow_delete=#{allowDelete} where hid=#{hid}")
     public int updateHouseRentAllowDelete(@Param("hid") int hid,@Param("allowDelete") int allowDelete);
@@ -52,4 +65,10 @@ public interface HouseRentMapper {
     // 浏览统计增加(租赁信息的房屋上)
     @Update("update house set glance_count=glance_count+1 where hid=#{hid}")
     public int addGlance(@Param("hid") int hid);
+
+    /*
+    * 创建发布的租赁
+    * */
+    @Insert("insert into house_rent (hid, custom_uid, rent_title, rent_content, month, month_money, contact_name, contact_phone, house_status, create_time, update_time, allow_hidden, allow_delete) values (#{selectHouse},#{customUid},#{rentTitle},#{rentContent},#{month},#{monthMoney},#{contactName},#{contactPhone},#{houseStatus},#{createTime},#{updateTime},#{allowHidden},#{allowDelete});")
+    public int insertHouseRent(CreateHouseRent createHouseRent);
 }

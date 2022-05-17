@@ -1,5 +1,6 @@
 package com.xinxin.controller;
 
+import com.xinxin.bean.dto.ViewHouseSelect;
 import com.xinxin.bean.dto.ViewStatistics;
 import com.xinxin.bean.sql.House;
 import com.xinxin.bean.vo.CreateHouse;
@@ -7,10 +8,7 @@ import com.xinxin.bean.vo.UpdateHouse;
 import com.xinxin.common.Result;
 import com.xinxin.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -22,6 +20,7 @@ import java.util.List;
  * @createTime 2022年05月07日 09:59:00
  */
 @RestController
+@RequestMapping("house")
 public class HouseController {
 
     @Autowired
@@ -60,9 +59,11 @@ public class HouseController {
         return Result.success(houseService.getHouse(hid));
     }
 
-
-    @GetMapping("/getHouseRentAndUserGlance")
-    public Result<ViewStatistics> getHouseRentAndUserGlance(){
-        return Result.success(houseService.queryHouseRentAndUserGlance());
+    /*
+    * select选择框数据
+    * */
+    @GetMapping("/getUserHouse")
+    public Result<List<ViewHouseSelect>> getViewHouseSelect(int uid){
+        return Result.success(houseService.queryUserAllHouse(uid));
     }
 }

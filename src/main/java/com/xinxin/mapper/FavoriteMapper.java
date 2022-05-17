@@ -29,4 +29,10 @@ public interface FavoriteMapper {
     // 查询用户的所有收藏
     public List<ViewHouseRent> getAllHouseRent(@Param("uid") int uid);
 
+    /*
+    * 查询是否存在收藏
+    * */
+    @Select("select * from favorite where uid=#{uid} and rid=#{rid}")
+    public Integer queryIsAlreadyExist(FavoriteHouseRent favoriteHouseRent);
+
 }

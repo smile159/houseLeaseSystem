@@ -182,7 +182,6 @@
 export default {
   name: 'HouseManage',
   mounted () {
-    // console.log(this.$route.query.adminUser)
     this.adminUserInfo = JSON.parse(this.$route.query.adminUser)
     this.getAllHouseByPaging()
   },
@@ -286,7 +285,6 @@ export default {
       this.updateHouseDialogVisible = false
     },
     openEditHouseDialog (row) {
-      console.log('row = ', row)
       this.updateHouseForm = row
       this.updateHouseDialogVisible = true
     },
@@ -298,7 +296,6 @@ export default {
         }
       })
       if (r.status !== 1) return this.$message.error(r.msg)
-      console.log('r', r)
       // 保存数据
       this.houseList = r.data.result
       // 总条数
@@ -306,7 +303,6 @@ export default {
       this.isLoading = false
     },
     async hiddenHouse (hid) {
-      console.log('操作的房屋id为：', hid)
       const { data: r } = await this.$http.get('admin/hiddenHouse', {
         params: {
           hid: hid

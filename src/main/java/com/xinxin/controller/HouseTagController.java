@@ -5,6 +5,7 @@ import com.xinxin.common.Result;
 import com.xinxin.service.HouseTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @createTime 2022年05月08日 21:20:00
  */
 @RestController
+@RequestMapping("house")
 public class HouseTagController {
     @Autowired
     HouseTagService houseTagService;

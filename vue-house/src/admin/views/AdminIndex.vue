@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     async getStatistics () {
-      console.log('获取数据')
       const { data: r } = await this.$http.get('admin/getStatistics')
       if (r.status !== 1) return this.$message.error(r.msg)
       this.statistics = r.data

@@ -11,7 +11,7 @@
     <!--@Insert("insert into house (uid, house_name, type, city, address, area, floor, max_floor, direction) values (#{uid},#{houseName},#{type},#{city},#{address},#{area},#{floor},#{maxFloor},#{direction});")-->
 
     <insert id="addNewHouse">
-        insert into house (uid, house_name, type, city, address, area, floor, max_floor, direction) values (#{uid},#{houseName},#{type},#{city},#{address},#{area},#{floor},#{maxFloor},#{direction})
+        insert into house (uid, house_name, type, city, address, area, floor, max_floor, direction,glance_count) values (#{uid},#{houseName},#{type},#{city},#{address},#{area},#{floor},#{maxFloor},#{direction},0)
     </insert>
 
 

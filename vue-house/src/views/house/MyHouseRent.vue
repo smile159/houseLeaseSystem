@@ -8,7 +8,7 @@
         <template v-else>
           <!--发布租赁信息-->
           <div class="myHouseOptions">
-            <el-button>发布房屋租赁</el-button>
+            <el-button @click="releaseHouseRent">发布房屋租赁</el-button>
           </div>
           <div class="flex-div">
             <Card v-for="item in myHouseRentList" :key="item.rid"
@@ -32,7 +32,9 @@
                     <el-button type="warning" slot="reference" round>下架</el-button>
                   </el-popconfirm>
                 </template>
-                <el-button :disabled="data.row.allowDelete === 0" type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
+                <el-button :disabled="data.row.allowDelete === 0" type="danger" round
+                           @click="deleteHouseRent(data.row.rid)">删除
+                </el-button>
               </template>
             </Card>
           </div>
@@ -51,7 +53,9 @@
               <el-button type="primary" round @click="editHouseDialog(data.row.rid)">编辑</el-button>
               <!--下架或上架-->
               <el-button type="success" round @click="showHouseRent(data.row.rid)">上架</el-button>
-              <el-button :disabled="data.row.allowDelete === 0" type="danger" round @click="deleteHouseRent(data.row.rid)">删除</el-button>
+              <el-button :disabled="data.row.allowDelete === 0" type="danger" round
+                         @click="deleteHouseRent(data.row.rid)">删除
+              </el-button>
             </template>
           </Card>
         </div>
@@ -121,6 +125,67 @@
         <el-button type="primary" @click="submitHouseRentDialogForm">确 定</el-button>
       </span>
     </el-dialog>
+    <!--发布租赁信息-->
+    <el-dialog
+      title="提示"
+      :visible.sync="releaseHouseRentDialogVisible"
+      width="50%"
+      @close="closereleaseHouseRentDialog"
+    >
+      <el-form :model="releaseHouseRentForm" :rules="releaseHouseRentRules" ref="releaseHouseRentRef"
+               label-width="100px">
+        <el-form-item label="出租房屋" prop="selectHouse">
+          <el-select v-model="releaseHouseRentForm.selectHouse" placeholder="请选择出租房屋">
+            <el-option
+              v-for="item in userAllHouse"
+              :key="item.hid"
+              :label="item.houseName"
+              :value="item.hid">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="出租标题"
+          prop="rentTitle"
+        >
+          <el-input v-model="releaseHouseRentForm.rentTitle"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="出租内容"
+          prop="rentContent"
+        >
+          <el-input v-model="releaseHouseRentForm.rentContent"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="出租月数"
+          prop="month"
+        >
+          <el-input v-model="releaseHouseRentForm.month"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="月租金额"
+          prop="monthMoney"
+        >
+          <el-input v-model="releaseHouseRentForm.monthMoney"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="联系人"
+          prop="contactName"
+        >
+          <el-input v-model="releaseHouseRentForm.contactName"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="联系电话"
+          prop="contactPhone"
+        >
+          <el-input v-model="releaseHouseRentForm.contactPhone"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="releaseHouseRentDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitReleaseHouseRent">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <!--
@@ -145,6 +210,13 @@ export default {
   name: 'MyHouseRent',
   components: { Card },
   data () {
+    var checkSelectHouse = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请选择出租房屋'))
+      } else {
+        callback()
+      }
+    }
     return {
       cardData: {
         rentTitle: '合租-测试用的',
@@ -206,13 +278,95 @@ export default {
         ]
       },
       // 当前的tab页
-      nowPage: 0
+      nowPage: 0,
+      // 发布房屋租赁对话框控制
+      releaseHouseRentDialogVisible: false,
+      // 用户所有的房屋
+      userAllHouse: [],
+      releaseHouseRentForm: {
+        // 用户id
+        uid: 0,
+        selectHouse: '',
+        rentTitle: '',
+        rentContent: '',
+        month: '',
+        monthMoney: '',
+        contactName: '',
+        contactPhone: ''
+      },
+      releaseHouseRentRules: {
+        selectHouse: [
+          { validator: checkSelectHouse }
+        ],
+        rentTitle: [
+          { required: true, message: '请输入出租标题', trigger: 'blur' },
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+        ],
+        rentContent: [
+          { required: true, message: '请输入出租内容', trigger: 'blur' },
+          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
+        ],
+        month: [
+          { required: true, message: '请输入出租月数', trigger: 'blur' },
+          {
+            type: 'number',
+            min: 1,
+            max: 99,
+            message: '月份必须在1~99之间',
+            trigger: 'blur',
+            transform: (value) => Number(value)
+          }
+        ],
+        monthMoney: [
+          { required: true, message: '请输入月租金额', trigger: 'blur' },
+          {
+            type: 'number',
+            min: 1,
+            max: 999999,
+            message: '月租金额在1~999999之间',
+            trigger: 'blur',
+            transform: (value) => Number(value)
+          }
+        ],
+        contactName: [
+          { required: true, message: '请输入联系人', trigger: 'blur' },
+          { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+        ],
+        contactPhone: [
+          { required: true, message: '请输入联系人电话', trigger: 'blur' },
+          { min: 5, max: 11, message: '长度在 5 到 11 个字符', trigger: 'blur' }
+        ]
+      }
     }
   },
   mounted () {
     this.getMyHouseRent()
+    let userinfo = localStorage.getItem('userInfo')
+    userinfo = userinfo ? JSON.parse(userinfo) : {}
+    this.releaseHouseRentForm.uid = userinfo.uid
   },
   methods: {
+    closereleaseHouseRentDialog () {
+      this.$refs.releaseHouseRentRef.resetFields()
+      this.releaseHouseRentDialogVisible = false
+    },
+    submitReleaseHouseRent () {
+      this.$refs.releaseHouseRentRef.validate(async valid => {
+        if (!valid) return this.$message.error('数据格式错误')
+        const { data: r } = await this.$http.post('createHouseRent', this.releaseHouseRentForm)
+        if (r.status !== 1) return this.$message.error(r.msg)
+        this.$message.success(r.msg)
+        this.releaseHouseRentDialogVisible = false
+        // 刷新数据
+        this.getMyHouseRent()
+      })
+    },
+    async releaseHouseRent () {
+      const { data: r } = await this.$http.get('getUserHouse', { params: { uid: this.releaseHouseRentForm.uid } })
+      if (r.status !== 1) return this.$message.error(r.msg)
+      this.userAllHouse = r.data
+      this.releaseHouseRentDialogVisible = true
+    },
     // 删除发布的信息
     deleteHouseRent (rid) {
       this.$confirm('此操作将删除该出租信息, 是否继续?', '提示', {
@@ -226,10 +380,6 @@ export default {
               this.$message.success(res.data.msg)
               this.getMyHouseRent()
             }
-          }
-        ).catch(
-          err => {
-            console.log('出错了', err.message)
           }
         )
       }).catch(() => {
@@ -247,20 +397,13 @@ export default {
         }
       }).then(
         res => {
-          console.log('我发布的租赁信息为：', res.data.data)
           this.myHouseRentList = res.data.data
-        }
-      ).catch(
-        err => {
-          console.log('出错了', err.message)
         }
       )
     },
     // 切换tab的回调方法
     switchTab (target) {
       this.nowPage = Number(target.paneName)
-      console.log('nowPage = ', this.nowPage)
-      console.log(target)
       if (target.paneName === '0') {
         this.type = 1
       } else if (target.paneName === '1') {
@@ -285,10 +428,6 @@ export default {
       }).then(
         res => {
           this.editHouseForm = res.data.data
-        }
-      ).catch(
-        err => {
-          console.log('出错了...getHouseRentDetailData', err.message)
         }
       )
     },
@@ -316,7 +455,6 @@ export default {
     },
     // 关闭编辑对话框
     clsoeEditHosueForm () {
-      console.log('关闭对话框')
       // 关闭前重置表单
       this.$refs.editHouseFormRef.resetFields()
       // 关闭对话框
@@ -324,7 +462,6 @@ export default {
     },
     // 下架出租信息
     hiddenHouseRent (rid) {
-      console.log('下架,rid=', rid)
       this.$http.get('hiddenMyHouseRent', {
         params: {
           rid: rid
@@ -344,24 +481,29 @@ export default {
       )
     },
     showHouseRent (rid) {
-      console.log('上架,rid=', rid)
-      this.$http.get('showMyHouseRent', {
-        params: {
-          rid: rid
-        }
-      }).then(
-        res => {
-          if (res.data.status === 1) {
-            this.$message.success(res.data.msg)
-            // 刷新数据
-            this.getMyHouseRent()
+      this.$confirm('您确定上架该租赁信息吗, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.get('showMyHouseRent', {
+          params: {
+            rid: rid
           }
-        }
-      ).catch(
-        err => {
-          this.$message.error(err.message)
-        }
-      )
+        }).then(
+          res => {
+            if (res.data.status === 1) {
+              this.$message.success(res.data.msg)
+              // 刷新数据
+              this.getMyHouseRent()
+            }
+          }
+        ).catch(
+          err => {
+            this.$message.error(err.message)
+          }
+        )
+      })
     }
   }
 }

@@ -195,7 +195,6 @@ export default {
     },
     // 关闭表单
     closeRegisterFormDialog () {
-      console.log('关闭表单')
       // 关闭表单提交对话框
       this.registerDialogVisble = false
       // 在关闭前对表单进行重置并移除校验结果
@@ -214,15 +213,12 @@ export default {
     globalUserFavorite (rid, triggerEvent) {
       // 收藏是登录后的功能，先判断是否登录
       if (!this.isLogin) return this.$message.error('请先登录')
-      console.log('rid = ', rid, 'uid = ', this.user.uid)
       const data = { rid: rid, uid: this.user.uid }
-      console.log('收藏的数据：', data)
       this.$http.post('favoriteHouseRent', data).then(
         res => {
           if (res.data.status === 1) {
             // 刷新数据
             // this.$bus.$emit('refreshCradList')
-            console.log('触发的事件为：' + triggerEvent)
             this.$bus.$emit(triggerEvent)
             this.$message.success(res.data.msg)
           }

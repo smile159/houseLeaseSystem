@@ -28,7 +28,7 @@
         <el-input v-model="searchForm.priceEnd" class="priceEnd"></el-input>
         元
         <el-button type="primary" round @click="searchHouseRent">搜索</el-button>
-        <el-button type="primary" round>重置</el-button>
+        <el-button type="primary" round @click="resetData">重置</el-button>
       </div>
     </el-card>
     <!--主体内容-->
@@ -49,7 +49,6 @@ export default {
   mounted () {
     // 获取最新的出租信息
     this.getHouseRentList()
-    console.log('viewHouse', this)
     this.$bus.$on('refreshCradList', this.getHouseRentList)
   },
   data () {
@@ -87,9 +86,9 @@ export default {
         // 街道
         address: '',
         // 价格开始
-        priceStart: 0,
+        priceStart: '',
         // 价格结束
-        priceEnd: 0
+        priceEnd: ''
       },
       // 浏览的租房信息
       viewHouseRent: [],
@@ -119,7 +118,25 @@ export default {
     }
   },
   methods: {
+    resetData () {
+      // 重置表单
+      this.searchForm = {
+        // 用户选择的城市
+        selectCityName: '',
+        // 街道
+        address: '',
+        // 价格开始
+        priceStart: '',
+        // 价格结束
+        priceEnd: ''
+      }
+      // 刷新数据
+      this.getHouseRentList()
+    },
     async searchHouseRent () {
+      // 提交前转化价格
+      this.searchForm.priceStart = Number(this.searchForm.priceStart)
+      this.searchForm.priceEnd = Number(this.searchForm.priceEnd)
       const { data: r } = await this.$http.post('conditionsSearch', this.searchForm)
       if (r.status !== 1) return this.$message.error(r.msg)
       this.cardDataList = r.data
@@ -127,7 +144,6 @@ export default {
     // 搜索城市
     searchCity (value) {
       // 自定义搜索逻辑
-      console.log('searchCity', value)
       // 过滤数据
       this.hotCity = this.cityList.filter((v) => {
         return v.name === value
@@ -140,11 +156,6 @@ export default {
         res => {
           // 请求成功
           this.cardDataList = res.data.data
-          console.log(this.cardDataList)
-        }
-      ).catch(
-        err => {
-          console.log(err.message)
         }
       )
     }

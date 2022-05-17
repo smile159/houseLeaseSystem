@@ -1,0 +1,18 @@
+# 测试环境
+spring:
+  datasource:
+    username: smile
+    password: ABcdef123.+-
+    url: jdbc:mysql://localhost:3306/houselease?useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+server:
+  port: 8080
+mybatis:
+  mapper-locations: classpath:com/xinxin/mapper/*.xml
+  type-aliases-package: com.xinxin.bean
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true

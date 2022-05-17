@@ -70,7 +70,7 @@
     <!--// 根据custom_uid查询租赁信息-->
     <!--public List<ViewHouseRent> getMyHouseRentByCustomId(@Param("cid") int cid);-->
     <select id="getMyHouseRentByCustomId" resultMap="recommendRentHouseResultMap">
-        select * from house_rent where custom_uid=#{cid}
+        select * from house_rent h where custom_uid=#{cid}
     </select>
 
     <!--

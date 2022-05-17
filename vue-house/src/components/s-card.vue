@@ -67,9 +67,6 @@ export default {
       tags: []
     }
   },
-  activated () {
-    console.log('激活')
-  },
   methods: {
     favorite () {
       if (this.favoriteAndTag > 0) {
@@ -95,7 +92,6 @@ export default {
       }
     },
     toDetailPage () {
-      console.log('s-card触发toDetailPage')
       this.$router.push({
         path: '/detail',
         query: {

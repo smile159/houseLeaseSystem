@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     async getStatistics () {
-      const { data: r } = await this.$http.get('getHouseRentAndUserGlance')
+      const { data: r } = await this.$http.get('admin/getHouseRentAndUserGlance')
       if (r.status !== 1) return this.$message.error(r.msg)
       this.statisticsList = r.data
     }

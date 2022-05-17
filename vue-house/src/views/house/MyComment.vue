@@ -78,7 +78,6 @@ export default {
   methods: {
     // 选项卡的切换
     handleClick (tabObject) {
-      console.log('switch tab', tabObject)
       if (tabObject.name === 'second') {
         this.read = 1
       } else {
@@ -107,19 +106,16 @@ export default {
     },
     // 每页条数改变的时候
     handleSizeChange (size) {
-      console.log(size)
       this.queryParams.pageSize = size
       this.getAllMessage()
     },
     // 用户点击了页数
     handleCurrentChange (num) {
-      console.log('当前页数为', num)
       this.queryParams.pageNum = num
       this.getAllMessage()
     },
     // 用户点击了已读
     readUserMessage (mid) {
-      console.log('用户点击的消息mid = ', mid)
       this.$http.get('readMessage', {
         params: {
           mid: mid

@@ -10,6 +10,7 @@ import com.xinxin.service.admin.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @createTime 2022年05月10日 22:52:00
  */
 @RestController
+@RequestMapping("house")
 public class AdminController {
     @Autowired
     AdminUserService adminUserService;

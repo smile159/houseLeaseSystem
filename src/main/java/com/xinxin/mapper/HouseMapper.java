@@ -1,6 +1,7 @@
 package com.xinxin.mapper;
 
 import com.xinxin.bean.admin.dto.ViewManageHouse;
+import com.xinxin.bean.dto.ViewHouseSelect;
 import com.xinxin.bean.query.StatisticsHouseRent;
 import com.xinxin.bean.query.StatisticsUser;
 import com.xinxin.bean.sql.House;
@@ -85,4 +86,10 @@ public interface HouseMapper {
 
     @Select("select h.house_name,glance_count from house h where h.glance_count>0")
     public List<StatisticsHouseRent> queryHouseRentGlance();
+
+    /*
+    * 根据用户id获取所有房屋的部分数据
+    * */
+    @Select("select h.hid,h.house_name from house h where uid=#{uid}")
+    public List<ViewHouseSelect> getSelectHouseByUid(@Param("uid") int uid);
 }

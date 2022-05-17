@@ -30,8 +30,13 @@ import * as echarts from 'echarts'
 Vue.use(ElementUI)
 Vue.use(VueAMap)
 Vue.use(EasyRing)
+
+console.log('当前项目的环境为：', process.env.VUE_APP_MODE)
+console.log('当前项目的基本路径为：', process.env.VUE_APP_API_URL)
+
 /* 设置基本url */
-axios.defaults.baseURL = 'http://localhost:8080/'
+// axios.defaults.baseURL = 'http://localhost:8080/'
+axios.defaults.baseURL = process.env.VUE_APP_API_URL
 // 运行携带cookie
 axios.defaults.withCredentials = true
 

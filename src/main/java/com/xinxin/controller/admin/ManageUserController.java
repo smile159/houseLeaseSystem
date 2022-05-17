@@ -18,7 +18,7 @@ import java.util.List;
  * @createTime 2022年05月11日 10:03:00
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("house/admin")
 public class ManageUserController {
     @Autowired
     UserService userService;

@@ -23,9 +23,6 @@
 <script>
 export default {
   name: 'Login',
-  mounted () {
-    console.log(this)
-  },
   data () {
     return {
       // 登录表单数据
@@ -44,7 +41,6 @@ export default {
     login () {
       // 判断表单是否校验通过
       this.$http.post('login', this.loginForm).then(res => {
-        console.log(res)
         if (res.data.status === 1) {
           // 登录成功的提示消息
           this.$message.success(res.data.msg)
@@ -55,9 +51,6 @@ export default {
         } else {
           if (res.data.status < 4000) this.$message.error(res.data.msg)
         }
-      }).catch(err => {
-        console.log(err)
-        this.$message.error('登录错误')
       })
     }
   }

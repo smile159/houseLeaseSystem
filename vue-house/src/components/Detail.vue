@@ -23,6 +23,7 @@
               <el-descriptions-item label="房屋状态">{{houseStatusText}}</el-descriptions-item>
               <el-descriptions-item label="房屋类型">{{houseDta.type}}</el-descriptions-item>
               <el-descriptions-item label="租金">¥ {{houseDta.monthMoney}}/月</el-descriptions-item>
+              <el-descriptions-item label="出租月数">{{houseDta.month}}月</el-descriptions-item>
               <el-descriptions-item label="房屋面积">{{houseDta.area}}平方米</el-descriptions-item>
               <el-descriptions-item label="是否有电梯">
                 <el-tag type="success" size="small">有</el-tag>
@@ -70,6 +71,7 @@
           <div class="house-container">
             <span class="dateTimeText">入住日期</span>
             <el-date-picker
+              ref="startTimePicker"
               value-format="yyyy-MM-dd"
               v-model="submitReserveForm.startTime"
               type="date"
@@ -93,6 +95,7 @@
           <div class="house-container">
             留言
             <el-input
+              class="liuyan"
               resize="none"
               maxlength="100"
               show-word-limit
@@ -119,21 +122,26 @@
 export default {
   name: 'Detail',
   mounted () {
-    console.log(this.$route)
     // 获取当前日期
     const date = new Date()
-    const nowDateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-    this.submitReserveForm.startTime = nowDateTime
+    // 初始化开始时间
+    this.submitReserveForm.startTime = date.getFullYear() + '-0' + (date.getMonth() + 1) + '-' + date.getDate()
     // 根据rid获取房屋数据
     this.getHouseDetailData()
+    // 检查是否已经预订
+    this.checkReserveOrder()
   },
   data () {
     return {
+      // 预订按钮的文字
       reserveBtnText: '立即预订',
+      // 控制预订按钮的禁用
       reserveBtnDisabled: false,
       // 预订按钮样式
       reserveBtn: 'primary',
+      // 控制日期选择器是否只读
       startTimeReadyOnly: false,
+      // 控制日期选择器是否只读
       endTimeReadyOnly: false,
       // 音效
       ringOptions: {
@@ -145,12 +153,14 @@ export default {
       activeNames: ['1', '2', '3', '4'],
       // 留言
       leaveMessage: '',
+      // 地图默认坐标
       nowZb: [
         114.5215319,
         38.04831193
       ],
       // 房屋的所有数据
       houseDta: {},
+      // 房屋的配置
       houseTags: [],
       // 预订提交表单
       submitReserveForm: {
@@ -162,6 +172,7 @@ export default {
     }
   },
   computed: {
+    // 计算出路由传递的rid
     rid () {
       return this.$route.query.rid
     },
@@ -171,6 +182,25 @@ export default {
     }
   },
   methods: {
+    // 检查是否已经预订
+    async checkReserveOrder () {
+      const { data: r } = await this.$http.get('checkReserveOrder', {
+        params: {
+          rid: this.rid
+        }
+      })
+      if (r.status !== 1) return this.$message.error(r.msg)
+      // 排除null的情况
+      if (r.data == null) return false
+      // 修改开始日期
+      this.submitReserveForm.startTime = r.data.startTime
+      // 修改结束日期
+      this.submitReserveForm.endTime = r.data.endTime
+      // 修改文字
+      this.reserveBtnText = '已预订'
+      // 禁用按钮
+      this.reserveBtnDisabled = true
+    },
     // 获取房屋的所有数据
     getHouseDetailData () {
       this.$http.get('getHouseDetail', {
@@ -179,9 +209,7 @@ export default {
         }
       }).then(
         res => {
-          console.log(res.data.status)
           if (res.data.status === 1) {
-            // this.$message.success(res.data.msg)
             this.houseDta = res.data.data
             this.getHouseAllTag(res.data.data.hid)
           }
@@ -201,7 +229,6 @@ export default {
       }).then(
         res => {
           if (res.data.status === 1) {
-            // this.$message.success(res.data.msg)
             this.houseTags = res.data.data
           }
         }
@@ -218,23 +245,28 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.ringOptions.src = this.$sound.reserve
-        this.ringOptions.open = true
+        // this.ringOptions.src = this.$sound.reserve
+        // this.ringOptions.open = true
         // 数据校验
         if (this.submitReserveForm.startDateTime === '' || this.submitReserveForm.endDateTime === '') {
           return this.$message.warning('请选择入住日期和退租日期')
+        }
+        // 结束日期不能小雨开始日期
+        const startTime = new Date(this.submitReserveForm.startTime)
+        const endTime = new Date(this.submitReserveForm.endTime)
+        if (endTime - startTime < 0) {
+          return this.$message.warning('退租日期必须大于开始日期')
         }
         // 数据组合
         const data = {
           rid: this.rid,
           ...this.submitReserveForm
         }
-        console.log('data = ', data)
         this.$http.post('reserveHouse', data).then(
           res => {
             if (res.data.status === 1) {
               // 开始播放提示音
-              this.ringOptions.ring = true
+              // this.ringOptions.ring = true
               // 修改文字
               this.reserveBtnText = '预订成功'
               // 禁用按钮并修改样式
@@ -246,9 +278,9 @@ export default {
               // 成功提示
               this.$message.success(res.data.msg)
               // 2秒后关闭提示音
-              setTimeout(() => {
-                this.ringOptions.ring = false
-              }, 1800)
+              // setTimeout(() => {
+              //   this.ringOptions.ring = false
+              // }, 1800)
             }
           }
         ).catch(
@@ -270,8 +302,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.ringOptions.src = this.$sound.message
-        this.ringOptions.open = true
+        // this.ringOptions.src = this.$sound.message
+        // this.ringOptions.open = true
         // 数据校验
         if (this.leaveMessage.length <= 0) return this.$message.warning('请输入留言内容')
         // 数据组合
@@ -279,18 +311,17 @@ export default {
           rid: this.rid,
           message: this.leaveMessage
         }
-        console.log('留言提交数据：', data)
         this.$http.post('userMessage', data).then(
           res => {
             if (res.data.status === 1) {
               this.$message.success(res.data.msg)
-              this.ringOptions.ring = true
+              // this.ringOptions.ring = true
               // 情况留言内容
               this.leaveMessage = ''
               // 2秒后关闭提示音
-              setTimeout(() => {
-                this.ringOptions.ring = false
-              }, 1800)
+              // setTimeout(() => {
+              //   this.ringOptions.ring = false
+              // }, 1800)
             }
           }
         ).catch(
@@ -306,6 +337,9 @@ export default {
 </script>
 
 <style scoped>
+.liuyan {
+  margin-top: 10px;
+}
 .mapCollapse .el-collapse-item__content {
   padding-bottom: 0;
 }

@@ -19,7 +19,7 @@ import java.util.List;
  * @createTime 2022年05月12日 14:51:00
  */
 @RestController
-@RequestMapping("admin")
+@RequestMapping("house/admin")
 public class ManageHouseController {
     @Autowired
     HouseService houseService;

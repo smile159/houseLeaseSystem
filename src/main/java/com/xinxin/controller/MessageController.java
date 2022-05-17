@@ -21,6 +21,7 @@ import java.util.List;
  * @createTime 2022年05月09日 10:23:00
  */
 @RestController
+@RequestMapping("house")
 public class MessageController {
 
     @Autowired

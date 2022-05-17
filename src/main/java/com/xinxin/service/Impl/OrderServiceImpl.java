@@ -1,5 +1,6 @@
 package com.xinxin.service.Impl;
 
+import com.xinxin.bean.dto.ViewReserveOrder;
 import com.xinxin.bean.vo.ReserveOrder;
 import com.xinxin.mapper.OrderMapper;
 import com.xinxin.mapper.UserMapper;
@@ -30,5 +31,10 @@ public class OrderServiceImpl implements OrderService {
         reserveOrder.setUserName(request.getAttribute("userName").toString());
         log.info("reserveOrder = {}",reserveOrder);
         return orderMapper.createReserveOrder(reserveOrder);
+    }
+
+    @Override
+    public ViewReserveOrder queryUserOrder(int rid,String userName) {
+        return orderMapper.queryOrder(rid,userName);
     }
 }

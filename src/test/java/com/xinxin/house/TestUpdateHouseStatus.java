@@ -25,9 +25,6 @@ public class TestUpdateHouseStatus {
 
     @Test
     public void test01(){
-        //int i = houseRentService.hiddenMyHouseRent(1);
-        int i = houseRentService.showMyHouseRent(1);
-        System.out.println(i);
     }
 
 
