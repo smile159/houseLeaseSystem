@@ -73,6 +73,7 @@ export default {
   },
   mounted () {
     this.bannerImg = this.$imgs.logo
+    this.RecommendHouseRent = []
   }
 }
 </script>

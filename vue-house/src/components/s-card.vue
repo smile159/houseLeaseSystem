@@ -35,7 +35,7 @@
       </div>
       <!--右边收藏按钮-->
       <div class="right">
-        <el-tag :type="tagType" @click="favorite">{{ favoriteOrTag }}</el-tag>
+        <el-tag :type="tagType" @click.stop="favorite">{{ favoriteOrTag }}</el-tag>
       </div>
     </div>
     <div class="flex-button">
@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     favorite () {
-      console.log('bug修复')
+      console.log('bug修复', this)
       this.count++
       console.log('count = ', this.count)
       if (this.favoriteAndTag > 0) {

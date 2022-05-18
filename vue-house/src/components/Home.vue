@@ -216,10 +216,9 @@ export default {
     },
     // 全局事件：用户收藏出租信息
     globalUserFavorite (rid, triggerEvent) {
-      console.log('test tt', this.isLogin)
+      console.log('test tt', this)
       // 收藏是登录后的功能，先判断是否登录
       if (!this.isLogin) return this.$message.error('请先登录')
-      if (!this.isLogin) return false
       const data = { rid: rid, uid: this.user.uid }
       this.$http.post('favoriteHouseRent', data).then(
         res => {
