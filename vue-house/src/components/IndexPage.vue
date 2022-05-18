@@ -39,17 +39,25 @@ export default {
       bannerImg: [],
       bannerHeight: '877px',
       // 推荐的租房信息
-      RecommendHouseRent: []
+      RecommendHouseRent: [],
+      // 用户数据
+      userInfo: {}
     }
   },
   created () {
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
     this.getRecommendHouseRent()
     this.$bus.$on('getRecommendHouseRent', this.getRecommendHouseRent)
+    this.$bus.$on('userLogOut', this.userLogOut)
   },
   methods: {
     // 获取推荐数据
     getRecommendHouseRent () {
-      this.$http.get('RecommendHouseRent').then(
+      this.$http.get('RecommendHouseRent', {
+        params: {
+          uid: this.userInfo != null ? this.userInfo.uid : null
+        }
+      }).then(
         res => {
           this.RecommendHouseRent = res.data.data
         }
@@ -57,6 +65,10 @@ export default {
     },
     moreHouse () {
       this.$router.push('/viewHouse')
+    },
+    userLogOut () {
+      this.userInfo = null
+      this.getRecommendHouseRent()
     }
   },
   mounted () {

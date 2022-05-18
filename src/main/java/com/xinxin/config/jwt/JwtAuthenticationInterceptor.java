@@ -67,7 +67,6 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
             // 获取 token 中的 id
             String userId = JwtUtils.getAudience(token);
-            int uid = Integer.parseInt(JwtUtils.getAudience(token));
             //找找看是否有这个user   因为我们需要检查用户是否存在，读者可以自行修改逻辑
             User user = userService.getUserById(userId);
             if (user == null) {
@@ -78,7 +77,6 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             // 验证 token
             JwtUtils.verifyToken(token, userId);
             httpServletRequest.setAttribute("userId",user.getUid());
-            httpServletRequest.setAttribute("uid",uid);
             httpServletRequest.setAttribute("userName",user.getUserName());
         }
         return true;

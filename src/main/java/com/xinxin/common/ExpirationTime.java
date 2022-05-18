@@ -12,6 +12,7 @@ public class ExpirationTime {
     *   S表示秒
     *   MS表示毫秒
     * */
+    public static final Integer test = 60;
 
     // 一天
     public static final Integer ONEDAYS = 24 * 60 * 60;

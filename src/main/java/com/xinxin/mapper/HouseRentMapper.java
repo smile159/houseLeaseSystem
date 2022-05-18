@@ -24,7 +24,7 @@ public interface HouseRentMapper {
     // 分页查询
     public List<ViewHouseRent> getHouseRentByPaging(@Param("offset") Integer offset,@Param("pageSize") Integer pageSize);
     // 根据rid获取fid
-    public Integer getFavoriteFidByRid(@Param("rid") int rid);
+    public Integer getFavoriteFidByRid(@Param("rid") int rid,@Param("uid") int uid);
     // 根据uid查询租赁信息
     public List<ViewHouseRent> getMyHouseRentById(@Param("uid") int uid,@Param("type") int type);
     // 根据custom_uid查询租赁信息

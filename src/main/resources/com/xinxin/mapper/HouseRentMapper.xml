@@ -43,11 +43,6 @@
                      column="hid"
                      fetchType="eager"
         />
-        <association property="fid"
-                     select="com.xinxin.mapper.HouseRentMapper.getFavoriteFidByRid"
-                     column="rid"
-                     >
-        </association>
     </resultMap>
 
     <select id="getRecommendHouseRent" resultMap="recommendRentHouseResultMap">
@@ -56,7 +51,7 @@
 
     <!--public int getFavoriteFidByRid(@Param("rid") int rid);-->
     <select id="getFavoriteFidByRid" resultType="integer">
-        select ifnull(fid,0) from favorite where rid=#{rid}
+        select ifnull(fid,0) from favorite where rid=#{rid} and uid=#{uid}
     </select>
 
 

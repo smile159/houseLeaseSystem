@@ -46,7 +46,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     public int adminBanUser(BanUser banUser) {
         // 填充操作的时间
         banUser.setCreateTime(DateTimeUtils.getNowDateTime());
-        banUser.setStatus(0);
+        banUser.setStatus(1);
         // 写入黑名单表
         int result = adminUserMapper.insertUserBlackList(banUser);
         if(result >0) {

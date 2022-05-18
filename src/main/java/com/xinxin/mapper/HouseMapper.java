@@ -90,6 +90,7 @@ public interface HouseMapper {
     /*
     * 根据用户id获取所有房屋的部分数据
     * */
-    @Select("select h.hid,h.house_name from house h where uid=#{uid}")
+    @Select("select h.hid,h.house_name,ifnull(hr.house_status,-1) from house h left join house_rent hr on h.hid = hr.hid where uid=#{uid} and hr.house_status is null")
     public List<ViewHouseSelect> getSelectHouseByUid(@Param("uid") int uid);
+
 }

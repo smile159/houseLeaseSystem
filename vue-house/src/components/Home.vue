@@ -201,18 +201,25 @@ export default {
       this.$refs.registerFormDialogRef.resetFields()
     },
     // 用户退出
-    logOut () {
+    async logOut () {
+      // 向服务器发送请求，清空cookie
+      const { data: r } = await this.$http.get('logOut')
+      if (r.status !== 1) return this.$message.error('退出失败')
+      this.$message.success(r.msg)
       // 清空data中的user
       this.user = {}
-      // 情况localStorage中的userInfo
+      // 清除localStorage中的userInfo
       localStorage.removeItem('userInfo')
       // 修改登录状态
       this.isLogin = false
+      this.$bus.$emit('userLogOut')
     },
     // 全局事件：用户收藏出租信息
     globalUserFavorite (rid, triggerEvent) {
+      console.log('test tt', this.isLogin)
       // 收藏是登录后的功能，先判断是否登录
       if (!this.isLogin) return this.$message.error('请先登录')
+      if (!this.isLogin) return false
       const data = { rid: rid, uid: this.user.uid }
       this.$http.post('favoriteHouseRent', data).then(
         res => {
@@ -249,6 +256,7 @@ export default {
     },
     // 修改徽章数量
     setBadeg (value) {
+      console.log(this.$route)
       this.$http.get('getMessageNum').then(
         res => {
           if (res.data.status === 1) {

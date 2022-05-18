@@ -47,9 +47,9 @@ public class HouseRentController {
 
     @PassToken
     @GetMapping("/RecommendHouseRent")
-    public Result<List<ViewHouseRent>> getHouseRent() {
+    public Result<List<ViewHouseRent>> getHouseRent(Integer uid) {
         // 查询数据库
-        return Result.success(houseRentService.getRecommendHouseRent());
+        return Result.success(houseRentService.getRecommendHouseRent(uid));
     }
 
     // 分页查询

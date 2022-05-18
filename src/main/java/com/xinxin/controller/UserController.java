@@ -18,11 +18,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -45,7 +43,6 @@ public class UserController {
     @PassToken
     @ApiOperation(value = "用户登录")
     public Result<ViewUser> loginUser(@RequestBody @ApiParam(value = "前端请求参数",required = true) LoginUser loginUser,@ApiParam(value = "设置COOKIE") HttpServletResponse response) throws UserExcepiton.UserStopMessage, UserExcepiton.UserBaned {
-        System.out.println("收到了登录请求：" + loginUser);
         // 数据库查询用户
         User sqlUser = userService.getUserByName(loginUser.getUserName());
         System.out.println("login = "+sqlUser);
@@ -53,7 +50,7 @@ public class UserController {
         // 校验数据是否为空，用户名和密码是否一致
         if (UserUtils.checkUser(loginUser,sqlUser)) {
             // 设置响应头token值，下次请求必须携带
-            response.addCookie(CookieUtils.createCookie("token",JwtUtils.createToken(sqlUser), ExpirationTime.SEVENDAYS,true));
+            response.addCookie(CookieUtils.createCookie("token",JwtUtils.createToken(sqlUser), ExpirationTime.ONEDAYS,true));
             ViewUser viewUser = ViewUser.builder()
                     .uid(sqlUser.getUid())
                     .userName(sqlUser.getUserName())
@@ -66,6 +63,17 @@ public class UserController {
             log.info("校验失败");
             return Result.error("账号或密码错误");
         }
+    }
+
+
+
+    @GetMapping("/logOut")
+    public Result<String> logOut(HttpServletResponse response){
+        // 删除名为token的cookie
+        Cookie cookie = new Cookie("token","");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return Result.success("退出成功");
     }
 
 

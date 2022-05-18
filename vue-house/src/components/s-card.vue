@@ -64,11 +64,15 @@ export default {
     return {
       dialogVisible: false,
       cardData: this.d,
-      tags: []
+      tags: [],
+      count: 0
     }
   },
   methods: {
     favorite () {
+      console.log('bug修复')
+      this.count++
+      console.log('count = ', this.count)
       if (this.favoriteAndTag > 0) {
         this.$http.get('getHouseAllTag', { params: { hid: this.d.hid } }).then(
           res => {
@@ -85,8 +89,10 @@ export default {
         this.dialogVisible = true
       } else {
         if (this.isFavorite) {
+          console.log('用户取消收藏')
           this.$bus.$emit('userCancel', this.d.fid, this.triggerEvent)
         } else {
+          console.log('用户收藏')
           this.$bus.$emit('userFavorite', this.d.rid, this.triggerEvent)
         }
       }

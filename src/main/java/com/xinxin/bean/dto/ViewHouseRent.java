@@ -27,6 +27,11 @@ public class ViewHouseRent {
 
 
     /*
+    *
+    * */
+    private Integer uid;
+
+    /*
     * 房屋的关联id
     * */
     private Integer hid;

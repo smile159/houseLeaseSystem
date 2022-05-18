@@ -7,6 +7,7 @@ import com.xinxin.bean.sql.HouseRent;
 import com.xinxin.bean.vo.CreateHouseRent;
 import org.apache.ibatis.annotations.Param;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public interface HouseRentService {
     // 分页查询
     public List<ViewHouseRent> queryHouseRent(int pageSize, int pageNum);
     // 推荐数据
-    public List<ViewHouseRent> getRecommendHouseRent();
+    public List<ViewHouseRent> getRecommendHouseRent(Integer uid);
     // 我的租赁
     public List<ViewHouseRent> getMyHouseRentById(int uid,int type);
     // 根据rid查询所有字段以及租客用户名

@@ -10,6 +10,7 @@ import com.xinxin.utils.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -31,8 +32,17 @@ public class HouseRentServiceImpl implements HouseRentService {
     }
 
     @Override
-    public List<ViewHouseRent> getRecommendHouseRent() {
-        return houseRentMapper.getRecommendHouseRent();
+    public List<ViewHouseRent> getRecommendHouseRent(Integer uid) {
+        List<ViewHouseRent> recommendHouseRent = houseRentMapper.getRecommendHouseRent();
+        for (ViewHouseRent viewHouseRent : recommendHouseRent) {
+            if(uid != null){
+                viewHouseRent.setFid(houseRentMapper.getFavoriteFidByRid(viewHouseRent.getRid(),uid));
+            }else{
+                viewHouseRent.setHouseStatus(0);
+            }
+        }
+        System.out.println(recommendHouseRent);
+        return recommendHouseRent;
     }
 
     @Override
